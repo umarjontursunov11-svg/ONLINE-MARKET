@@ -512,23 +512,23 @@
             <h4 class="fw-bold mb-3" data-i18n="contact_form_title">Tezkor Murojaat va Tijorat Taklifi Formasi</h4>
             <p class="text-muted small mb-4" data-i18n="contact_form_subtitle">Quyidagi formani to'ldiring, menejerimiz 15 daqiqada siz bilan bog'lanadi.</p>
 
-            <form onsubmit="event.preventDefault(); store.showToast('Murojaatingiz qabul qilindi! Menejerimiz tez orada bog\'lanadi.', 'success'); this.reset();">
+            <form onsubmit="handleContactSubmit(event)">
               <div class="row g-3">
                 <div class="col-md-6">
                   <label class="form-label small fw-semibold" data-i18n="form_name">F.I.O yoki Mas'ul Shaxs *</label>
-                  <input type="text" class="form-control" data-i18n-placeholder="form_name_placeholder" placeholder="F.I.O yoki mas'ul shaxs ismi" required />
+                  <input type="text" id="contactName" class="form-control" data-i18n-placeholder="form_name_placeholder" placeholder="F.I.O yoki mas'ul shaxs ismi" required />
                 </div>
                 <div class="col-md-6">
                   <label class="form-label small fw-semibold" data-i18n="form_phone">Telefon Raqamingiz *</label>
-                  <input type="tel" class="form-control" placeholder="+998 (90) 123-45-67" required />
+                  <input type="tel" id="contactPhone" class="form-control" placeholder="+998 (90) 123-45-67" required />
                 </div>
                 <div class="col-md-6">
                   <label class="form-label small fw-semibold" data-i18n="form_company">Tashkilot Nomi (Ixtiyoriy)</label>
-                  <input type="text" class="form-control" data-i18n-placeholder="form_company_placeholder" placeholder="MCHJ, AJ yoki Laboratoriya nomi" />
+                  <input type="text" id="contactCompany" class="form-control" data-i18n-placeholder="form_company_placeholder" placeholder="MCHJ, AJ yoki Laboratoriya nomi" />
                 </div>
                 <div class="col-md-6">
                   <label class="form-label small fw-semibold" data-i18n="form_interest">Qiziqtirgan Mahsulot / Xizmat</label>
-                  <select class="form-select">
+                  <select id="contactInterest" class="form-select">
                     <option>Standart namunalar (GSO/CRM)</option>
                     <option>Standart-titrlar (Fiksanallar)</option>
                     <option>Bufer eritmalari (pH / Cond)</option>
@@ -539,7 +539,7 @@
                 </div>
                 <div class="col-12">
                   <label class="form-label small fw-semibold" data-i18n="form_message">Qo'shimcha Izoh yoki Texnik Talablar</label>
-                  <textarea class="form-control" rows="3" data-i18n-placeholder="form_message_placeholder" placeholder="Sizga kerak bo'lgan miqdor, GOST talablari yoki savollaringizni yozing..."></textarea>
+                  <textarea id="contactMessage" class="form-control" rows="3" data-i18n-placeholder="form_message_placeholder" placeholder="Sizga kerak bo'lgan miqdor, GOST talablari yoki savollaringizni yozing..."></textarea>
                 </div>
                 <div class="col-12">
                   <button type="submit" class="btn btn-primary-custom w-100 py-3" data-i18n="form_submit">

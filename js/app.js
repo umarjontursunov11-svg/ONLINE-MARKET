@@ -678,6 +678,87 @@ function openCheckoutModal() {
   modal.show();
 }
 
+// ============================================================================
+// TELEGRAM NOTIFICATION SERVICE (GURUHGA BUYURTMA VA MUROJAAT YUBORISH)
+// ============================================================================
+function escapeTgHtml(text) {
+  if (!text) return '';
+  return String(text)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+async function sendTelegramNotification(text) {
+  const token = typeof TELEGRAM_CONFIG !== 'undefined' ? TELEGRAM_CONFIG.getBotToken() : (localStorage.getItem('sm_tg_bot_token') || '8796402233:AAHkcD3lE1piqcC3yOWgTRUIXWJhtaSQ8qQ');
+  const chatId = typeof TELEGRAM_CONFIG !== 'undefined' ? TELEGRAM_CONFIG.getChatId() : (localStorage.getItem('sm_tg_chat_id') || '-1003964640399');
+
+  if (!token || !chatId) {
+    console.warn("Telegram Bot Token yoki Chat ID mavjud emas.");
+    return false;
+  }
+
+  try {
+    const url = `https://api.telegram.org/bot${token}/sendMessage`;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: text,
+        parse_mode: 'HTML'
+      })
+    });
+
+    const data = await response.json();
+    if (data.ok) {
+      console.log(`✅ Xabar Telegram guruhga (${chatId}) muvaffaqiyatli yuborildi:`, data);
+      return true;
+    } else {
+      console.warn(`⚠️ Telegram API xatoligi (${data.error_code}): ${data.description}`);
+      return false;
+    }
+  } catch (err) {
+    console.warn("⚠️ Telegram API ga so'rov yuborishda xatolik:", err);
+    return false;
+  }
+}
+
+function formatOrderForTelegramHTML(order) {
+  let msg = `🛒 <b>YANGI BUYURTMA — STANDART VA METROLOGIYA</b>\n`;
+  msg += `━━━━━━━━━━━━━━━━━━━━━━\n`;
+  msg += `📋 <b>Buyurtma №:</b> <code>#${order.id}</code>\n`;
+  msg += `👤 <b>Mijoz:</b> ${escapeTgHtml(order.customer.name)}\n`;
+  msg += `📞 <b>Telefon:</b> <code>${escapeTgHtml(order.customer.phone)}</code>\n`;
+  msg += `🏢 <b>Mijoz turi:</b> ${escapeTgHtml(order.customerType)}\n`;
+  if (order.customer.company && order.customer.company !== 'Jismoniy Shaxs') {
+    msg += `🏭 <b>Tashkilot:</b> ${escapeTgHtml(order.customer.company)}\n`;
+  }
+  if (order.customer.inn) {
+    msg += `🔢 <b>STIR (INN):</b> <code>${escapeTgHtml(order.customer.inn)}</code>\n`;
+  }
+  msg += `📍 <b>Manzil:</b> ${escapeTgHtml(order.customer.address)}\n`;
+  msg += `💳 <b>To'lov usuli:</b> ${escapeTgHtml(order.payType)}\n`;
+  if (order.notes) {
+    msg += `📝 <b>Izoh:</b> <i>${escapeTgHtml(order.notes)}</i>\n`;
+  }
+  msg += `━━━━━━━━━━━━━━━━━━━━━━\n`;
+  msg += `📦 <b>BUYURTMA TARKIBI (${order.items.reduce((s, it) => s + it.quantity, 0)} dona):</b>\n\n`;
+
+  order.items.forEach((item, idx) => {
+    msg += `${idx + 1}. <b>${escapeTgHtml(item.title)}</b>\n`;
+    msg += `   └ Artikul: <code>${escapeTgHtml(item.artikul)}</code>\n`;
+    msg += `   └ ${item.quantity} dona x ${store.formatMoney(item.price)} = <b>${store.formatMoney(item.price * item.quantity)}</b>\n`;
+  });
+
+  msg += `\n━━━━━━━━━━━━━━━━━━━━━━\n`;
+  msg += `💰 <b>JAMI SUMMA:</b> <b>${order.totalSumFormatted}</b> (QQS bilan)\n`;
+  msg += `📅 <b>Vaqt:</b> ${new Date().toLocaleString('uz-UZ')}\n`;
+  return msg;
+}
+
 function processOrderSubmit(event) {
   event.preventDefault();
 
@@ -723,27 +804,32 @@ function processOrderSubmit(event) {
   const offerDate = new Date().toLocaleDateString('uz-UZ', { day: '2-digit', month: '2-digit', year: 'numeric' }) + " y.";
   currentOfferData = { items: offerItems, client: clientInfo, offerNumber, offerDate };
 
+  const newOrder = {
+    id: offerNumber,
+    date: new Date().toISOString(),
+    dateFormatted: offerDate,
+    customer: clientInfo,
+    customerType: customerType,
+    items: offerItems,
+    totalSum: store.cart.reduce((s, it) => s + (it.price * it.quantity), 0),
+    totalSumFormatted: totalPriceFormatted,
+    payType: payType,
+    notes: notes,
+    status: 'Yangi'
+  };
+
   // Admin panel uchun buyurtmani saqlash
   try {
     const orders = JSON.parse(localStorage.getItem('sm_orders') || '[]');
-    const newOrder = {
-      id: offerNumber,
-      date: new Date().toISOString(),
-      dateFormatted: offerDate,
-      customer: clientInfo,
-      customerType: customerType,
-      items: offerItems,
-      totalSum: store.cart.reduce((s, it) => s + (it.price * it.quantity), 0),
-      totalSumFormatted: totalPriceFormatted,
-      payType: payType,
-      notes: notes,
-      status: 'Yangi'
-    };
     orders.unshift(newOrder);
     localStorage.setItem('sm_orders', JSON.stringify(orders));
   } catch (e) {
     console.warn("Could not save order to storage:", e);
   }
+
+  // Telegram guruhga (-1003964640399) to'g'ridan-to'g'ri xabar yuborish
+  const orderTgHtml = formatOrderForTelegramHTML(newOrder);
+  sendTelegramNotification(orderTgHtml);
 
   // Close Checkout Modal
   const checkoutModalEl = document.getElementById('checkoutModal');
@@ -755,6 +841,32 @@ function processOrderSubmit(event) {
   
   // Clear cart
   store.clearCart();
+}
+
+// ALOQA VA TEZKOR MUROJAAT FORMASI (TELEGRAM GURUHGA YUBORISH)
+async function handleContactSubmit(event) {
+  event.preventDefault();
+  const name = document.getElementById('contactName')?.value || '';
+  const phone = document.getElementById('contactPhone')?.value || '';
+  const company = document.getElementById('contactCompany')?.value || '';
+  const interest = document.getElementById('contactInterest')?.value || '';
+  const message = document.getElementById('contactMessage')?.value || '';
+
+  let tgMsg = `📨 <b>YANGI MUROJAAT (SAYTDAN)</b>\n`;
+  tgMsg += `━━━━━━━━━━━━━━━━━━━━━━\n`;
+  tgMsg += `👤 <b>F.I.O / Mas'ul:</b> ${escapeTgHtml(name)}\n`;
+  tgMsg += `📞 <b>Telefon:</b> <code>${escapeTgHtml(phone)}</code>\n`;
+  if (company) tgMsg += `🏭 <b>Tashkilot:</b> ${escapeTgHtml(company)}\n`;
+  tgMsg += `🎯 <b>Qiziqtirgan:</b> ${escapeTgHtml(interest)}\n`;
+  if (message) tgMsg += `💬 <b>Xabar:</b> <i>${escapeTgHtml(message)}</i>\n`;
+  tgMsg += `📅 <b>Vaqt:</b> ${new Date().toLocaleString('uz-UZ')}\n`;
+
+  // Guruhga jo'natish
+  sendTelegramNotification(tgMsg);
+
+  const isRu = typeof currentLang !== 'undefined' && currentLang === 'ru';
+  store.showToast(isRu ? "Ваше обращение принято! Наш специалист свяжется с вами." : "Murojaatingiz qabul qilindi! Menejerimiz tez orada bog'lanadi.", "success");
+  event.target.reset();
 }
 
 function showOrderSuccessModal(orderText, name, phone, company) {
@@ -771,7 +883,10 @@ function showOrderSuccessModal(orderText, name, phone, company) {
     msgContainer.innerHTML = `
       <div class="alert alert-success">
         <h5 class="alert-heading"><i class="bi bi-check-circle me-1"></i> Rahmat, buyurtmangiz qabul qilindi!</h5>
-        <p class="mb-0">Menejerimiz <strong>${phone}</strong> raqami orqali siz bilan 15 daqiqa ichida bog'lanadi.</p>
+        <p class="mb-1">Menejerimiz <strong>${phone}</strong> raqami orqali siz bilan 15 daqiqa ichida bog'lanadi.</p>
+        <div class="small text-success mt-2 pt-2 border-top border-success-subtle">
+          <i class="bi bi-telegram me-1"></i> Buyurtma ma'lumotlari Telegram guruhga (-1003964640399) yuborildi.
+        </div>
       </div>
       <p class="small text-muted">Buyurtmani tezlashtirish uchun to'g'ridan-to'g'ri Telegram orqali yuborishingiz yoki Tijorat taklifini chop etishingiz mumkin.</p>
     `;
