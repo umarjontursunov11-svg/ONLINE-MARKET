@@ -1083,3 +1083,56 @@
   display: inline-block;
   margin-top: 4px;
 }
+
+/* -------------------------------------------------------------
+   20. LANGUAGE SWITCHER (UZ / RU)
+   ------------------------------------------------------------- */
+.lang-switcher {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: var(--radius-full);
+  padding: 2px;
+  gap: 2px;
+}
+
+.site-navbar .lang-switcher {
+  background: var(--bg-surface-subtle);
+  border-color: var(--border-color);
+}
+
+.lang-btn {
+  background: transparent;
+  border: none;
+  color: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  line-height: 1.2;
+}
+
+.top-bar .lang-btn {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.site-navbar .lang-btn {
+  color: var(--text-secondary);
+}
+
+.lang-btn:hover {
+  color: #ffffff;
+}
+
+.site-navbar .lang-btn:hover {
+  color: var(--primary);
+}
+
+.lang-btn.active {
+  background: var(--primary);
+  color: #ffffff !important;
+  box-shadow: 0 2px 6px rgba(2, 132, 199, 0.4);
+}

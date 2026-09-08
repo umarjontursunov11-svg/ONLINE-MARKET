@@ -144,7 +144,8 @@ class StoreState {
   }
 
   formatMoney(num) {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " " + this.currency;
+    const curr = (typeof currentLang !== 'undefined' && currentLang === 'ru') ? "сум" : this.currency;
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " " + curr;
   }
 
   // BADGE UPDATES

@@ -43,34 +43,39 @@ function renderCategoryShowcase() {
 
   const categoryMeta = {
     'standart-namunalar': {
-      desc: "Davlat GSO va xalqaro Weiyel CRM standart namunalari, metallar, neft va suv tahlili etalonlari.",
+      desc_uz: "Davlat GSO va xalqaro Weiyel CRM standart namunalari, metallar, neft va suv tahlili etalonlari.",
+      desc_ru: "Государственные стандартные образцы (ГСО) и международные CRM Weiyel, металлы, нефть и анализ воды.",
       accent: "#0284c7",
       bg: "#e0f2fe",
       badge: "GSO & CRM"
     },
     'standart-titrlar': {
-      desc: "Ampuladagi analitik kimyoviy etalon eritmalar, kislotalar, ishqorlar va tuzlar (Fiksanallar).",
+      desc_uz: "Ampuladagi analitik kimyoviy etalon eritmalar, kislotalar, ishqorlar va tuzlar (Fiksanallar).",
+      desc_ru: "Аналитические стандартные растворы в ампулах, кислоты, щелочи и соли (фиксаналы).",
       accent: "#10b981",
       bg: "#d1fae5",
-      badge: "Fiksanallar"
+      badge: currentLang === 'ru' ? "Фиксаналы" : "Fiksanallar"
     },
     'bufer-eritmalari': {
-      desc: "pH 1.68 - 10.01 va elektr o'tkazuvchanlik 1413 µS/cm kalibrlash bufer standart eritmalari.",
+      desc_uz: "pH 1.68 - 10.01 va elektr o'tkazuvchanlik 1413 µS/cm kalibrlash bufer standart eritmalari.",
+      desc_ru: "Калибровочные буферные растворы pH 1.68 - 10.01 и электропроводности 1413 мкСм/см.",
       accent: "#8b5cf6",
       bg: "#ede9fe",
       badge: "pH & Cond"
     },
     'olchov-vositalari': {
-      desc: "Raqamli manometrlar, analitik tarozilar, spektrofotometrlar, viskozimetrlar (Davlat qiyoslovi bilan).",
+      desc_uz: "Raqamli manometrlar, analitik tarozilar, spektrofotometrlar, viskozimetrlar (Davlat qiyoslovi bilan).",
+      desc_ru: "Цифровые манометры, аналитические весы, спектрофотометры, вискозиметры (с госповеркой).",
       accent: "#f59e0b",
       bg: "#fef3c7",
-      badge: "Poverka bilan"
+      badge: currentLang === 'ru' ? "С поверкой" : "Poverka bilan"
     },
     'areometrlar-termometrlar': {
-      desc: "Neft (ANT), kislota (AK), spirt (ASP) areometrlari va etalon laboratoriya termometrlari.",
+      desc_uz: "Neft (ANT), kislota (AK), spirt (ASP) areometrlari va etalon laboratoriya termometrlari.",
+      desc_ru: "Ареометры для нефтепродуктов (АНТ), кислот (АК), спирта (АСП) и эталонные термометры.",
       accent: "#ef4444",
       bg: "#fee2e2",
-      badge: "GOST 18481"
+      badge: "ГОСТ 18481"
     }
   };
 
@@ -78,13 +83,20 @@ function renderCategoryShowcase() {
 
   container.innerHTML = mainCategories.map(cat => {
     const meta = categoryMeta[cat.id] || {
-      desc: "Laboratoriyangiz uchun akkreditatsiyalangan metrologik sinov vositalari.",
+      desc_uz: "Laboratoriyangiz uchun akkreditatsiyalangan metrologik sinov vositalari.",
+      desc_ru: "Аккредитованные средства метрологических испытаний для лаборатории.",
       accent: "#0284c7",
       bg: "#e0f2fe",
       badge: "Standart"
     };
 
     const count = PRODUCTS_DATABASE.filter(p => p.category === cat.id).length;
+    const catName = (typeof CATEGORY_TRANSLATIONS !== 'undefined' && CATEGORY_TRANSLATIONS[currentLang] && CATEGORY_TRANSLATIONS[currentLang][cat.id]) 
+      ? CATEGORY_TRANSLATIONS[currentLang][cat.id] 
+      : cat.name;
+    const catDesc = currentLang === 'ru' ? meta.desc_ru : meta.desc_uz;
+    const itemsLabel = currentLang === 'ru' ? "наименований" : "ta mahsulot";
+    const exploreLabel = currentLang === 'ru' ? "Перейти" : "Ko'rish";
 
     return `
       <div class="col-12 col-md-6 col-lg-4 col-xl" style="--cat-accent: ${meta.accent}; --cat-bg: ${meta.bg}; --cat-color: ${meta.accent};">
@@ -98,16 +110,16 @@ function renderCategoryShowcase() {
                 ${meta.badge}
               </span>
             </div>
-            <h3 class="cat-showcase-title">${cat.name}</h3>
-            <p class="cat-showcase-desc">${meta.desc}</p>
+            <h3 class="cat-showcase-title">${catName}</h3>
+            <p class="cat-showcase-desc">${catDesc}</p>
           </div>
 
           <div class="cat-showcase-footer">
             <span class="cat-count-badge">
-              <i class="bi bi-box-seam me-1"></i> ${count} ta mahsulot
+              <i class="bi bi-box-seam me-1"></i> ${count} ${itemsLabel}
             </span>
             <span class="cat-explore-link">
-              Ko'rish <i class="bi bi-arrow-right"></i>
+              ${exploreLabel} <i class="bi bi-arrow-right"></i>
             </span>
           </div>
         </div>
@@ -121,14 +133,55 @@ function renderDiscountedProducts() {
   const container = document.getElementById('discountedProductsGrid');
   if (!container) return;
 
-  // Promoted discounted products with special percentage discounts
   const promoConfigs = [
-    { id: "si-1", discountPercent: 35, badge: "-35% Super Aksiya", limitedStock: "Faqat 3 dona qoldi" },
-    { id: "dev-fluke-manometer", discountPercent: 15, badge: "-15% Maxsus Narx", limitedStock: "Omborda 12 dona" },
-    { id: "dev-ph-meter-seven", discountPercent: 20, badge: "-20% Chegirma", limitedStock: "Omborda 8 dona" },
-    { id: "dev-analytical-balance", discountPercent: 12, badge: "-12% Aksiya", limitedStock: "Omborda 6 dona" },
-    { id: "si-2", discountPercent: 20, badge: "-20% Chegirma", limitedStock: "Omborda 15 dona" },
-    { id: "buf-197", discountPercent: 25, badge: "-25% Maxsus Taklif", limitedStock: "Omborda 20 dona" }
+    { 
+      id: "si-1", 
+      discountPercent: 35, 
+      badge_uz: "-35% Super Aksiya", 
+      badge_ru: "-35% Супер Акция",
+      stock_uz: "Faqat 3 dona qoldi", 
+      stock_ru: "Осталось 3 шт." 
+    },
+    { 
+      id: "dev-fluke-manometer", 
+      discountPercent: 15, 
+      badge_uz: "-15% Maxsus Narx", 
+      badge_ru: "-15% Спеццена",
+      stock_uz: "Omborda 12 dona", 
+      stock_ru: "В наличии 12 шт." 
+    },
+    { 
+      id: "dev-ph-meter-seven", 
+      discountPercent: 20, 
+      badge_uz: "-20% Chegirma", 
+      badge_ru: "-20% Скидка",
+      stock_uz: "Omborda 8 dona", 
+      stock_ru: "В наличии 8 шт." 
+    },
+    { 
+      id: "dev-analytical-balance", 
+      discountPercent: 12, 
+      badge_uz: "-12% Aksiya", 
+      badge_ru: "-12% Акция",
+      stock_uz: "Omborda 6 dona", 
+      stock_ru: "В наличии 6 шт." 
+    },
+    { 
+      id: "si-2", 
+      discountPercent: 20, 
+      badge_uz: "-20% Chegirma", 
+      badge_ru: "-20% Скидка",
+      stock_uz: "Omborda 15 dona", 
+      stock_ru: "В наличии 15 шт." 
+    },
+    { 
+      id: "buf-197", 
+      discountPercent: 25, 
+      badge_uz: "-25% Maxsus Taklif", 
+      badge_ru: "-25% Спецпредложение",
+      stock_uz: "Omborda 20 dona", 
+      stock_ru: "В наличии 20 шт." 
+    }
   ];
 
   const promoProducts = [];
@@ -144,16 +197,19 @@ function renderDiscountedProducts() {
         oldPrice,
         savings,
         discountPercent: cfg.discountPercent,
-        badgeText: cfg.badge,
-        limitedStock: cfg.limitedStock
+        badgeText: currentLang === 'ru' ? cfg.badge_ru : cfg.badge_uz,
+        limitedStock: currentLang === 'ru' ? cfg.stock_ru : cfg.stock_uz
       });
     }
   });
 
   if (promoProducts.length === 0) {
-    container.innerHTML = `<div class="col-12 text-center text-muted">Hozirda aksiyadagi mahsulotlar yangilanmoqda.</div>`;
+    container.innerHTML = `<div class="col-12 text-center text-muted">Aksiyadagi mahsulotlar yangilanmoqda.</div>`;
     return;
   }
+
+  const saveLabel = currentLang === 'ru' ? "Экономия:" : "Tejaysiz:";
+  const addCartLabel = currentLang === 'ru' ? "В корзину" : "Savatga";
 
   container.innerHTML = promoProducts.map(p => {
     const isFav = store.isFavorite(p.id);
@@ -171,13 +227,13 @@ function renderDiscountedProducts() {
             <button class="action-circle-btn ${isComp ? 'active' : ''}" 
                     data-comp-btn="${p.id}" 
                     onclick="store.toggleCompare('${p.id}')" 
-                    title="Taqqoslash">
+                    title="${currentLang === 'ru' ? 'Сравнить' : 'Taqqoslash'}">
               <i class="bi bi-shuffle"></i>
             </button>
             <button class="action-circle-btn ${isFav ? 'active' : ''}" 
                     data-fav-btn="${p.id}" 
                     onclick="store.toggleFavorite('${p.id}')" 
-                    title="Sevimlilarga qo'shish">
+                    title="${currentLang === 'ru' ? 'В избранное' : 'Sevimlilarga qo\'shish'}">
               <i class="bi ${isFav ? 'bi-heart-fill text-danger' : 'bi-heart'}"></i>
             </button>
           </div>
@@ -209,7 +265,7 @@ function renderDiscountedProducts() {
                     <div class="new-price-val">${store.formatMoney(p.salePrice)}</div>
                   </div>
                   <span class="savings-tag">
-                    <i class="bi bi-arrow-down-circle-fill me-1"></i> Tejaysiz: ${store.formatMoney(p.savings)}
+                    <i class="bi bi-arrow-down-circle-fill me-1"></i> ${saveLabel} ${store.formatMoney(p.savings)}
                   </span>
                 </div>
               </div>
@@ -217,7 +273,7 @@ function renderDiscountedProducts() {
               <!-- Buttons -->
               <div class="d-flex gap-2">
                 <button class="btn btn-primary-custom flex-grow-1 py-2 fw-semibold" onclick="store.addToCart('${p.id}')">
-                  <i class="bi bi-cart-plus me-1"></i> Savatga
+                  <i class="bi bi-cart-plus me-1"></i> ${addCartLabel}
                 </button>
                 <button class="btn btn-outline-secondary px-3 py-2" onclick="openProductModal('${p.id}')" title="Texnik Pasport &amp; Xususiyatlar">
                   <i class="bi bi-eye"></i>
@@ -236,12 +292,18 @@ function renderCategoryTabs() {
   const categoryContainer = document.getElementById('categoryTabsContainer');
   if (!categoryContainer) return;
 
-  categoryContainer.innerHTML = CATEGORIES.map(cat => `
-    <button class="cat-pill ${cat.id === currentCategory ? 'active' : ''}" onclick="setCategory('${cat.id}')">
-      <i class="bi ${cat.icon} me-1"></i>
-      <span>${cat.name}</span>
-    </button>
-  `).join('');
+  categoryContainer.innerHTML = CATEGORIES.map(cat => {
+    const catName = (typeof CATEGORY_TRANSLATIONS !== 'undefined' && CATEGORY_TRANSLATIONS[currentLang] && CATEGORY_TRANSLATIONS[currentLang][cat.id]) 
+      ? CATEGORY_TRANSLATIONS[currentLang][cat.id] 
+      : cat.name;
+
+    return `
+      <button class="cat-pill ${cat.id === currentCategory ? 'active' : ''}" onclick="setCategory('${cat.id}')">
+        <i class="bi ${cat.icon} me-1"></i>
+        <span>${catName}</span>
+      </button>
+    `;
+  }).join('');
 }
 
 function setCategory(catId) {
@@ -298,7 +360,9 @@ function renderProducts() {
 
   // Update counts
   if (countBadge) {
-    countBadge.textContent = `${filtered.length} ta mahsulot topildi`;
+    countBadge.textContent = (typeof currentLang !== 'undefined' && currentLang === 'ru') 
+      ? `${filtered.length} товаров найдено` 
+      : `${filtered.length} ta mahsulot topildi`;
   }
 
   // Empty check
@@ -314,9 +378,11 @@ function renderProducts() {
   grid.innerHTML = filtered.map(product => {
     const isFav = store.isFavorite(product.id);
     const isComp = store.isCompared(product.id);
+    const isRu = typeof currentLang !== 'undefined' && currentLang === 'ru';
     
     // Extract top 3 key specs for card preview
     const specEntries = Object.entries(product.specs).slice(0, 3);
+    const priceDisplay = isRu ? product.priceFormatted.replace("so'm", "сум") : product.priceFormatted;
 
     return `
       <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
@@ -330,13 +396,13 @@ function renderProducts() {
               <button class="action-circle-btn ${isComp ? 'active' : ''}" 
                       data-comp-btn="${product.id}" 
                       onclick="store.toggleCompare('${product.id}')"
-                      title="Taqqoslash">
+                      title="${isRu ? 'Сравнить' : 'Taqqoslash'}">
                 <i class="bi bi-shuffle"></i>
               </button>
               <button class="action-circle-btn ${isFav ? 'active' : ''}" 
                       data-fav-btn="${product.id}" 
-                      onclick="store.toggleFavorite('${product.id}')"
-                      title="Sevimlilarga qo'shish">
+                      onclick="store.toggleFavorite('${product.id}')" 
+                      title="${isRu ? 'В избранное' : 'Sevimlilarga qo\'shish'}">
                 <i class="bi ${isFav ? 'bi-heart-fill text-danger' : 'bi-heart'}"></i>
               </button>
             </div>
@@ -346,7 +412,7 @@ function renderProducts() {
           <div class="product-img-wrapper" onclick="openProductModal('${product.id}')">
             <img src="${product.image}" alt="${product.title}" loading="lazy" class="product-card-img" />
             <div class="quick-view-overlay">
-              <span class="quick-view-btn"><i class="bi bi-eye"></i> Texnik Pasport</span>
+              <span class="quick-view-btn"><i class="bi bi-eye"></i> ${isRu ? 'Техпаспорт' : 'Texnik Pasport'}</span>
             </div>
           </div>
 
@@ -354,7 +420,7 @@ function renderProducts() {
           <div class="product-card-body">
             <div class="product-meta">
               <span class="product-category-tag">${product.categoryName}</span>
-              <span class="product-code-tag">Kod: ${product.artikul}</span>
+              <span class="product-code-tag">${isRu ? 'Код:' : 'Kod:'} ${product.artikul}</span>
             </div>
 
             <h3 class="product-title" onclick="openProductModal('${product.id}')" title="${product.title}">
@@ -384,11 +450,11 @@ function renderProducts() {
             <!-- Price and Cart Button -->
             <div class="product-card-footer">
               <div class="price-container">
-                <span class="price-label">Narxi:</span>
-                <span class="price-val">${product.priceFormatted}</span>
+                <span class="price-label">${isRu ? 'Цена:' : 'Narxi:'}</span>
+                <span class="price-val">${priceDisplay}</span>
               </div>
-              <button class="btn btn-add-cart" onclick="store.addToCart('${product.id}')" title="Savatga qo'shish">
-                <i class="bi bi-cart-plus-fill me-1"></i> Savatga
+              <button class="btn btn-add-cart" onclick="store.addToCart('${product.id}')" title="${isRu ? 'В корзину' : 'Savatga qo\'shish'}">
+                <i class="bi bi-cart-plus-fill me-1"></i> ${isRu ? 'В корзину' : 'Savatga'}
               </button>
             </div>
           </div>
@@ -403,6 +469,7 @@ function openProductModal(productId) {
   const product = PRODUCTS_DATABASE.find(p => p.id === productId);
   if (!product) return;
 
+  const isRu = typeof currentLang !== 'undefined' && currentLang === 'ru';
   const modalTitle = document.getElementById('productModalTitle');
   const modalBody = document.getElementById('productModalBody');
 
@@ -425,6 +492,8 @@ function openProductModal(productId) {
     <li class="feature-item"><i class="bi bi-shield-check text-primary me-2"></i>${f}</li>
   `).join('') : '';
 
+  const priceDisplay = isRu ? product.priceFormatted.replace("so'm", "сум") : product.priceFormatted;
+
   modalBody.innerHTML = `
     <div class="row g-4">
       <!-- Left Column: Image & Quick Details -->
@@ -435,8 +504,8 @@ function openProductModal(productId) {
         
         <div class="modal-price-box mt-3 p-3 bg-light rounded-3 border">
           <div class="d-flex justify-content-between align-items-center mb-2">
-            <span class="text-muted small">Mahsulot narxi:</span>
-            <span class="modal-price-tag">${product.priceFormatted}</span>
+            <span class="text-muted small">${isRu ? 'Цена товара:' : 'Mahsulot narxi:'}</span>
+            <span class="modal-price-tag">${priceDisplay}</span>
           </div>
           <div class="text-success small mb-3">
             <i class="bi bi-check-circle-fill me-1"></i> ${product.stockCount}
@@ -449,20 +518,20 @@ function openProductModal(productId) {
               <button class="btn btn-outline-secondary" type="button" onclick="adjustModalQty(1)">+</button>
             </div>
             <button class="btn btn-primary-custom flex-grow-1" onclick="addModalItemToCart('${product.id}')">
-              <i class="bi bi-cart-plus-fill me-1"></i> Savatga qo'shish
+              <i class="bi bi-cart-plus-fill me-1"></i> ${isRu ? 'В корзину' : 'Savatga qo\'shish'}
             </button>
           </div>
 
           <div class="mt-3 pt-3 border-top d-flex gap-2">
             <button class="btn btn-sm btn-outline-secondary w-50" onclick="store.toggleCompare('${product.id}')">
-              <i class="bi bi-shuffle me-1"></i> Taqqoslash
+              <i class="bi bi-shuffle me-1"></i> ${isRu ? 'Сравнить' : 'Taqqoslash'}
             </button>
             <button class="btn btn-sm btn-outline-secondary w-50" onclick="showCertificateModal('${product.artikul}', '${product.title}')">
-              <i class="bi bi-file-earmark-pdf me-1"></i> Sertifikat
+              <i class="bi bi-file-earmark-pdf me-1"></i> ${isRu ? 'Сертификат' : 'Sertifikat'}
             </button>
           </div>
           <button class="btn btn-sm btn-outline-primary w-100 mt-2" onclick="generateSingleProductOffer('${product.id}')">
-            <i class="bi bi-file-earmark-ruled me-1"></i> Ushbu mahsulotga Tijorat Taklifi (PDF)
+            <i class="bi bi-file-earmark-ruled me-1"></i> ${isRu ? 'Коммерческое Предложение (PDF)' : 'Ushbu mahsulotga Tijorat Taklifi (PDF)'}
           </button>
         </div>
       </div>
@@ -471,7 +540,7 @@ function openProductModal(productId) {
       <div class="col-lg-7">
         <div class="product-modal-details">
           <div class="d-flex gap-2 align-items-center mb-2">
-            <span class="badge bg-secondary-subtle text-dark border">Artikul: ${product.artikul}</span>
+            <span class="badge bg-secondary-subtle text-dark border">${isRu ? 'Артикул:' : 'Artikul:'} ${product.artikul}</span>
             <span class="badge bg-info-subtle text-dark border">${product.categoryName}</span>
           </div>
 
@@ -479,7 +548,7 @@ function openProductModal(productId) {
           <p class="text-muted mb-4">${product.shortDesc}</p>
 
           <h5 class="section-subtitle mb-3">
-            <i class="bi bi-sliders me-2 text-primary"></i> Texnik Xususiyatlari va Parametrlari
+            <i class="bi bi-sliders me-2 text-primary"></i> ${isRu ? 'Технические характеристики и параметры' : 'Texnik Xususiyatlari va Parametrlari'}
           </h5>
           
           <div class="table-responsive mb-4">
@@ -492,7 +561,7 @@ function openProductModal(productId) {
 
           ${appsHtml ? `
             <h5 class="section-subtitle mb-2">
-              <i class="bi bi-building-check me-2 text-success"></i> Qo'llanish Sohalari
+              <i class="bi bi-building-check me-2 text-success"></i> ${isRu ? 'Области применения' : 'Qo\'llanish Sohalari'}
             </h5>
             <ul class="list-unstyled mb-4 app-list">
               ${appsHtml}
@@ -501,7 +570,7 @@ function openProductModal(productId) {
 
           ${featuresHtml ? `
             <h5 class="section-subtitle mb-2">
-              <i class="bi bi-award me-2 text-warning"></i> Metrologik Afzalliklar va Kafolat
+              <i class="bi bi-award me-2 text-warning"></i> ${isRu ? 'Метрологические преимущества и гарантия' : 'Metrologik Afzalliklar va Kafolat'}
             </h5>
             <ul class="list-unstyled mb-2 feature-list">
               ${featuresHtml}
@@ -923,16 +992,29 @@ function renderCommercialOfferHTML() {
 
   const { items, client, offerNumber, offerDate } = currentOfferData;
   let totalSum = items.reduce((sum, it) => sum + (it.price * it.quantity), 0);
-  let totalWords = numberToUzbekWords(totalSum);
+  
+  const isRu = (typeof currentLang !== 'undefined' && currentLang === 'ru');
+  let totalWords = isRu 
+    ? (typeof numberToRussianWords === 'function' ? numberToRussianWords(totalSum) : numberToUzbekWords(totalSum))
+    : numberToUzbekWords(totalSum);
+
+  const docTitle = isRu ? "КОММЕРЧЕСКОЕ СОГЛАШЕНИЕ И СПЕЦИФИКАЦИЯ ПРОДУКЦИИ" : "TIJORAT KELISHUVI VA MAHSULOTLAR SPETSIFIKATSIYASI";
+  const docNumberLbl = isRu ? "Номер документа:" : "Hujjat raqami:";
+  const docValidityLbl = isRu ? "Срок действия:" : "Amal qilish muddati:";
+  const docValidityVal = isRu ? "30 календарных дней" : "30 kalendar kuni";
+  const docDateLbl = isRu ? "Дата:" : "Sana:";
+  const supplierTitle = isRu ? "ПОСТАВЩИК:" : "YETKAZIB BERUVCHI:";
+  const customerTitle = isRu ? "ПОКУПАТЕЛЬ (КЛИЕНТ):" : "BUYURTMACHI (MIJOZ):";
+  const qtyUnit = isRu ? "шт" : "dona";
 
   const rowsHtml = items.map((item, idx) => `
     <tr>
       <td class="text-center fw-bold">${idx + 1}</td>
       <td>
         <strong>${item.title}</strong>
-        <div class="small text-muted">Artikul / Standart kodi: ${item.artikul}</div>
+        <div class="small text-muted">${isRu ? 'Артикул / Код стандарта' : 'Artikul / Standart kodi'}: ${item.artikul}</div>
       </td>
-      <td class="text-center">${item.quantity} dona</td>
+      <td class="text-center">${item.quantity} ${qtyUnit}</td>
       <td class="text-end">${store.formatMoney(item.price)}</td>
       <td class="text-end fw-bold">${store.formatMoney(item.price * item.quantity)}</td>
     </tr>
@@ -946,44 +1028,44 @@ function renderCommercialOfferHTML() {
           <img src="assets/images/logo.png" alt="STANDART VA METROLOGIYA" class="doc-brand-logo" />
           <div>
             <div class="doc-company-title">"STANDART VA METROLOGIYA" MCHJ</div>
-            <div class="small text-muted">Sifat, Kalibrlash va Metrologiya Markazi</div>
+            <div class="small text-muted">${isRu ? 'Центр Качества, Калибровки и Метрологии' : 'Sifat, Kalibrlash va Metrologiya Markazi'}</div>
             <div class="small text-primary fw-bold">O'zDSt ISO/IEC 17025 • ISO 17034</div>
           </div>
         </div>
         <div class="doc-company-requisites">
-          <div><strong>Manzil:</strong> Toshkent sh., Sergeli tumani, Uzumzor 16-tor ko'cha 18-uy</div>
-          <div><strong>Tel:</strong> +998 (90) 939-71-83 | +998 (55) 503-47-15</div>
-          <div><strong>Email:</strong> standartmetrolog@bk.ru | <strong>Sayt:</strong> gsouz.uz</div>
-          <div><strong>STIR (INN):</strong> 305 918 247 | <strong>MFO:</strong> 00440 | <strong>H/r:</strong> 2020 8000 9005 1234 5001</div>
+          <div><strong>${isRu ? 'Адрес:' : 'Manzil:'}</strong> ${isRu ? 'г. Ташкент, Сергелийский район, Узумзор 16-тупик, 18' : 'Toshkent sh., Sergeli tumani, Uzumzor 16-tor ko\'cha 18-uy'}</div>
+          <div><strong>Тел:</strong> +998 (90) 939-71-83 | +998 (55) 503-47-15</div>
+          <div><strong>Email:</strong> standartmetrolog@bk.ru | <strong>${isRu ? 'Сайт:' : 'Sayt:'}</strong> gsouz.uz</div>
+          <div><strong>${isRu ? 'ИНН:' : 'STIR (INN):'}</strong> 305 918 247 | <strong>${isRu ? 'МФО:' : 'MFO:'}</strong> 00440 | <strong>${isRu ? 'Р/с:' : 'H/r:'}</strong> 2020 8000 9005 1234 5001</div>
         </div>
       </div>
 
       <!-- Document Title & Meta -->
       <div class="doc-title-box">
-        <div class="doc-main-title">TIJORAT KELISHUVI VA MAHSULOTLAR SPETSIFIKATSIYASI</div>
+        <div class="doc-main-title">${docTitle}</div>
         <div class="doc-meta-row">
-          <span>Hujjat raqami: <strong>${offerNumber}</strong></span>
-          <span>Amal qilish muddati: <strong>30 kalendar kuni</strong></span>
-          <span>Sana: <strong>${offerDate}</strong></span>
+          <span>${docNumberLbl} <strong>${offerNumber}</strong></span>
+          <span>${docValidityLbl} <strong>${docValidityVal}</strong></span>
+          <span>${docDateLbl} <strong>${offerDate}</strong></span>
         </div>
       </div>
 
       <!-- Parties Details -->
       <div class="doc-parties-grid">
         <div>
-          <div class="party-box-title">YETKAZIB BERUVCHI:</div>
+          <div class="party-box-title">${supplierTitle}</div>
           <div><strong>"STANDART VA METROLOGIYA" MCHJ</strong></div>
-          <div>Direktor: Saidov A.M.</div>
-          <div>Bank: ATIB "Ipoteka-bank" Toshkent filiali</div>
-          <div>Hisob-faktura: Didox / E-Faktura orqali</div>
+          <div>${isRu ? 'Директор:' : 'Direktor:'} Saidov A.M.</div>
+          <div>${isRu ? 'Банк:' : 'Bank:'} ATIB "Ipoteka-bank" Toshkent filiali</div>
+          <div>${isRu ? 'Счет-фактура:' : 'Hisob-faktura:'} Didox / E-Faktura</div>
         </div>
         <div>
-          <div class="party-box-title">BUYURTMACHI (MIJOZ):</div>
-          <div>Kompaniya: <strong>${client.company || "Xususiy Buyurtmachi"}</strong></div>
-          <div>Mas'ul shaxs: <strong>${client.name}</strong></div>
-          <div>STIR (INN): <strong>${client.inn || "—"}</strong></div>
-          <div>Telefon: <strong>${client.phone}</strong></div>
-          <div>Yetkazish manzili: <strong>${client.address}</strong></div>
+          <div class="party-box-title">${customerTitle}</div>
+          <div>${isRu ? 'Организация:' : 'Kompaniya:'} <strong>${client.company || (isRu ? 'Частный заказчик' : 'Xususiy Buyurtmachi')}</strong></div>
+          <div>${isRu ? 'Ответственное лицо:' : 'Mas\'ul shaxs:'} <strong>${client.name}</strong></div>
+          <div>${isRu ? 'ИНН:' : 'STIR (INN):'} <strong>${client.inn || "—"}</strong></div>
+          <div>${isRu ? 'Телефон:' : 'Telefon:'} <strong>${client.phone}</strong></div>
+          <div>${isRu ? 'Адрес доставки:' : 'Yetkazish manzili:'} <strong>${client.address}</strong></div>
         </div>
       </div>
 
