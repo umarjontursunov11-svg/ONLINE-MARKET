@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="uz" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>"STANDART VA METROLOGIYA" MCHJ — Standart Namunalar, Bufer Eritmalari va O'lchov Vositalari</title>
+  <meta name="description" content="STANDART VA METROLOGIYA MCHJ — Davlat standart namunalari (GSO/CRM), standart-titrlar (fiksanallar), pH bufer eritmalari va o'lchov vositalarining rasmiy internet magazini." />
+  <meta name="keywords" content="standart namunalar, bufer eritmalari, standart titrlar, fiksanallar, areometrlar, termometrlar, viskozimetr, GSO, CRM, metrologiya, Toshkent" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/images/logo_emblem.png" />
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+  <!-- Custom Stylesheets -->
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body>
+
+  <!-- ==========================================================================
+       1. TOP INFORMATION BAR
+       ========================================================================== -->
+  <div class="top-bar">
+    <div class="container-fluid px-lg-5">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-4 top-bar-contacts">
+          <span><i class="bi bi-geo-alt-fill text-primary me-1"></i> Toshkent sh., Sergeli tumani, Uzumzor 16-tor ko'cha 18-uy</span>
+          <span><i class="bi bi-clock-fill text-primary me-1"></i> Dush - Shan: 09:00 - 18:00</span>
+          <span><i class="bi bi-globe text-primary me-1"></i> <a href="http://gsouz.uz" target="_blank" class="text-white">gsouz.uz</a></span>
+        </div>
+        <div class="d-flex align-items-center gap-3 ms-auto">
+          <a href="tel:+998909397183" class="fw-semibold"><i class="bi bi-telephone-fill text-primary me-1"></i> +998 (90) 939-71-83</a>
+          <span class="text-white-50">|</span>
+          <a href="https://t.me/standartgso_uz" target="_blank" class="fw-semibold text-info"><i class="bi bi-telegram me-1"></i> @standartgso_uz</a>
+          <span class="text-white-50">|</span>
+          <a href="https://instagram.com/standartgso_uz" target="_blank" class="fw-semibold text-warning"><i class="bi bi-instagram me-1"></i> @standartgso_uz</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       2. MAIN NAVBAR & ACTIONS
+       ========================================================================== -->
+  <nav class="site-navbar">
+    <div class="container-fluid px-lg-5">
+      <div class="d-flex justify-content-between align-items-center">
+        <!-- Brand Logo -->
+        <a href="#bosh-sahifa" class="brand-logo-wrapper">
+          <div class="brand-logo-frame">
+            <img src="assets/images/logo_emblem.png" alt="STANDART VA METROLOGIYA" class="brand-logo-img" />
+          </div>
+          <div class="brand-text-block">
+            <h1 class="brand-title">STANDART <span class="brand-title-metrolog">VA METROLOGIYA</span></h1>
+            <div class="brand-slogan-bar">
+              <span class="brand-slogan-dot"></span>
+              <span class="brand-slogan-text">ANIQLIK • ISHONCH • SIFAT</span>
+              <span class="brand-slogan-dot"></span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <div class="d-none d-lg-flex align-items-center gap-2">
+          <a href="#bosh-sahifa" class="nav-link-custom">Bosh sahifa</a>
+          <a href="#katalog" class="nav-link-custom">Katalog (294+ mahsulot)</a>
+          <a href="#xizmatlar" class="nav-link-custom">Metrologiya Xizmatlari</a>
+          <a href="#afzalliklar" class="nav-link-custom">Afzalliklar</a>
+          <a href="#biz-haqimizda" class="nav-link-custom">Biz haqimizda</a>
+          <a href="#aloqa" class="nav-link-custom">Aloqa</a>
+        </div>
+
+        <!-- Action Tools (Theme, Compare, Favorites, Cart) -->
+        <div class="d-flex align-items-center gap-2">
+          <!-- Theme Toggle -->
+          <button class="header-action-btn" id="themeToggleBtn" title="Mavzuni almashtirish">
+            <i class="bi bi-moon-stars-fill" id="themeToggleIcon"></i>
+          </button>
+
+          <!-- Compare Button -->
+          <button class="header-action-btn" data-bs-toggle="modal" data-bs-target="#compareModal" title="Taqqoslash">
+            <i class="bi bi-shuffle"></i>
+            <span class="header-badge compare-badge-count" style="display:none;">0</span>
+          </button>
+
+          <!-- Favorites Button -->
+          <button class="header-action-btn" data-bs-toggle="modal" data-bs-target="#favoritesModal" title="Sevimlilar">
+            <i class="bi bi-heart"></i>
+            <span class="header-badge fav-badge-count" style="display:none;">0</span>
+          </button>
+
+          <!-- Cart Drawer Trigger Button -->
+          <button class="cart-header-btn" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas" title="Savatni ochish">
+            <i class="bi bi-cart3 fs-5"></i>
+            <span class="cart-text">Savat</span>
+            <span class="badge bg-white text-primary rounded-pill cart-badge-count">0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ==========================================================================
+       3. HERO SECTION
+       ========================================================================== -->
+  <section class="hero-section" id="bosh-sahifa">
+    <div class="container-fluid px-lg-5">
+      <div class="row align-items-center">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+          <div class="hero-pill">
+            <i class="bi bi-patch-check-fill text-primary"></i> Rasmiy Prays-List • O'zDSt, GOST &amp; Weiyel CRM
+          </div>
+          <h2 class="hero-title">
+            Laboratoriyangiz uchun <span class="gradient-text">aniqlik va metrologik kafolat</span>
+          </h2>
+          <p class="hero-subtitle">
+            Davlat standart namunalari (GSO/CRM), Weiyel xalqaro CRM standartlari, titrlash eritmalari (fiksanallar), bufer kalibrlash eritmalari, areometrlar, viskozimetrlar hamda yuqori aniqlikdagi laboratoriya asboblarining to'liq katalogi.
+          </p>
+
+          <div class="d-flex flex-wrap gap-3">
+            <a href="#katalog" class="btn btn-primary-custom px-4 py-3 fs-6">
+              <i class="bi bi-grid-fill me-2"></i> Mahsulotlar Katalogi (294+ ta)
+            </a>
+            <button type="button" onclick="openCommercialOfferModal()" class="btn btn-outline-secondary px-4 py-3 fs-6 fw-semibold">
+              <i class="bi bi-file-earmark-ruled me-2"></i> Tijorat Kelishuvi (PDF)
+            </button>
+          </div>
+
+          <!-- Hero Metrics -->
+          <div class="hero-stats-grid">
+            <div class="hero-stat-item">
+              <h4>294+</h4>
+              <p>Haqiqiy narxlardagi mahsulotlar</p>
+            </div>
+            <div class="hero-stat-item">
+              <h4>100%</h4>
+              <p>Davlat qiyoslovi va sertifikati</p>
+            </div>
+            <div class="hero-stat-item">
+              <h4>1-2 Kun</h4>
+              <p>O'zbekiston bo'ylab yetkazib berish</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="hero-banner-card">
+            <img src="assets/images/hero_lab.jpg" alt="Standart va Metrologiya laboratoriyasi" class="hero-banner-img" />
+            <div class="hero-banner-badge">
+              <div class="hero-badge-icon">
+                <i class="bi bi-shield-shaded"></i>
+              </div>
+              <div>
+                <h5 class="mb-1 fw-bold fs-6">Birlamchi Davlat va Xalqaro Etalonlar</h5>
+                <p class="mb-0 small text-white-50">Weiyel CRM, Ekrosxim, TsSOVV, UZXP, Uralximinvest va Steklopribor rasmiy mahsulotlari.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       4. INTERACTIVE CATALOG & FILTER BAR
+       ========================================================================== -->
+  <section class="catalog-nav-section" id="katalog">
+    <div class="container-fluid px-lg-5">
+      <div class="row align-items-center g-3">
+        <!-- Category Filter Pills -->
+        <div class="col-lg-7 col-md-12">
+          <div class="category-pills-row" id="categoryTabsContainer">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Live Search Field -->
+        <div class="col-lg-3 col-md-6">
+          <div class="search-wrapper">
+            <i class="bi bi-search search-icon-left"></i>
+            <input type="text" id="searchInput" class="search-input-field" placeholder="Nomi, kodi, GOST, GSO bo'yicha qidiruv..." />
+            <button id="clearSearchBtn" class="search-clear-btn" title="Tozalash"><i class="bi bi-x-circle-fill"></i></button>
+          </div>
+        </div>
+
+        <!-- Price & Sorting Dropdowns -->
+        <div class="col-lg-2 col-md-6">
+          <div class="d-flex gap-2">
+            <select class="form-select form-select-sm" id="priceFilterSelect" title="Narx bo'yicha filtr">
+              <!-- Rendered by JS -->
+            </select>
+            <select class="form-select form-select-sm" id="sortSelect" title="Saralash">
+              <option value="popular">Ommabopligi</option>
+              <option value="price-asc">Narxi: Arzonroq</option>
+              <option value="price-desc">Narxi: Qimmatroq</option>
+              <option value="name-asc">Nomi (A-Z)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Count Info -->
+      <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top">
+        <span class="small text-muted" id="catalogResultsCount">Yuklanmoqda...</span>
+        <span class="small text-primary"><i class="bi bi-info-circle me-1"></i> Barcha narxlar QQS (НДС) bilan ko'rsatilgan</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       5. PRODUCTS GRID SECTION
+       ========================================================================== -->
+  <section class="py-5">
+    <div class="container-fluid px-lg-5">
+      <!-- Grid Container -->
+      <div class="row" id="productsGrid">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+
+      <!-- Empty State -->
+      <div id="productsEmptyState" class="text-center py-5 d-none">
+        <i class="bi bi-search text-muted" style="font-size: 3.5rem;"></i>
+        <h4 class="mt-3 fw-bold">Mos mahsulot topilmadi</h4>
+        <p class="text-muted">Qidiruv so'zini o'zgartirib ko'ring yoki boshqa toifani tanlang.</p>
+        <button class="btn btn-outline-primary mt-2" onclick="setCategory('all'); document.getElementById('searchInput').value=''; searchQuery=''; renderProducts();">
+          Filtrlarni tozalash
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       6. METROLOGY SERVICES SECTION
+       ========================================================================== -->
+  <section class="py-5 bg-surface-subtle" id="xizmatlar">
+    <div class="container-fluid px-lg-5">
+      <div class="text-center max-w-700 mx-auto mb-5">
+        <span class="badge-custom badge-primary mb-2">Metrologik Xizmatlar</span>
+        <h2 class="fw-bold fs-2">Kompleks Laboratoriya va Metrologiya Xizmatlari</h2>
+        <p class="text-muted">"STANDART VA METROLOGIYA" MCHJ — barcha laboratoriya vositalarini yetkazib berish va qiyoslash xizmatlarini kafolatlaydi.</p>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-3">
+          <div class="service-card">
+            <div class="service-icon-box">
+              <i class="bi bi-patch-check"></i>
+            </div>
+            <h3 class="service-title">Davlat Qiyoslovi (Poverka)</h3>
+            <p class="service-desc">
+              O'lchov vositalarini O'zbekiston Davlat Reestri talablariga asosan qiyoslashdan o'tkazish va rasmiy sertifikat taqdim etish.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+          <div class="service-card">
+            <div class="service-icon-box">
+              <i class="bi bi-sliders2-vertical"></i>
+            </div>
+            <h3 class="service-title">Kalibrlash Xizmati</h3>
+            <p class="service-desc">
+              ISO/IEC 17025 standartiga muvofiq laboratoriya tarozilari, pH-metrlar, spektrofotometrlar va manometrlarni kalibrlash.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+          <div class="service-card">
+            <div class="service-icon-box">
+              <i class="bi bi-file-earmark-ruled"></i>
+            </div>
+            <h3 class="service-title">B2B Shartnoma va E-Faktura</h3>
+            <p class="service-desc">
+              Yuridik shaxslar, davlat korxonalari va xususiy laboratoriyalar uchun barcha qonuniy hujjatlar va Didox orqali tezkor hisob-kitob.
+            </p>
+            <div class="d-flex flex-wrap gap-2 mt-2">
+              <button type="button" class="btn btn-sm btn-outline-primary" onclick="openCommercialOfferModal()">
+                <i class="bi bi-file-earmark-ruled me-1"></i> Shartnoma (PDF)
+              </button>
+              <button type="button" class="btn btn-sm btn-primary-custom" onclick="openB2BModal()">
+                <i class="bi bi-link-45deg me-1"></i> Didox &amp; E-Faktura
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+          <div class="service-card">
+            <div class="service-icon-box">
+              <i class="bi bi-truck"></i>
+            </div>
+            <h3 class="service-title">Xavfsiz Termo-Yetkazish</h3>
+            <p class="service-desc">
+              Maxsus harorat rejimini talab qiluvchi bufer eritmalar va standart namunalarni termobokslarda butun respublika bo'ylab yetkazib berish.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       7. WHY CHOOSE US (AFZALLIKLAR)
+       ========================================================================== -->
+  <section class="py-5" id="afzalliklar">
+    <div class="container-fluid px-lg-5">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6">
+          <div class="p-4 p-md-5 rounded-4 border bg-surface position-relative shadow-lg">
+            <span class="badge-custom badge-success mb-3">Nega Aynan Biz?</span>
+            <h2 class="fw-bold mb-4">Natijangizning aniqligi — bizning oliy standartimiz</h2>
+            
+            <div class="d-flex gap-3 mb-4">
+              <div class="fs-3 text-primary"><i class="bi bi-check2-circle"></i></div>
+              <div>
+                <h5 class="fw-bold mb-1">100% Rasmiy va Metrologik Attestatlangan</h5>
+                <p class="text-secondary small mb-0">Har bir standart namunalar partiyasi pasporti va muvofiqlik sertifikati bilan biriktirilgan.</p>
+              </div>
+            </div>
+
+            <div class="d-flex gap-3 mb-4">
+              <div class="fs-3 text-primary"><i class="bi bi-check2-circle"></i></div>
+              <div>
+                <h5 class="fw-bold mb-1">Birlamchi NIST va OIML Zanjiri</h5>
+                <p class="text-secondary small mb-0">O'lchov natijalari xalqaro miqyosda tan olinishi uchun etalon zanjiriga qat'iy bog'langan.</p>
+              </div>
+            </div>
+
+            <div class="d-flex gap-3 mb-4">
+              <div class="fs-3 text-primary"><i class="bi bi-check2-circle"></i></div>
+              <div>
+                <h5 class="fw-bold mb-1">Doimiy Ombordagi Zaxira</h5>
+                <p class="text-secondary small mb-0">294 dan ortiq turdagi standart namunalar, Weiyel CRM, fiksanallar va asboblar doimo tayyor holatda.</p>
+              </div>
+            </div>
+
+            <div class="d-flex gap-3">
+              <div class="fs-3 text-primary"><i class="bi bi-check2-circle"></i></div>
+              <div>
+                <h5 class="fw-bold mb-1">Professional Mutaxassislar Konsultatsiyasi</h5>
+                <p class="text-secondary small mb-0">Laboratoriyangiz faoliyatiga mos mahsulotlarni tanlashda to'liq bepul yordam beramiz.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6" id="biz-haqimizda">
+          <div class="ps-lg-4">
+            <span class="badge-custom badge-primary mb-2">Kompaniya Haqida</span>
+            <h2 class="fw-bold fs-2 mb-3">"STANDART VA METROLOGIYA" MCHJ</h2>
+            <p class="text-secondary mb-3">
+              Kompaniyamiz O'zbekiston Respublikasi bo'ylab barcha turdagi kimyo, oziq-ovqat, farmatsevtika, neft-gaz, ekologiya va sanoat laboratoriyalarini yuqori darajadagi standart namunalar (GSO), Weiyel CRM etalonlari, bufer eritmalari, standart-titrlar va o'lchov vositalari bilan ta'minlovchi ishonchli hamkordir.
+            </p>
+            <p class="text-secondary mb-4">
+              Bizning rasmiy veb-saytimiz: <a href="http://gsouz.uz" target="_blank" class="fw-bold">gsouz.uz</a>. Barcha mahsulotlarimiz akkreditatsiyalangan yetkazib beruvchilardan to'g'ridan-to'g'ri olib kelinadi va O'zbekiston standartlariga javob beradi.
+            </p>
+
+            <div class="row g-3">
+              <div class="col-6">
+                <div class="p-3 bg-light rounded-3 border">
+                  <div class="fw-bold fs-4 text-primary">294+</div>
+                  <div class="small text-muted">Prays-listdagi mahsulotlar</div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="p-3 bg-light rounded-3 border">
+                  <div class="fw-bold fs-4 text-primary">1200+</div>
+                  <div class="small text-muted">Mamnun korxonalar</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       8. CONTACT & ORDER INQUIRY SECTION
+       ========================================================================== -->
+  <section class="py-5 bg-surface-subtle" id="aloqa">
+    <div class="container-fluid px-lg-5">
+      <div class="row g-5">
+        <div class="col-lg-5">
+          <span class="badge-custom badge-primary mb-2">Bog'lanish</span>
+          <h2 class="fw-bold fs-2 mb-3">Savollaringiz bormi yoki Tijorat Taklifi kerakmi?</h2>
+          <p class="text-muted mb-4">
+            Biz bilan to'g'ridan-to'g'ri bog'laning. Mutaxassislarimiz kerakli mahsulotlarning texnik xususiyatlari va yetkazib berish bo'yicha to'liq ma'lumot berishadi.
+          </p>
+
+          <div class="d-flex flex-column gap-3">
+            <div class="d-flex align-items-center gap-3 p-3 bg-surface rounded-3 border">
+              <div class="fs-4 text-primary"><i class="bi bi-telephone-inbound-fill"></i></div>
+              <div>
+                <div class="text-muted small">Telefon raqamlarimiz:</div>
+                <a href="tel:+998909397183" class="fw-bold text-dark fs-6">+998 (90) 939-71-83</a> / 
+                <a href="tel:+998938707877" class="fw-bold text-dark fs-6">+998 (93) 870-78-77</a><br>
+                <a href="tel:+998983617183" class="fw-bold text-dark fs-6">+998 (98) 361-71-83</a> | 
+                <a href="tel:+998555034715" class="fw-bold text-dark fs-6">+998 (55) 503-47-15 (ofis)</a>
+              </div>
+            </div>
+
+            <div class="d-flex align-items-center gap-3 p-3 bg-surface rounded-3 border">
+              <div class="fs-4 text-info"><i class="bi bi-telegram"></i></div>
+              <div>
+                <div class="text-muted small">Telegram kanal / bot:</div>
+                <a href="https://t.me/standartgso_uz" target="_blank" class="fw-bold text-info fs-6">@standartgso_uz</a>
+              </div>
+            </div>
+
+            <div class="d-flex align-items-center gap-3 p-3 bg-surface rounded-3 border">
+              <div class="fs-4 text-warning"><i class="bi bi-instagram"></i></div>
+              <div>
+                <div class="text-muted small">Instagram sahifamiz:</div>
+                <a href="https://instagram.com/standartgso_uz" target="_blank" class="fw-bold text-warning fs-6">@standartgso_uz</a>
+              </div>
+            </div>
+
+            <div class="d-flex align-items-center gap-3 p-3 bg-surface rounded-3 border">
+              <div class="fs-4 text-success"><i class="bi bi-envelope-check-fill"></i></div>
+              <div>
+                <div class="text-muted small">Elektron pochta:</div>
+                <a href="mailto:standartmetrolog@bk.ru" class="fw-bold text-dark fs-6">standartmetrolog@bk.ru</a>
+              </div>
+            </div>
+
+            <div class="d-flex align-items-center gap-3 p-3 bg-surface rounded-3 border">
+              <div class="fs-4 text-danger"><i class="bi bi-geo-alt-fill"></i></div>
+              <div>
+                <div class="text-muted small">Manzilimiz:</div>
+                <div class="fw-semibold text-dark fs-6">Toshkent sh., Sergeli tumani, Uzumzor 16-tor ko'cha 18-uy</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-7">
+          <div class="p-4 p-md-5 bg-surface rounded-4 border shadow-sm">
+            <h4 class="fw-bold mb-3">Tezkor Murojaat va Tijorat Taklifi Formasi</h4>
+            <p class="text-muted small mb-4">Quyidagi formani to'ldiring, menejerimiz 15 daqiqada siz bilan bog'lanadi.</p>
+
+            <form onsubmit="event.preventDefault(); store.showToast('Murojaatingiz qabul qilindi! Menejerimiz tez orada bog\'lanadi.', 'success'); this.reset();">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold">F.I.O yoki Mas'ul Shaxs *</label>
+                  <input type="text" class="form-control" placeholder="F.I.O yoki mas'ul shaxs ismi" required />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold">Telefon Raqamingiz *</label>
+                  <input type="tel" class="form-control" placeholder="+998 (90) 123-45-67" required />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold">Tashkilot Nomi (Ixtiyoriy)</label>
+                  <input type="text" class="form-control" placeholder="MCHJ, AJ yoki Laboratoriya nomi" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold">Qiziqtirgan Mahsulot / Xizmat</label>
+                  <select class="form-select">
+                    <option>Standart namunalar (GSO/CRM)</option>
+                    <option>Standart-titrlar (Fiksanallar)</option>
+                    <option>Bufer eritmalari (pH / Cond)</option>
+                    <option>O'lchov vositalari (Tarozilar, asboblar)</option>
+                    <option>Areometrlar va Termometrlar</option>
+                    <option>Qiyoslash va kalibrlash xizmati</option>
+                  </select>
+                </div>
+                <div class="col-12">
+                  <label class="form-label small fw-semibold">Qo'shimcha Izoh yoki Texnik Talablar</label>
+                  <textarea class="form-control" rows="3" placeholder="Sizga kerak bo'lgan miqdor, GOST talablari yoki savollaringizni yozing..."></textarea>
+                </div>
+                <div class="col-12">
+                  <button type="submit" class="btn btn-primary-custom w-100 py-3">
+                    <i class="bi bi-send-fill me-2"></i> Murojaatni Yuborish
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       9. FOOTER
+       ========================================================================== -->
+  <footer class="site-footer">
+    <div class="container-fluid px-lg-5">
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <div class="footer-logo-frame">
+              <img src="assets/images/logo_emblem.png" alt="STANDART VA METROLOGIYA" class="footer-logo-img" />
+            </div>
+            <div>
+              <h5 class="text-white mb-0 fw-bold">STANDART VA METROLOGIYA</h5>
+              <div class="small text-info fw-semibold" style="letter-spacing: 1px;">ANIQLIK • ISHONCH • SIFAT</div>
+            </div>
+          </div>
+          <p class="small text-light mb-3">
+            "STANDART VA METROLOGIYA" MCHJ — O'zbekistonda standart namunalar (GSO), bufer eritmalari, fiksanallar, areometrlar va yuqori aniqlikdagi laboratoriya asboblarining yetkazib beruvchisi.
+          </p>
+          <div class="d-flex gap-2">
+            <a href="https://t.me/standartgso_uz" target="_blank" class="btn btn-sm btn-outline-light"><i class="bi bi-telegram"></i></a>
+            <a href="https://instagram.com/standartgso_uz" target="_blank" class="btn btn-sm btn-outline-light"><i class="bi bi-instagram"></i></a>
+            <a href="http://gsouz.uz" target="_blank" class="btn btn-sm btn-outline-light"><i class="bi bi-globe"></i></a>
+            <a href="mailto:standartmetrolog@bk.ru" class="btn btn-sm btn-outline-light"><i class="bi bi-envelope"></i></a>
+          </div>
+        </div>
+
+        <div class="col-6 col-lg-2">
+          <h4 class="footer-title">Katalog</h4>
+          <ul class="footer-links">
+            <li><a href="#katalog" onclick="setCategory('all')">Barcha mahsulotlar</a></li>
+            <li><a href="#katalog" onclick="setCategory('standart-namunalar')">Standart namunalar</a></li>
+            <li><a href="#katalog" onclick="setCategory('standart-titrlar')">Standart-titrlar</a></li>
+            <li><a href="#katalog" onclick="setCategory('bufer-eritmalari')">Bufer eritmalari</a></li>
+            <li><a href="#katalog" onclick="setCategory('olchov-vositalari')">O'lchov vositalari</a></li>
+            <li><a href="#katalog" onclick="setCategory('areometrlar-termometrlar')">Areometr &amp; Termometr</a></li>
+          </ul>
+        </div>
+
+        <div class="col-6 col-lg-3">
+          <h4 class="footer-title">Xizmatlar</h4>
+          <ul class="footer-links">
+            <li><a href="#xizmatlar">Davlat qiyoslovi (Poverka)</a></li>
+            <li><a href="#xizmatlar">Asboblarni kalibrlash</a></li>
+            <li><a href="#xizmatlar">Metrologik pasport berish</a></li>
+            <li><a href="#xizmatlar">Tijorat taklifi (B2B)</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-3">
+          <h4 class="footer-title">Bog'lanish</h4>
+          <p class="small text-light mb-1"><i class="bi bi-geo-alt me-1 text-primary"></i> Toshkent sh., Sergeli tumani, Uzumzor 18</p>
+          <p class="small text-light mb-1"><i class="bi bi-telephone me-1 text-primary"></i> +998 (90) 939-71-83</p>
+          <p class="small text-light mb-1"><i class="bi bi-envelope me-1 text-primary"></i> standartmetrolog@bk.ru</p>
+          <p class="small text-light"><i class="bi bi-clock me-1 text-primary"></i> Dush-Shan: 09:00 - 18:00</p>
+        </div>
+      </div>
+
+      <div class="footer-bottom d-flex flex-wrap justify-content-between align-items-center">
+        <div>© 2026 "STANDART VA METROLOGIYA" MCHJ. Barcha huquqlar himoyalangan.</div>
+        <div class="text-muted small">O'zbekiston Respublikasi standartlashtirish va metrologiya qoidalari asosida faoliyat yuritadi.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       10. CART DRAWER (OFFCANVAS)
+       ========================================================================== -->
+  <div class="offcanvas offcanvas-end cart-drawer" tabindex="-1" id="cartOffcanvas" aria-labelledby="cartOffcanvasLabel">
+    <div class="offcanvas-header border-bottom">
+      <h5 class="offcanvas-title fw-bold" id="cartOffcanvasLabel">
+        <i class="bi bi-cart3 text-primary me-2"></i> Xaridlar Savati
+      </h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body d-flex flex-column">
+      <!-- Items Container -->
+      <div id="cartItemsList" class="flex-grow-1 overflow-auto">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- Empty State -->
+      <div id="cartEmptyState" class="text-center py-5 d-none">
+        <i class="bi bi-cart-x text-muted" style="font-size: 3.5rem;"></i>
+        <h5 class="mt-3 fw-bold">Savatingiz hozircha bo'sh</h5>
+        <p class="text-muted small">Katalogdan kerakli standartlar yoki asboblarni tanlang.</p>
+        <button class="btn btn-sm btn-primary-custom" data-bs-dismiss="offcanvas" onclick="location.href='#katalog'">
+          Katalogga o'tish
+        </button>
+      </div>
+
+      <!-- Footer / Summary -->
+      <div id="cartFooter" class="border-top pt-3 mt-auto">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <span class="text-muted fw-semibold">Jami to'lov:</span>
+          <span class="fs-4 fw-bold text-primary" id="cartTotalAmount">0 so'm</span>
+        </div>
+        <div class="d-grid gap-2">
+          <button class="btn btn-primary-custom py-2" data-bs-dismiss="offcanvas" onclick="openCheckoutModal()">
+            <i class="bi bi-check2-circle me-1"></i> Buyurtmani Rasmiylashtirish
+          </button>
+          <button class="btn btn-outline-primary py-2 fw-semibold" data-bs-dismiss="offcanvas" onclick="openCommercialOfferModal()">
+            <i class="bi bi-file-earmark-pdf me-1"></i> Avtomatik Tijorat Taklifi (PDF)
+          </button>
+          <button class="btn btn-sm btn-outline-danger" onclick="store.clearCart()">
+            <i class="bi bi-trash me-1"></i> Savatni tozalash
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       11. PRODUCT DETAIL MODAL (TEXNIK PASPORT)
+       ========================================================================== -->
+  <div class="modal fade" id="productDetailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content modal-content-custom">
+        <div class="modal-header border-bottom">
+          <h5 class="modal-title fw-bold" id="productModalTitle">Mahsulot Texnik Pasporti</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4" id="productModalBody">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       12. CHECKOUT MODAL (BUYURTMA VA TIJORAT TAKLIFI)
+       ========================================================================== -->
+  <div class="modal fade" id="checkoutModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content modal-content-custom">
+        <div class="modal-header border-bottom">
+          <h5 class="modal-title fw-bold">
+            <i class="bi bi-bag-check-fill text-primary me-2"></i> Buyurtmani Rasmiylashtirish
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <div id="checkoutOrderSummary"></div>
+
+          <form id="orderForm">
+            <!-- Client Type Radios -->
+            <div class="mb-3">
+              <label class="form-label fw-bold small text-muted">Mijoz Turi:</label>
+              <div class="d-flex gap-4">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="clientType" id="typeIndividual" value="Jismoniy shaxs" checked />
+                  <label class="form-check-label" for="typeIndividual">Jismoniy Shaxs</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="clientType" id="typeCompany" value="Yuridik shaxs" />
+                  <label class="form-check-label fw-bold text-primary" for="typeCompany">Yuridik Shaxs / Korxona (Shartnoma &amp; STIR)</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold">F.I.O / Mas'ul shaxs *</label>
+                <input type="text" id="orderFullName" class="form-control" placeholder="F.I.O yoki mas'ul shaxs" required />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold">Telefon Raqami *</label>
+                <input type="tel" id="orderPhone" class="form-control" placeholder="+998 (90) 123-45-67" required />
+              </div>
+
+              <!-- Company Fields (Shown for Yuridik Shaxs) -->
+              <div id="companyFields" class="col-12 d-none">
+                <div class="row g-3 p-3 bg-light rounded border">
+                  <div class="col-md-6">
+                    <label class="form-label small fw-semibold">Kompaniya Nomi *</label>
+                    <input type="text" id="orderCompany" class="form-control" placeholder="Kompaniya / Korxona nomi" />
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label small fw-semibold">STIR (INN) Raqami *</label>
+                    <input type="text" id="orderINN" class="form-control" placeholder="9 xonali STIR raqami" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold">Yetkazib berish manzili *</label>
+                <input type="text" id="orderAddress" class="form-control" placeholder="Shahar, tuman, ko'cha, xona" required />
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold">To'lov Usuli</label>
+                <select id="orderPayType" class="form-select">
+                  <option value="Hisob-raqam (Shartnoma)">Hisob-raqam orqali to'lov (Shartnoma / E-faktura)</option>
+                  <option value="Payme / Click">Payme / Click orqali online</option>
+                  <option value="Naqd to'lov">Qabul qilganda naqd to'lov</option>
+                </select>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label small fw-semibold">Qo'shimcha Izoh (Ixtiyoriy)</label>
+                <textarea id="orderNotes" class="form-control" rows="2" placeholder="Laboratoriya talablari, yetkazish vaqti yoki qo'shimcha ma'lumot..."></textarea>
+              </div>
+            </div>
+
+            <div class="mt-4 pt-3 border-top d-flex gap-2 justify-content-end">
+              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Bekor qilish</button>
+              <button type="submit" class="btn btn-primary-custom px-4">
+                <i class="bi bi-check2-circle me-1"></i> Buyurtmani Tasdiqlash
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       13. ORDER SUCCESS & PRINT COMMERCIAL OFFER MODAL
+       ========================================================================== -->
+  <div class="modal fade" id="orderSuccessModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+      <div class="modal-content modal-content-custom">
+        <div class="modal-body p-4 text-center">
+          <div class="mb-3">
+            <i class="bi bi-check-circle-fill text-success" style="font-size: 3.5rem;"></i>
+          </div>
+
+          <div id="orderSuccessDetails">
+            <!-- Rendered by JS -->
+          </div>
+
+          <div class="d-grid gap-2 mt-4">
+            <a id="btnSendTelegram" href="#" target="_blank" class="btn btn-primary-custom py-2">
+              <i class="bi bi-telegram me-2"></i> Telegram Orqali Menejerga Yuborish
+            </a>
+            <button class="btn btn-success py-2 fw-semibold text-white" onclick="downloadCommercialOfferPDF()">
+              <i class="bi bi-file-earmark-arrow-down-fill me-2"></i> Tijorat Taklifini PDF Yuklab Olish
+            </button>
+            <button class="btn btn-outline-primary py-2 fw-semibold" onclick="openCommercialOfferModal()">
+              <i class="bi bi-file-earmark-pdf me-2"></i> Rasmiy Shartnomani Ekranda Ko'rish
+            </button>
+            <button class="btn btn-link text-muted" data-bs-dismiss="modal">Bosh sahifaga qaytish</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       14. COMPARE MODAL
+       ========================================================================== -->
+  <div class="modal fade" id="compareModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+      <div class="modal-content modal-content-custom">
+        <div class="modal-header border-bottom">
+          <h5 class="modal-title fw-bold">
+            <i class="bi bi-shuffle text-primary me-2"></i> Mahsulotlarni Taqqoslash
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <div id="compareContent">
+            <!-- Rendered by JS -->
+          </div>
+
+          <div id="compareEmptyState" class="text-center py-5 d-none">
+            <i class="bi bi-shuffle text-muted" style="font-size: 3.5rem;"></i>
+            <h5 class="mt-3 fw-bold">Taqqoslash uchun mahsulot tanlanmagan</h5>
+            <p class="text-muted small">Mahsulot kartochkalaridagi taqqoslash tugmasini bosing.</p>
+            <button class="btn btn-sm btn-primary-custom" data-bs-dismiss="modal" onclick="location.href='#katalog'">
+              Katalogga o'tish
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       15. FAVORITES MODAL
+       ========================================================================== -->
+  <div class="modal fade" id="favoritesModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content modal-content-custom">
+        <div class="modal-header border-bottom">
+          <h5 class="modal-title fw-bold">
+            <i class="bi bi-heart-fill text-danger me-2"></i> Sevimli Mahsulotlarim
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <div id="favoritesItemsList" class="d-flex flex-column gap-3">
+            <!-- Rendered by JS -->
+          </div>
+
+          <div id="favoritesEmptyState" class="text-center py-5 d-none">
+            <i class="bi bi-heart text-muted" style="font-size: 3.5rem;"></i>
+            <h5 class="mt-3 fw-bold">Sevimlilar ro'yxati bo'sh</h5>
+            <p class="text-muted small">O'zingizga yoqqan mahsulotlarni yurakcha tugmasi orqali saqlab qo'ying.</p>
+            <button class="btn btn-sm btn-primary-custom" data-bs-dismiss="modal" onclick="location.href='#katalog'">
+              Katalogga o'tish
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       16. CERTIFICATE & PASSPORT PREVIEW MODAL
+       ========================================================================== -->
+  <div class="modal fade" id="certificateModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content modal-content-custom">
+        <div class="modal-header border-bottom">
+          <h5 class="modal-title fw-bold" id="certModalTitle">Metrologik Sertifikat &amp; Pasport</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4" id="certModalBody">
+          <!-- Rendered by JS -->
+        </div>
+        <div class="modal-footer border-top">
+          <button class="btn btn-outline-secondary" onclick="printCommercialOffer()">
+            <i class="bi bi-printer me-1"></i> Sertifikatni Chop Etish (PDF)
+          </button>
+          <button type="button" class="btn btn-primary-custom" data-bs-dismiss="modal">Yopish</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       16. OFFICIAL B2B TIJORAT KELISHUVI & SPECIFICATION MODAL (A4 FORMAT)
+       ========================================================================== -->
+  <div class="modal fade" id="commercialOfferModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content modal-content-custom">
+        <div class="modal-header border-bottom d-flex justify-content-between align-items-center">
+          <div class="d-flex align-items-center gap-2">
+            <h5 class="modal-title fw-bold text-primary mb-0">
+              <i class="bi bi-file-earmark-ruled me-2"></i> Rasmiy Tijorat Kelishuvi va Spetsifikatsiya
+            </h5>
+            <span class="badge bg-success-subtle text-success border border-success-subtle">A4 Standart B2B Shakli</span>
+          </div>
+          <div class="d-flex flex-wrap gap-2">
+            <button class="btn btn-sm btn-primary-custom" onclick="downloadCommercialOfferPDF()">
+              <i class="bi bi-file-earmark-arrow-down-fill me-1"></i> PDF Yuklab Olish
+            </button>
+            <button class="btn btn-sm btn-outline-secondary" onclick="printCommercialOffer()">
+              <i class="bi bi-printer me-1"></i> Chop Etish
+            </button>
+            <button class="btn btn-sm btn-outline-info" onclick="sendOfferViaTelegram()">
+              <i class="bi bi-telegram me-1"></i> Telegram
+            </button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+        </div>
+        <div class="modal-body p-2 p-md-4 bg-light">
+          <!-- Rendered A4 Document Sheet -->
+          <div id="commercialOfferDocContainer">
+            <!-- Dynamically populated by renderCommercialOfferHTML() -->
+          </div>
+        </div>
+        <div class="modal-footer border-top d-flex justify-content-between align-items-center bg-white">
+          <div class="small text-muted">
+            <i class="bi bi-info-circle me-1"></i> Ushbu kelishuv 30 kalendar kuni davomida rasmiy kuchga ega. Barcha narxlar QQS bilan keltirilgan.
+          </div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-primary-custom" onclick="downloadCommercialOfferPDF()">
+              <i class="bi bi-file-earmark-arrow-down-fill me-1"></i> PDF Yuklab Olish (A4)
+            </button>
+            <button class="btn btn-outline-secondary" onclick="printCommercialOffer()">
+              <i class="bi bi-printer me-1"></i> Chop etish
+            </button>
+            <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Yopish</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       17. B2B DIDOX & E-FAKTURA INTEGRATION MODAL
+       ========================================================================== -->
+  <div class="modal fade" id="b2bModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content modal-content-custom">
+        <div class="modal-header border-bottom">
+          <div class="d-flex align-items-center gap-2">
+            <div class="rounded-circle bg-primary-subtle text-primary p-2 d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
+              <i class="bi bi-link-45deg fs-4"></i>
+            </div>
+            <div>
+              <h5 class="modal-title fw-bold text-dark mb-0">B2B Elektron Shartnoma va E-Faktura (Didox)</h5>
+              <div class="text-muted small">O'zbekiston Respublikasi DSQ E-Faktura &amp; Didox.uz standartlari</div>
+            </div>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-3 p-md-4 bg-light" id="b2bModalBody">
+          <!-- Populated by b2b-efaktura.js -->
+        </div>
+        <div class="modal-footer border-top bg-white">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Yopish</button>
+          <button type="button" class="btn btn-primary-custom" onclick="downloadDidoxPackageAction()">
+            <i class="bi bi-download me-1"></i> Didox Paketini Yuklab Olish
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap 5 Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Application Logic Scripts -->
+  <script src="js/html2pdf.bundle.min.js"></script>
+  <script src="js/products-data.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/b2b-efaktura.js"></script>
+</body>
+</html>
