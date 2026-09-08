@@ -836,6 +836,10 @@ function processOrderSubmit(event) {
   const modal = bootstrap.Modal.getInstance(checkoutModalEl);
   if (modal) modal.hide();
 
+  // Reset checkout form fields so values don't linger in DOM
+  const checkoutForm = document.getElementById('orderForm');
+  if (checkoutForm) checkoutForm.reset();
+
   // Show Success Modal with direct Telegram link & printable commercial offer
   showOrderSuccessModal(orderText, fullName, phone, company);
   
@@ -1057,6 +1061,21 @@ function generateSingleProductOffer(productId) {
 }
 
 function openCommercialOfferModal(customItems = null, customClient = null) {
+  // Barcha boshqa modallarni yopish (ayniqsa checkoutModal va orderSuccessModal)
+  ['checkoutModal', 'orderSuccessModal', 'productDetailModal', 'quickViewModal', 'compareModal', 'authModal', 'b2bModal'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      const inst = bootstrap.Modal.getInstance(el);
+      if (inst) inst.hide();
+    }
+  });
+
+  // Qo'shimcha qolib ketgan backdrop'larni tozalash va tanani tozalash
+  document.querySelectorAll('.modal-backdrop').forEach(b => b.remove());
+  document.body.classList.remove('modal-open');
+  document.body.style.removeProperty('padding-right');
+  document.body.style.removeProperty('overflow');
+
   // Agar avval rasmiylashtirilgan buyurtma ma'lumotlari mavjud bo'lsa va yangi mahsulot berilmagan bo'lsa
   if (!customItems && currentOfferData && (!store.cart || store.cart.length === 0)) {
     renderCommercialOfferHTML();
@@ -1276,11 +1295,14 @@ function printCommercialOffer() {
     printFrame = document.createElement('iframe');
     printFrame.id = 'commercialPrintIframe';
     printFrame.style.position = 'fixed';
-    printFrame.style.right = '0';
-    printFrame.style.bottom = '0';
-    printFrame.style.width = '0';
-    printFrame.style.height = '0';
-    printFrame.style.border = '0';
+    printFrame.style.top = '0';
+    printFrame.style.left = '0';
+    printFrame.style.width = '100vw';
+    printFrame.style.height = '100vh';
+    printFrame.style.border = 'none';
+    printFrame.style.zIndex = '-9999';
+    printFrame.style.opacity = '0.01';
+    printFrame.style.pointerEvents = 'none';
     document.body.appendChild(printFrame);
   }
 
@@ -1557,11 +1579,11 @@ function downloadCommercialOfferPDF() {
     html2pdf().set(opt).from(element).save().then(() => {
       store.showToast("Tijorat taklifi PDF fayli muvaffaqiyatli yuklab olindi!", "success");
     }).catch(err => {
-      console.warn("html2pdf fallback to browser print:", err);
-      window.print();
+      console.warn("html2pdf fallback to dedicated print:", err);
+      printCommercialOffer();
     });
   } else {
-    window.print();
+    printCommercialOffer();
   }
 }
 
