@@ -32,7 +32,15 @@ O'zbekiston Respublikasi bo'ylab kimyo, farmatsevtika, neft-gaz, oziq-ovqat va s
 5. **Buyurtmalarni Telegram Orqali Yuborish**:
    - Buyurtmani rasmiylashtirganda barcha ma'lumotlarni shakllantirib, menejer Telegramiga 1 bosishda jo'natish.
 
-6. **Zamonaviy Dizayn va Moslashuvchanlik (Responsive UI)**:
+6. **Admin Panel & Ombor Tahlili (admin.html)**:
+   - **Parol bilan himoyalangan boshqaruv tizimi** (Standart parol: `admin2026`).
+   - **Mahsulotlar CRUD**: Istalgan mahsulot narxi, nomi, tavsifini tahrirlash, yangi qo'shish va o'chirish.
+   - **Rasm yangilash**: Kompyuterdan rasm yuklash (File Upload) yoki URL kiritish orqali to'g'ridan-to'g'ri yangilash va jonli ko'rish.
+   - **Ombor tahlili**: Jami zaxira summasi (so'm), kam qolgan yoki tugagan tovarlar monitoringi, kategoriyalar bo'yicha taqsimot.
+   - **Savdo analitikasi**: Didox va sayt orqali tushgan buyurtmalar tarixi, umumiy aylanma va oylik tushum diagrammasi (SVG).
+   - **Sinxronizatsiya**: Admin panelda qilingan har qanday o'zgarish `localStorage` orqali asosiy saytda darhol aks etadi.
+
+7. **Zamonaviy Dizayn va Moslashuvchanlik (Responsive UI)**:
    - Mobil, planshet va kompyuter ekranlariga to'liq moslashgan (Mobile First).
    - Kunduzgi va tungi (Light / Dark mode) rejimlarni qo'llab-quvvatlaydi.
    - Hech qanday og'ir kutubxona va ortiqcha dependency'larsiz toza, tezkor kod.
@@ -43,7 +51,7 @@ O'zbekiston Respublikasi bo'ylab kimyo, farmatsevtika, neft-gaz, oziq-ovqat va s
 
 - **HTML5**: Semantik, qidiruv tizimlari (SEO) uchun optimallashtirilgan struktura.
 - **CSS3 / Vanilla CSS**: CSS Custom Properties (Variables), Flexbox, CSS Grid, zamonaviy animatsiyalar.
-- **JavaScript (ES6+)**: Modulli tuzilma, `StoreState` reaktiv boshqaruvi, STIR tekshiruvi.
+- **JavaScript (ES6+)**: Modulli tuzilma, `StoreState` reaktiv boshqaruvi, `AdminManager`, STIR tekshiruvi.
 - **Bootstrap 5.3.3**: Layout griddi va modal oynalar.
 - **Bootstrap Icons**: Vektorli piktogrammalar to'plami.
 - **html2pdf.js**: Brauzerning o'zida A4 PDF hujjatlarni generatsiya qilish.
@@ -53,17 +61,19 @@ O'zbekiston Respublikasi bo'ylab kimyo, farmatsevtika, neft-gaz, oziq-ovqat va s
 ## 📁 Loyiha Strukturasi
 
 ```plaintext
-├── index.html                  # Asosiy sahifa (Katalog, Qidiruv, Modallar)
+├── index.html                  # Asosiy sayt (Katalog, Qidiruv, Modallar)
+├── admin.html                  # Admin Dashboard (Mahsulotlar CRUD, Ombor va Savdo analitikasi)
 ├── css/
 │   ├── main.css                # Asosiy dizayn qoidalari, ranglar, shriftlar
 │   ├── components.css          # Kartochkalar, savat, A4 tijorat hujjati, Didox stili
-│   └── responsive.css          # Mobil va planshet ekran moslashuvlari
+│   ├── responsive.css          # Mobil va planshet ekran moslashuvlari
+│   └── admin.css               # Admin panel uslublari va diagrammalar
 ├── js/
 │   ├── products-data.js        # 290+ standart namunalar va uskunalar ma'lumotlar bazasi
 │   ├── cart.js                 # Savat, Sevimlilar, Taqqoslash (Store boshqaruvi)
 │   ├── app.js                  # Asosiy ilova mantiqi, filtrlash, qidiruv, PDF/Telegram
 │   ├── b2b-efaktura.js         # B2B elektron shartnoma, Didox & E-Faktura moduli
-│   └── html2pdf.bundle.min.js  # A4 formatida PDF generatsiya qilish kutubxonasi
+│   ├── admin.js                # Admin panel mantiqi, CRUD, rasm yuklash, ombor va savdo tahlili
 ├── assets/
 │   ├── icons/                  # SVG va veb-belgilar
 │   └── images/                 # Mahsulotlar va logotip rasmlari

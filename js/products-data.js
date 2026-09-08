@@ -52,7 +52,7 @@ const CATEGORIES = [
   }
 ];
 
-const PRODUCTS_DATABASE = [
+const DEFAULT_PRODUCTS_DATABASE = [
   {
     "id": "dev-fluke-manometer",
     "title": "Yuqori aniqlikdagi raqamli manometr / bosim kalibratori (Model: Fluke CPC-800)",
@@ -9328,3 +9328,42 @@ const FILTER_OPTIONS = {
     { id: "name-asc", label: "Nomi bo'yicha (A-Z)" }
   ]
 };
+
+// Admin panel orqali kiritilgan o'zgarishlarni localStorage orqali yuklash va boshqarish
+function getInitialProducts() {
+  try {
+    const custom = localStorage.getItem('sm_custom_products');
+    if (custom) {
+      const parsed = JSON.parse(custom);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed;
+      }
+    }
+  } catch (e) {
+    console.warn("Could not load custom products from localStorage:", e);
+  }
+  return [...DEFAULT_PRODUCTS_DATABASE];
+}
+
+let PRODUCTS_DATABASE = getInitialProducts();
+
+function saveProductsDatabase(newList) {
+  try {
+    PRODUCTS_DATABASE = newList;
+    localStorage.setItem('sm_custom_products', JSON.stringify(newList));
+    return true;
+  } catch (e) {
+    console.error("Error saving products:", e);
+    return false;
+  }
+}
+
+function resetProductsDatabase() {
+  try {
+    localStorage.removeItem('sm_custom_products');
+    PRODUCTS_DATABASE = [...DEFAULT_PRODUCTS_DATABASE];
+    return true;
+  } catch (e) {
+    return false;
+  }
+}

@@ -444,6 +444,28 @@ function processOrderSubmit(event) {
   const offerDate = new Date().toLocaleDateString('uz-UZ', { day: '2-digit', month: '2-digit', year: 'numeric' }) + " y.";
   currentOfferData = { items: offerItems, client: clientInfo, offerNumber, offerDate };
 
+  // Admin panel uchun buyurtmani saqlash
+  try {
+    const orders = JSON.parse(localStorage.getItem('sm_orders') || '[]');
+    const newOrder = {
+      id: offerNumber,
+      date: new Date().toISOString(),
+      dateFormatted: offerDate,
+      customer: clientInfo,
+      customerType: customerType,
+      items: offerItems,
+      totalSum: store.cart.reduce((s, it) => s + (it.price * it.quantity), 0),
+      totalSumFormatted: totalPriceFormatted,
+      payType: payType,
+      notes: notes,
+      status: 'Yangi'
+    };
+    orders.unshift(newOrder);
+    localStorage.setItem('sm_orders', JSON.stringify(orders));
+  } catch (e) {
+    console.warn("Could not save order to storage:", e);
+  }
+
   // Close Checkout Modal
   const checkoutModalEl = document.getElementById('checkoutModal');
   const modal = bootstrap.Modal.getInstance(checkoutModalEl);
