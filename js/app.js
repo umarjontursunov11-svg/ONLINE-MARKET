@@ -13,12 +13,222 @@ let currentSort = 'popular';
 let selectedPriceRange = 0; // index in filterOptions
 
 function initApp() {
+  renderCategoryShowcase();
+  renderDiscountedProducts();
   renderCategoryTabs();
   renderProducts();
   store.updateBadges();
   store.renderCart();
   setupEventListeners();
   setupThemeToggle();
+}
+
+function selectCategoryAndScroll(catId) {
+  currentCategory = catId;
+  renderCategoryTabs();
+  renderProducts();
+
+  const catalogEl = document.getElementById('katalog');
+  if (catalogEl) {
+    const yOffset = -70;
+    const y = catalogEl.getBoundingClientRect().top + window.pageYOffset + yOffset;
+    window.scrollTo({ top: y, behavior: 'smooth' });
+  }
+}
+
+// 0.1. RENDER ASOSIY KATEGORIYALAR (MAIN SCREEN CATEGORIES SHOWCASE)
+function renderCategoryShowcase() {
+  const container = document.getElementById('categoryShowcaseGrid');
+  if (!container) return;
+
+  const categoryMeta = {
+    'standart-namunalar': {
+      desc: "Davlat GSO va xalqaro Weiyel CRM standart namunalari, metallar, neft va suv tahlili etalonlari.",
+      accent: "#0284c7",
+      bg: "#e0f2fe",
+      badge: "GSO & CRM"
+    },
+    'standart-titrlar': {
+      desc: "Ampuladagi analitik kimyoviy etalon eritmalar, kislotalar, ishqorlar va tuzlar (Fiksanallar).",
+      accent: "#10b981",
+      bg: "#d1fae5",
+      badge: "Fiksanallar"
+    },
+    'bufer-eritmalari': {
+      desc: "pH 1.68 - 10.01 va elektr o'tkazuvchanlik 1413 µS/cm kalibrlash bufer standart eritmalari.",
+      accent: "#8b5cf6",
+      bg: "#ede9fe",
+      badge: "pH & Cond"
+    },
+    'olchov-vositalari': {
+      desc: "Raqamli manometrlar, analitik tarozilar, spektrofotometrlar, viskozimetrlar (Davlat qiyoslovi bilan).",
+      accent: "#f59e0b",
+      bg: "#fef3c7",
+      badge: "Poverka bilan"
+    },
+    'areometrlar-termometrlar': {
+      desc: "Neft (ANT), kislota (AK), spirt (ASP) areometrlari va etalon laboratoriya termometrlari.",
+      accent: "#ef4444",
+      bg: "#fee2e2",
+      badge: "GOST 18481"
+    }
+  };
+
+  const mainCategories = CATEGORIES.filter(c => c.id !== 'all');
+
+  container.innerHTML = mainCategories.map(cat => {
+    const meta = categoryMeta[cat.id] || {
+      desc: "Laboratoriyangiz uchun akkreditatsiyalangan metrologik sinov vositalari.",
+      accent: "#0284c7",
+      bg: "#e0f2fe",
+      badge: "Standart"
+    };
+
+    const count = PRODUCTS_DATABASE.filter(p => p.category === cat.id).length;
+
+    return `
+      <div class="col-12 col-md-6 col-lg-4 col-xl" style="--cat-accent: ${meta.accent}; --cat-bg: ${meta.bg}; --cat-color: ${meta.accent};">
+        <div class="category-showcase-card" onclick="selectCategoryAndScroll('${cat.id}')">
+          <div>
+            <div class="d-flex justify-content-between align-items-start">
+              <div class="cat-icon-bubble">
+                <i class="bi ${cat.icon}"></i>
+              </div>
+              <span class="badge" style="background: ${meta.bg}; color: ${meta.accent}; font-weight: 700; font-size: 0.72rem;">
+                ${meta.badge}
+              </span>
+            </div>
+            <h3 class="cat-showcase-title">${cat.name}</h3>
+            <p class="cat-showcase-desc">${meta.desc}</p>
+          </div>
+
+          <div class="cat-showcase-footer">
+            <span class="cat-count-badge">
+              <i class="bi bi-box-seam me-1"></i> ${count} ta mahsulot
+            </span>
+            <span class="cat-explore-link">
+              Ko'rish <i class="bi bi-arrow-right"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// 0.2. RENDER CHEGIRMADAGI MAHSULOTLAR (DISCOUNTED & PROMOTIONAL PRODUCTS)
+function renderDiscountedProducts() {
+  const container = document.getElementById('discountedProductsGrid');
+  if (!container) return;
+
+  // Promoted discounted products with special percentage discounts
+  const promoConfigs = [
+    { id: "si-1", discountPercent: 35, badge: "-35% Super Aksiya", limitedStock: "Faqat 3 dona qoldi" },
+    { id: "dev-fluke-manometer", discountPercent: 15, badge: "-15% Maxsus Narx", limitedStock: "Omborda 12 dona" },
+    { id: "dev-ph-meter-seven", discountPercent: 20, badge: "-20% Chegirma", limitedStock: "Omborda 8 dona" },
+    { id: "dev-analytical-balance", discountPercent: 12, badge: "-12% Aksiya", limitedStock: "Omborda 6 dona" },
+    { id: "si-2", discountPercent: 20, badge: "-20% Chegirma", limitedStock: "Omborda 15 dona" },
+    { id: "buf-197", discountPercent: 25, badge: "-25% Maxsus Taklif", limitedStock: "Omborda 20 dona" }
+  ];
+
+  const promoProducts = [];
+  promoConfigs.forEach(cfg => {
+    const prod = PRODUCTS_DATABASE.find(p => p.id === cfg.id);
+    if (prod && prod.price > 0) {
+      const salePrice = prod.price;
+      const oldPrice = Math.round(salePrice / (1 - cfg.discountPercent / 100));
+      const savings = oldPrice - salePrice;
+      promoProducts.push({
+        ...prod,
+        salePrice,
+        oldPrice,
+        savings,
+        discountPercent: cfg.discountPercent,
+        badgeText: cfg.badge,
+        limitedStock: cfg.limitedStock
+      });
+    }
+  });
+
+  if (promoProducts.length === 0) {
+    container.innerHTML = `<div class="col-12 text-center text-muted">Hozirda aksiyadagi mahsulotlar yangilanmoqda.</div>`;
+    return;
+  }
+
+  container.innerHTML = promoProducts.map(p => {
+    const isFav = store.isFavorite(p.id);
+    const isComp = store.isCompared(p.id);
+
+    return `
+      <div class="col-12 col-md-6 col-lg-4 mb-4">
+        <div class="discount-product-card">
+          <!-- Discount Badge & Quick Actions -->
+          <div class="discount-badge-banner">
+            <i class="bi bi-fire"></i> ${p.badgeText}
+          </div>
+
+          <div class="card-quick-actions" style="position: absolute; top: 12px; right: 12px; z-index: 5;">
+            <button class="action-circle-btn ${isComp ? 'active' : ''}" 
+                    data-comp-btn="${p.id}" 
+                    onclick="store.toggleCompare('${p.id}')" 
+                    title="Taqqoslash">
+              <i class="bi bi-shuffle"></i>
+            </button>
+            <button class="action-circle-btn ${isFav ? 'active' : ''}" 
+                    data-fav-btn="${p.id}" 
+                    onclick="store.toggleFavorite('${p.id}')" 
+                    title="Sevimlilarga qo'shish">
+              <i class="bi ${isFav ? 'bi-heart-fill text-danger' : 'bi-heart'}"></i>
+            </button>
+          </div>
+
+          <!-- Product Image -->
+          <div class="discount-img-wrap" onclick="openProductModal('${p.id}')">
+            <img src="${p.image}" alt="${p.title}" loading="lazy" onerror="this.src='assets/images/precision_manometer.jpg'" />
+          </div>
+
+          <!-- Card Body -->
+          <div class="discount-card-body">
+            <div>
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="product-category-tag">${p.categoryName}</span>
+                <span class="badge bg-danger-subtle text-danger small">${p.limitedStock}</span>
+              </div>
+              <h4 class="product-title" onclick="openProductModal('${p.id}')" title="${p.title}">
+                ${p.title}
+              </h4>
+              <div class="product-code-tag mb-2">Artikul: <strong>${p.artikul}</strong></div>
+            </div>
+
+            <div>
+              <!-- Price Box -->
+              <div class="discount-price-box">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <div class="old-price-line">${store.formatMoney(p.oldPrice)}</div>
+                    <div class="new-price-val">${store.formatMoney(p.salePrice)}</div>
+                  </div>
+                  <span class="savings-tag">
+                    <i class="bi bi-arrow-down-circle-fill me-1"></i> Tejaysiz: ${store.formatMoney(p.savings)}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Buttons -->
+              <div class="d-flex gap-2">
+                <button class="btn btn-primary-custom flex-grow-1 py-2 fw-semibold" onclick="store.addToCart('${p.id}')">
+                  <i class="bi bi-cart-plus me-1"></i> Savatga
+                </button>
+                <button class="btn btn-outline-secondary px-3 py-2" onclick="openProductModal('${p.id}')" title="Texnik Pasport &amp; Xususiyatlar">
+                  <i class="bi bi-eye"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
 }
 
 // 1. RENDER CATEGORIES

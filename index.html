@@ -70,8 +70,10 @@
         <!-- Desktop Navigation Links -->
         <div class="d-none d-lg-flex align-items-center gap-2">
           <a href="#bosh-sahifa" class="nav-link-custom">Bosh sahifa</a>
-          <a href="#katalog" class="nav-link-custom">Katalog (294+ mahsulot)</a>
-          <a href="#xizmatlar" class="nav-link-custom">Metrologiya Xizmatlari</a>
+          <a href="#asosiy-kategoriyalar" class="nav-link-custom">Kategoriyalar</a>
+          <a href="#chegirmalar-bolimi" class="nav-link-custom text-danger fw-semibold"><i class="bi bi-fire me-1"></i> Chegirmalar</a>
+          <a href="#katalog" class="nav-link-custom">Katalog</a>
+          <a href="#xizmatlar" class="nav-link-custom">Xizmatlar</a>
           <a href="#afzalliklar" class="nav-link-custom">Afzalliklar</a>
           <a href="#biz-haqimizda" class="nav-link-custom">Biz haqimizda</a>
           <a href="#aloqa" class="nav-link-custom">Aloqa</a>
@@ -165,6 +167,56 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       3.1. ASOSIY KATEGORIYALAR BO'LIMI (CATEGORIES SHOWCASE)
+       ========================================================================== -->
+  <section class="py-5 bg-surface-subtle" id="asosiy-kategoriyalar">
+    <div class="container-fluid px-lg-5">
+      <div class="d-flex flex-wrap justify-content-between align-items-end mb-4">
+        <div>
+          <span class="badge-custom badge-primary mb-2">Katalog Yo'nalishlari</span>
+          <h2 class="fw-bold fs-2 mb-1">Mahsulotlar Kategoriyalari</h2>
+          <p class="text-muted small mb-0">Laboratoriyangiz uchun barcha turdagi akkreditatsiyalangan standartlar va uskunalar</p>
+        </div>
+        <a href="#katalog" onclick="selectCategoryAndScroll('all')" class="btn btn-sm btn-outline-primary mt-2 mt-md-0 fw-semibold">
+          Barcha Mahsulotlar (294+) <i class="bi bi-arrow-right ms-1"></i>
+        </a>
+      </div>
+
+      <!-- Categories Cards Grid -->
+      <div class="row g-4" id="categoryShowcaseGrid">
+        <!-- Rendered by renderCategoryShowcase() in app.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       3.2. CHEGIRMADAGI MAHSULOTLAR (SPECIAL OFFERS & PROMOTIONS)
+       ========================================================================== -->
+  <section class="py-5" id="chegirmalar-bolimi">
+    <div class="container-fluid px-lg-5">
+      <div class="d-flex flex-wrap justify-content-between align-items-end mb-4">
+        <div>
+          <span class="badge-custom badge-danger mb-2">
+            <i class="bi bi-fire me-1"></i> Aksiya &amp; Maxsus Takliflar
+          </span>
+          <h2 class="fw-bold fs-2 mb-1">Chegirmadagi Metrologik Mahsulotlar</h2>
+          <p class="text-muted small mb-0">Eng ko'p so'raladigan standart namunalar va etalon uskunalar maxsus narxlar bilan</p>
+        </div>
+        <div class="d-flex align-items-center gap-2 mt-2 mt-md-0">
+          <span class="badge bg-danger-subtle text-danger border border-danger-subtle p-2">
+            <i class="bi bi-clock-history me-1"></i> Cheklangan muddatli narxlar
+          </span>
+        </div>
+      </div>
+
+      <!-- Discounted Products Grid -->
+      <div class="row g-4" id="discountedProductsGrid">
+        <!-- Rendered by renderDiscountedProducts() in app.js -->
       </div>
     </div>
   </section>

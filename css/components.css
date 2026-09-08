@@ -873,3 +873,213 @@
     opacity: 0;
   }
 }
+
+/* -------------------------------------------------------------
+   18. CATEGORIES SHOWCASE CARDS (ASOSIY EKRAN KATEGORIYALAR)
+   ------------------------------------------------------------- */
+.category-showcase-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-sm);
+}
+
+.category-showcase-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--cat-accent, var(--primary));
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.category-showcase-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--cat-accent, var(--primary));
+  box-shadow: var(--shadow-xl);
+}
+
+.category-showcase-card:hover::before {
+  opacity: 1;
+}
+
+.cat-icon-bubble {
+  width: 54px;
+  height: 54px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  margin-bottom: 16px;
+  background: var(--cat-bg, var(--primary-light));
+  color: var(--cat-color, var(--primary));
+  transition: transform var(--transition-fast);
+}
+
+.category-showcase-card:hover .cat-icon-bubble {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.cat-showcase-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.cat-showcase-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  margin-bottom: 18px;
+}
+
+.cat-showcase-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-color);
+}
+
+.cat-count-badge {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--cat-color, var(--primary));
+  background: var(--cat-bg, var(--primary-light));
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+}
+
+.cat-explore-link {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: gap var(--transition-fast);
+}
+
+.category-showcase-card:hover .cat-explore-link {
+  gap: 10px;
+  color: var(--primary-dark);
+}
+
+/* -------------------------------------------------------------
+   19. DISCOUNTED PRODUCTS CARDS (CHEGIRMADAGI MAHSULOTLAR)
+   ------------------------------------------------------------- */
+.discount-product-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-sm);
+}
+
+.discount-product-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(239, 68, 68, 0.4);
+  box-shadow: 0 16px 32px rgba(239, 68, 68, 0.12);
+}
+
+.discount-badge-banner {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 5;
+  background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 0.78rem;
+  padding: 5px 12px;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 4px 10px rgba(239, 68, 68, 0.35);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.discount-img-wrap {
+  width: 100%;
+  height: 200px;
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+}
+
+.discount-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 12px;
+  transition: transform var(--transition-normal);
+}
+
+.discount-product-card:hover .discount-img-wrap img {
+  transform: scale(1.08);
+}
+
+.discount-card-body {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
+}
+
+.discount-price-box {
+  background: rgba(239, 68, 68, 0.04);
+  border: 1px dashed rgba(239, 68, 68, 0.25);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  margin: 12px 0 16px;
+}
+
+.old-price-line {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-decoration: line-through;
+  margin-bottom: 2px;
+}
+
+.new-price-val {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #dc2626;
+  line-height: 1.1;
+}
+
+.savings-tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #15803d;
+  background: #dcfce7;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  display: inline-block;
+  margin-top: 4px;
+}
