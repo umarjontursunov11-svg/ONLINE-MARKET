@@ -792,11 +792,11 @@
             <a id="btnSendTelegram" href="#" target="_blank" class="btn btn-primary-custom py-2">
               <i class="bi bi-telegram me-2"></i> Telegram Orqali Menejerga Yuborish
             </a>
-            <button class="btn btn-success py-2 fw-semibold text-white" onclick="downloadCommercialOfferPDF()">
+            <button class="btn btn-success py-2 fw-semibold text-white" onclick="downloadCommercialOfferPDF()" data-i18n="order_success_download_offer">
               <i class="bi bi-file-earmark-arrow-down-fill me-2"></i> Tijorat Taklifini PDF Yuklab Olish
             </button>
-            <button class="btn btn-outline-primary py-2 fw-semibold" onclick="openCommercialOfferModal()">
-              <i class="bi bi-file-earmark-pdf me-2"></i> Rasmiy Shartnomani Ekranda Ko'rish
+            <button class="btn btn-outline-primary py-2 fw-semibold" onclick="openCommercialOfferModal()" data-i18n="order_success_view_offer">
+              <i class="bi bi-file-earmark-pdf me-2"></i> Rasmiy Tijorat Taklifini Ekranda Ko'rish
             </button>
             <button class="btn btn-link text-muted" data-bs-dismiss="modal">Bosh sahifaga qaytish</button>
           </div>
@@ -897,16 +897,16 @@
         <div class="modal-header border-bottom d-flex justify-content-between align-items-center">
           <div class="d-flex align-items-center gap-2">
             <h5 class="modal-title fw-bold text-primary mb-0">
-              <i class="bi bi-file-earmark-ruled me-2"></i> Rasmiy Tijorat Kelishuvi va Spetsifikatsiya
+              <i class="bi bi-file-earmark-ruled me-2"></i> <span data-i18n="commercial_modal_title">Rasmiy Tijorat Taklifi va Spetsifikatsiya</span>
             </h5>
-            <span class="badge bg-success-subtle text-success border border-success-subtle">A4 Standart B2B Shakli</span>
+            <span class="badge bg-success-subtle text-success border border-success-subtle" data-i18n="commercial_modal_badge">A4 Standart B2B Shakli</span>
           </div>
           <div class="d-flex flex-wrap gap-2">
             <button class="btn btn-sm btn-primary-custom" onclick="downloadCommercialOfferPDF()">
-              <i class="bi bi-file-earmark-arrow-down-fill me-1"></i> PDF Yuklab Olish
+              <i class="bi bi-file-earmark-arrow-down-fill me-1"></i> <span data-i18n="doc_download_pdf">PDF Yuklab Olish</span>
             </button>
             <button class="btn btn-sm btn-outline-secondary" onclick="printCommercialOffer()">
-              <i class="bi bi-printer me-1"></i> Chop Etish
+              <i class="bi bi-printer me-1"></i> <span data-i18n="doc_print">Chop Etish</span>
             </button>
             <button class="btn btn-sm btn-outline-info" onclick="sendOfferViaTelegram()">
               <i class="bi bi-telegram me-1"></i> Telegram
@@ -921,17 +921,17 @@
           </div>
         </div>
         <div class="modal-footer border-top d-flex justify-content-between align-items-center bg-white">
-          <div class="small text-muted">
-            <i class="bi bi-info-circle me-1"></i> Ushbu kelishuv 30 kalendar kuni davomida rasmiy kuchga ega. Barcha narxlar QQS bilan keltirilgan.
+          <div class="small text-muted" data-i18n="commercial_modal_validity_note">
+            <i class="bi bi-info-circle me-1"></i> Ushbu tijorat taklifi 30 kalendar kuni davomida rasmiy kuchga ega. Barcha narxlar QQS bilan keltirilgan.
           </div>
           <div class="d-flex gap-2">
             <button class="btn btn-primary-custom" onclick="downloadCommercialOfferPDF()">
-              <i class="bi bi-file-earmark-arrow-down-fill me-1"></i> PDF Yuklab Olish (A4)
+              <i class="bi bi-file-earmark-arrow-down-fill me-1"></i> <span data-i18n="doc_download_pdf">PDF Yuklab Olish (A4)</span>
             </button>
             <button class="btn btn-outline-secondary" onclick="printCommercialOffer()">
-              <i class="bi bi-printer me-1"></i> Chop etish
+              <i class="bi bi-printer me-1"></i> <span data-i18n="doc_print">Chop etish</span>
             </button>
-            <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Yopish</button>
+            <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal" data-i18n="btn_close">Yopish</button>
           </div>
         </div>
       </div>

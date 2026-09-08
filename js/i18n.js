@@ -27,7 +27,7 @@ const TRANSLATIONS = {
     "hero_title": "Laboratoriyangiz uchun <span class=\"gradient-text\">aniqlik va metrologik kafolat</span>",
     "hero_subtitle": "Davlat standart namunalari (GSO/CRM), Weiyel xalqaro CRM standartlari, titrlash eritmalari (fiksanallar), bufer kalibrlash eritmalari, areometrlar, viskozimetrlar hamda yuqori aniqlikdagi laboratoriya asboblarining to'liq katalogi.",
     "hero_catalog_btn": "Mahsulotlar Katalogi (294+ ta)",
-    "hero_offer_btn": "Tijorat Kelishuvi (PDF)",
+    "hero_offer_btn": "Tijorat Taklifi (PDF)",
     "hero_stat_1_val": "294+",
     "hero_stat_1_lbl": "Haqiqiy narxlardagi mahsulotlar",
     "hero_stat_2_val": "100%",
@@ -125,7 +125,7 @@ const TRANSLATIONS = {
     "cart_browse_btn": "Katalogga o'tish",
     "cart_total_label": "Jami to'lov miqdori:",
     "cart_checkout_btn": "Buyurtmani Rasmiylashtirish",
-    "cart_offer_btn": "Tijorat Kelishuvi (PDF)",
+    "cart_offer_btn": "Tijorat Taklifi (PDF)",
     "cart_clear_btn": "Savatni Tozalash",
 
     // Checkout Modal
@@ -149,7 +149,7 @@ const TRANSLATIONS = {
 
     // Commercial Offer Document
     "doc_header_subtitle": "Sifat, Kalibrlash va Metrologiya Markazi",
-    "doc_main_title": "TIJORAT KELISHUVI VA MAHSULOTLAR SPETSIFIKATSIYASI",
+    "doc_main_title": "TIJORAT TAKLIFI VA MAHSULOTLAR SPETSIFIKATSIYASI",
     "doc_number_label": "Hujjat raqami:",
     "doc_validity_label": "Amal qilish muddati:",
     "doc_validity_val": "30 kalendar kuni",
@@ -165,6 +165,11 @@ const TRANSLATIONS = {
     "doc_total_payment": "JAMI TO'LOV (QQS bilan):",
     "doc_download_pdf": "PDF Yuklab Olish (A4)",
     "doc_print": "Chop etish",
+    "commercial_modal_title": "Rasmiy Tijorat Taklifi va Spetsifikatsiya",
+    "commercial_modal_badge": "A4 Standart B2B Shakli",
+    "commercial_modal_validity_note": "Ushbu tijorat taklifi 30 kalendar kuni davomida rasmiy kuchga ega. Barcha narxlar QQS bilan keltirilgan.",
+    "order_success_download_offer": "Tijorat Taklifini PDF Yuklab Olish",
+    "order_success_view_offer": "Rasmiy Tijorat Taklifini Ekranda Ko'rish",
     "btn_close": "Yopish",
 
     // Footer
@@ -321,7 +326,7 @@ const TRANSLATIONS = {
 
     // Commercial Offer Document
     "doc_header_subtitle": "Центр Качества, Калибровки и Метрологии",
-    "doc_main_title": "КОММЕРЧЕСКОЕ СОГЛАШЕНИЕ И СПЕЦИФИКАЦИЯ ПРОДУКЦИИ",
+    "doc_main_title": "КОММЕРЧЕСКОЕ ПРЕДЛОЖЕНИЕ И СПЕЦИФИКАЦИЯ ПРОДУКЦИИ",
     "doc_number_label": "Номер документа:",
     "doc_validity_label": "Срок действия:",
     "doc_validity_val": "30 календарных дней",
@@ -337,6 +342,11 @@ const TRANSLATIONS = {
     "doc_total_payment": "ИТОГО К ОПЛАТЕ (с НДС):",
     "doc_download_pdf": "Скачать PDF (A4)",
     "doc_print": "Распечатать",
+    "commercial_modal_title": "Официальное Коммерческое Предложение и Спецификация",
+    "commercial_modal_badge": "Форма B2B (A4)",
+    "commercial_modal_validity_note": "Данное коммерческое предложение действительно в течение 30 календарных дней. Все цены указаны с учетом НДС.",
+    "order_success_download_offer": "Скачать Коммерческое предложение (PDF)",
+    "order_success_view_offer": "Посмотреть Коммерческое предложение",
     "btn_close": "Закрыть",
 
     // Footer

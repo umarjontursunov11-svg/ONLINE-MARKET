@@ -800,8 +800,8 @@ function processOrderSubmit(event) {
     phone: phone,
     address: address
   };
-  const offerNumber = "TT-" + new Date().getFullYear() + "/" + String(new Date().getMonth()+1).padStart(2, '0') + "-" + Math.floor(100 + Math.random() * 900);
-  const offerDate = new Date().toLocaleDateString('uz-UZ', { day: '2-digit', month: '2-digit', year: 'numeric' }) + " y.";
+  const isRu = (typeof currentLang !== 'undefined' && currentLang === 'ru');
+  const offerDate = new Date().toLocaleDateString(isRu ? 'ru-RU' : 'uz-UZ', { day: '2-digit', month: '2-digit', year: 'numeric' }) + (isRu ? " г." : " y.");
   currentOfferData = { items: offerItems, client: clientInfo, offerNumber, offerDate };
 
   const newOrder = {
@@ -1107,8 +1107,9 @@ function openCommercialOfferModal(customItems = null, customClient = null) {
     address: "O'zbekiston Respublikasi"
   };
 
+  const isRu = (typeof currentLang !== 'undefined' && currentLang === 'ru');
   const offerNumber = "TT-" + new Date().getFullYear() + "/" + String(new Date().getMonth()+1).padStart(2, '0') + "-" + Math.floor(100 + Math.random() * 900);
-  const offerDate = new Date().toLocaleDateString('uz-UZ', { day: '2-digit', month: '2-digit', year: 'numeric' }) + " y.";
+  const offerDate = new Date().toLocaleDateString(isRu ? 'ru-RU' : 'uz-UZ', { day: '2-digit', month: '2-digit', year: 'numeric' }) + (isRu ? " г." : " y.");
 
   currentOfferData = { items, client, offerNumber, offerDate };
   renderCommercialOfferHTML();
@@ -1132,7 +1133,7 @@ function renderCommercialOfferHTML() {
     ? (typeof numberToRussianWords === 'function' ? numberToRussianWords(totalSum) : numberToUzbekWords(totalSum))
     : numberToUzbekWords(totalSum);
 
-  const docTitle = isRu ? "КОММЕРЧЕСКОЕ СОГЛАШЕНИЕ И СПЕЦИФИКАЦИЯ ПРОДУКЦИИ" : "TIJORAT KELISHUVI VA MAHSULOTLAR SPETSIFIKATSIYASI";
+  const docTitle = isRu ? "КОММЕРЧЕСКОЕ ПРЕДЛОЖЕНИЕ И СПЕЦИФИКАЦИЯ ПРОДУКЦИИ" : "TIJORAT TAKLIFI VA MAHSULOTLAR SPETSIFIKATSIYASI";
   const docNumberLbl = isRu ? "Номер документа:" : "Hujjat raqami:";
   const docValidityLbl = isRu ? "Срок действия:" : "Amal qilish muddati:";
   const docValidityVal = isRu ? "30 календарных дней" : "30 kalendar kuni";
@@ -1208,10 +1209,10 @@ function renderCommercialOfferHTML() {
         <thead>
           <tr>
             <th style="width: 5%;">№</th>
-            <th style="width: 50%;">Mahsulot / Standart Namunalar Nomi</th>
-            <th style="width: 10%;">Miqdori</th>
-            <th style="width: 17%;">Narxi (so'm, QQS bilan)</th>
-            <th style="width: 18%;">Jami Summa (so'm)</th>
+            <th style="width: 50%;">${isRu ? 'Наименование продукции / Стандартных образцов' : 'Mahsulot / Standart Namunalar Nomi'}</th>
+            <th style="width: 10%;">${isRu ? 'Количество' : 'Miqdori'}</th>
+            <th style="width: 17%;">${isRu ? 'Цена (сум, с НДС)' : 'Narxi (so\'m, QQS bilan)'}</th>
+            <th style="width: 18%;">${isRu ? 'Общая сумма (сум)' : 'Jami Summa (so\'m)'}</th>
           </tr>
         </thead>
         <tbody>
@@ -1222,35 +1223,43 @@ function renderCommercialOfferHTML() {
       <!-- Total Summary -->
       <div class="doc-total-box d-flex justify-content-between align-items-center">
         <div>
-          <div class="small fw-bold text-uppercase text-secondary">Summa so'z bilan:</div>
+          <div class="small fw-bold text-uppercase text-secondary">${isRu ? 'Сумма прописью:' : 'Summa so\'z bilan:'}</div>
           <div class="doc-words-sum">${totalWords}</div>
         </div>
         <div class="text-end">
-          <span class="text-secondary small fw-bold">JAMI TO'LOV (QQS bilan):</span>
+          <span class="text-secondary small fw-bold">${isRu ? 'ИТОГО К ОПЛАТЕ (с НДС):' : 'JAMI TO\'LOV (QQS bilan):'}</span>
           <div class="doc-total-sum">${store.formatMoney(totalSum)}</div>
         </div>
       </div>
 
       <!-- Commercial Terms & Metrological Guarantee -->
       <div class="doc-terms-box">
-        <div class="doc-terms-title"><i class="bi bi-shield-check text-primary me-1"></i> YETKAZIB BERISH VA METROLOGIK KAFOLAT SHARTLARI:</div>
+        <div class="doc-terms-title"><i class="bi bi-shield-check text-primary me-1"></i> ${isRu ? 'УСЛОВИЯ ПОСТАВКИ И МЕТРОЛОГИЧЕСКАЯ ГАРАНТИЯ:' : 'YETKAZIB BERISH VA METROLOGIK KAFOLAT SHARTLARI:'}</div>
         <ol>
+          ${isRu ? `
+          <li>Все поставляемые стандартные образцы (ГСО/CRM) и буферные растворы внесены в Государственный реестр Республики Узбекистан и поставляются с официальным паспортом метрологической аттестации производителя.</li>
+          <li>Средства измерений поверены (с Государственным сертификатом поверки) и готовы к полной эксплуатации.</li>
+          <li>Срок поставки: по г. Ташкенту в течение 24 часов (бесплатно), по регионам Узбекистана — 1-3 рабочих дня в специальных термобоксах.</li>
+          <li>Условия оплаты: 15% или 100% предоплата для юридических лиц (по договору через Didox / Э-Фактура).</li>
+          <li>Гарантийный срок: на стандартные образцы 2-3 года, на измерительные приборы от 12 до 24 месяцев.</li>
+          ` : `
           <li>Barcha taqdim etilayotgan standart namunalar (GSO/CRM) va bufer eritmalari O'zbekiston Respublikasi Davlat Reestridan o'tgan hamda ishlab chiqaruvchining rasmiy metrologik attestatsiya pasporti bilan birga taqdim etiladi.</li>
           <li>O'lchov vositalari qiyoslashdan o'tkazilgan (Davlat qiyoslov sertifikati / Poverka bilan) va foydalanishga to'liq shay holatda yetkaziladi.</li>
           <li>Yetkazib berish muddati: Toshkent shahrida 24 soat ichida (bepul), O'zbekiston viloyatlariga 1-3 ish kunida termobokslarda yetkaziladi.</li>
           <li>To'lov sharti: Yuridik shaxslar uchun 15% yoki 100% oldindan to'lov (Didox / E-Faktura orqali shartnoma asosida).</li>
           <li>Kafolat muddati: Standart namunalarga 2-3 yil, o'lchov asboblariga 12 oydan 24 oygacha to'liq kafolat beriladi.</li>
+          `}
         </ol>
       </div>
 
       <!-- Signatures & Official Stamp -->
       <div class="doc-signatures-grid">
         <div class="doc-sign-box">
-          <div class="fw-bold mb-1">YETKAZIB BERUVCHI:</div>
+          <div class="fw-bold mb-1">${isRu ? 'ПОСТАВЩИК:' : 'YETKAZIB BERUVCHI:'}</div>
           <div>"STANDART VA METROLOGIYA" MCHJ</div>
-          <div>Bosh direktor: <strong>A. Saidov</strong></div>
+          <div>${isRu ? 'Генеральный директор:' : 'Bosh direktor:'} <strong>A. Saidov</strong></div>
           <div class="doc-sign-line">
-            <span>Imzo: _________________</span>
+            <span>${isRu ? 'Подпись: _________________' : 'Imzo: _________________'}</span>
           </div>
 
           <!-- Official Blue Round Seal Stamp -->
@@ -1268,12 +1277,12 @@ function renderCommercialOfferHTML() {
         </div>
 
         <div class="doc-sign-box">
-          <div class="fw-bold mb-1">BUYURTMACHI (MIJOZ):</div>
-          <div>Tashkilot: <strong>${client.company || "Xususiy buyurtmachi"}</strong></div>
-          <div>Mas'ul shaxs: <strong>${client.name}</strong></div>
+          <div class="fw-bold mb-1">${isRu ? 'ПОКУПАТЕЛЬ (КЛИЕНТ):' : 'BUYURTMACHI (MIJOZ):'}</div>
+          <div>${isRu ? 'Организация:' : 'Tashkilot:'} <strong>${client.company || (isRu ? 'Частный заказчик' : 'Xususiy buyurtmachi')}</strong></div>
+          <div>${isRu ? 'Ответственное лицо:' : 'Mas\'ul shaxs:'} <strong>${client.name}</strong></div>
           <div class="doc-sign-line">
-            <span>Imzo: _________________</span>
-            <span>M.O'.</span>
+            <span>${isRu ? 'Подпись: _________________' : 'Imzo: _________________'}</span>
+            <span>${isRu ? 'М.П.' : 'M.O\'.'}</span>
           </div>
         </div>
       </div>
@@ -1288,6 +1297,8 @@ function printCommercialOffer() {
     setTimeout(printCommercialOffer, 350);
     return;
   }
+
+  const isRu = (typeof currentLang !== 'undefined' && currentLang === 'ru');
 
   // Create or reuse hidden iframe dedicated for printing
   let printFrame = document.getElementById('commercialPrintIframe');
@@ -1310,10 +1321,10 @@ function printCommercialOffer() {
   doc.open();
   doc.write(`
     <!DOCTYPE html>
-    <html lang="uz">
+    <html lang="${isRu ? 'ru' : 'uz'}">
     <head>
       <meta charset="UTF-8">
-      <title>Tijorat Kelishuvi — STANDART VA METROLOGIYA MCHJ</title>
+      <title>${isRu ? 'Коммерческое предложение — STANDART VA METROLOGIYA MCHJ' : 'Tijorat Taklifi — STANDART VA METROLOGIYA MCHJ'}</title>
       <style>
         @page {
           size: A4 portrait;
@@ -1560,12 +1571,13 @@ function downloadCommercialOfferPDF() {
     return;
   }
 
+  const isRu = (typeof currentLang !== 'undefined' && currentLang === 'ru');
   const docNumber = (currentOfferData && currentOfferData.offerNumber)
     ? currentOfferData.offerNumber.replace(/[\/\\]/g, '_')
     : 'TT_2026';
-  const fileName = `Tijorat_Kelishuvi_${docNumber}.pdf`;
+  const fileName = isRu ? `Kommercheskoye_Predlozheniye_${docNumber}.pdf` : `Tijorat_Taklifi_${docNumber}.pdf`;
 
-  store.showToast("Rasmiy PDF hujjat tayyorlanmoqda, iltimos kuting...", "info");
+  store.showToast(isRu ? "Формируется официальный PDF документ, пожалуйста подождите..." : "Rasmiy PDF hujjat tayyorlanmoqda, iltimos kuting...", "info");
 
   const opt = {
     margin: [6, 8, 6, 8],
@@ -1577,7 +1589,7 @@ function downloadCommercialOfferPDF() {
 
   if (typeof html2pdf !== 'undefined') {
     html2pdf().set(opt).from(element).save().then(() => {
-      store.showToast("Tijorat taklifi PDF fayli muvaffaqiyatli yuklab olindi!", "success");
+      store.showToast(isRu ? "Файл коммерческого предложения PDF успешно скачан!" : "Tijorat taklifi PDF fayli muvaffaqiyatli yuklab olindi!", "success");
     }).catch(err => {
       console.warn("html2pdf fallback to dedicated print:", err);
       printCommercialOffer();
@@ -1589,22 +1601,28 @@ function downloadCommercialOfferPDF() {
 
 function sendOfferViaTelegram() {
   if (!currentOfferData) return;
+  const isRu = (typeof currentLang !== 'undefined' && currentLang === 'ru');
   const { items, client, offerNumber } = currentOfferData;
   let totalSum = items.reduce((sum, it) => sum + (it.price * it.quantity), 0);
+  const qtyUnit = isRu ? "шт" : "dona";
 
-  let text = `📄 *TIJORAT KELISHUVI SO'ROVI — ${offerNumber}*\n\n`;
-  text += `🏢 *Tashkilot:* ${client.company}\n`;
-  text += `👤 *Mas'ul shaxs:* ${client.name}\n`;
-  text += `📞 *Telefon:* ${client.phone}\n`;
-  if (client.inn) text += `🔢 *STIR:* ${client.inn}\n`;
-  text += `📍 *Manzil:* ${client.address}\n\n`;
-  text += `📦 *MAHSULOTLAR SPETSIFIKATSIYASI:*\n`;
+  let text = isRu 
+    ? `📄 *ЗАПРОС НА КОММЕРЧЕСКОЕ ПРЕДЛОЖЕНИЕ — ${offerNumber}*\n\n`
+    : `📄 *TIJORAT TAKLIFI SO'ROVI — ${offerNumber}*\n\n`;
+  text += isRu ? `🏢 *Организация:* ${client.company}\n` : `🏢 *Tashkilot:* ${client.company}\n`;
+  text += isRu ? `👤 *Ответственное лицо:* ${client.name}\n` : `👤 *Mas'ul shaxs:* ${client.name}\n`;
+  text += isRu ? `📞 *Телефон:* ${client.phone}\n` : `📞 *Telefon:* ${client.phone}\n`;
+  if (client.inn) text += isRu ? `🔢 *ИНН:* ${client.inn}\n` : `🔢 *STIR:* ${client.inn}\n`;
+  text += isRu ? `📍 *Адрес:* ${client.address}\n\n` : `📍 *Manzil:* ${client.address}\n\n`;
+  text += isRu ? `📦 *СПЕЦИФИКАЦИЯ ПРОДУКЦИИ:*\n` : `📦 *MAHSULOTLAR SPETSIFIKATSIYASI:*\n`;
   items.forEach((it, idx) => {
-    text += `${idx + 1}. ${it.title} (${it.artikul}) — ${it.quantity} dona x ${store.formatMoney(it.price)} = ${store.formatMoney(it.price * it.quantity)}\n`;
+    text += `${idx + 1}. ${it.title} (${it.artikul}) — ${it.quantity} ${qtyUnit} x ${store.formatMoney(it.price)} = ${store.formatMoney(it.price * it.quantity)}\n`;
   });
-  text += `\n💰 *JAMI SUMMA:* ${store.formatMoney(totalSum)}\n`;
-  text += `📅 *Sana:* ${currentOfferData.offerDate}\n\n`;
-  text += `Iltimos, ushbu kelishuv bo'yicha rasmiy hisob-faktura (Didox) va shartnoma yuborsangiz.`;
+  text += isRu ? `\n💰 *ОБЩАЯ СУММА:* ${store.formatMoney(totalSum)}\n` : `\n💰 *JAMI SUMMA:* ${store.formatMoney(totalSum)}\n`;
+  text += isRu ? `📅 *Дата:* ${currentOfferData.offerDate}\n\n` : `📅 *Sana:* ${currentOfferData.offerDate}\n\n`;
+  text += isRu 
+    ? `Пожалуйста, направьте официальный договор и счет-фактуру (Didox) по данному предложению.`
+    : `Iltimos, ushbu tijorat taklifi bo'yicha rasmiy hisob-faktura (Didox) va shartnoma yuborsangiz.`;
 
   const encoded = encodeURIComponent(text);
   window.open(`https://t.me/share/url?url=${encoded}`, '_blank');
