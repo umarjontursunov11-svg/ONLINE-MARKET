@@ -634,7 +634,7 @@ function showCertificateModal(artikul, title) {
 
         <div class="mt-4 pt-3 border-top d-flex justify-content-between align-items-center">
           <div class="small text-muted">
-            Bosh metrolog: <em>A. Saidov</em><br>
+            Bosh metrolog: <em>Inogamov K.T.</em><br>
             Sana: 28.08.2026
           </div>
           <div class="stamp-box text-center p-2 border border-danger text-danger rounded-circle" style="width: 85px; height: 85px; font-size: 10px; display:flex; flex-direction:column; justify-content:center;">
