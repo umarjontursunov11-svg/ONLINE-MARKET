@@ -16,8 +16,14 @@ class AdminManager {
     this.orders = this.loadOrders();
   }
 
-  init() {
-    this.checkAuth();
+  async init() {
+    const isAuthorized = await this.checkAuth();
+    if (!isAuthorized) return;
+
+    // Reveal protected body container
+    const bodyEl = document.getElementById('adminBody');
+    if (bodyEl) bodyEl.style.display = 'block';
+
     this.setupEventListeners();
     this.renderMetrics();
     this.renderProductsTable();
@@ -27,34 +33,40 @@ class AdminManager {
     this.setupTheme();
   }
 
-  // 1. AUTHENTICATION (XAVFSIZLIK)
-  checkAuth() {
+  // 1. AUTHENTICATION & ROUTE PROTECTION
+  async checkAuth() {
+    try {
+      // First check server session endpoint
+      const response = await fetch('/api/admin/verify');
+      const data = await response.json();
+
+      if (response.ok && data.authenticated) {
+        sessionStorage.setItem('sm_admin_logged', 'true');
+        return true;
+      }
+    } catch (e) {
+      console.warn("Backend session check unavailable, checking session flag:", e);
+    }
+
+    // Secondary session storage check
     const isAuth = sessionStorage.getItem('sm_admin_logged');
-    const authModalEl = document.getElementById('adminAuthModal');
-    if (!isAuth && authModalEl) {
-      const modal = new bootstrap.Modal(authModalEl, { backdrop: 'static', keyboard: false });
-      modal.show();
-    }
-  }
-
-  handleLogin(password) {
-    // Admin paroli
-    if (password === 'U20020604u') {
-      sessionStorage.setItem('sm_admin_logged', 'true');
-      const authModalEl = document.getElementById('adminAuthModal');
-      const modal = bootstrap.Modal.getInstance(authModalEl);
-      if (modal) modal.hide();
-      this.showToast("Admin panelga muvaffaqiyatli kirdingiz!", "success");
+    if (isAuth === 'true') {
       return true;
-    } else {
-      this.showToast("Parol noto'g'ri! Iltimos qaytadan urinib ko'ring.", "danger");
-      return false;
     }
+
+    // Unauthenticated - redirect immediately to standalone login page
+    window.location.href = '/admin/login';
+    return false;
   }
 
-  logout() {
+  async logout() {
+    try {
+      await fetch('/api/admin/logout', { method: 'POST' });
+    } catch (e) {
+      console.error("Logout API error:", e);
+    }
     sessionStorage.removeItem('sm_admin_logged');
-    window.location.reload();
+    window.location.href = '/admin/login';
   }
 
   // 2. BUYURTMALARNI YUKLASH VA TAYYORLASH

@@ -1,0 +1,14 @@
+{
+  "name": "online-market-admin-backend",
+  "version": "1.0.0",
+  "description": "STANDART VA METROLOGIYA MCHJ Online Market Admin Security Backend",
+  "main": "api/admin/login.js",
+  "scripts": {
+    "start": "node api/server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie": "^0.6.0",
+    "jsonwebtoken": "^9.0.2"
+  }
+}
