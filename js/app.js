@@ -652,9 +652,19 @@ function showCertificateModal(artikul, title) {
 
 // 5. CHECKOUT & COMMERCIAL OFFER
 function openCheckoutModal() {
-  if (store.cart.length === 0) {
-    store.showToast("Savat bo'sh! Avval mahsulot tanlang.", "warning");
+  const isRu = (typeof currentLang !== 'undefined' && currentLang === 'ru');
+  if (!store.cart || store.cart.length === 0) {
+    store.showToast(isRu ? "Корзина пуста! Выберите товары в каталоге." : "Savat bo'sh! Avval mahsulot tanlang.", "warning");
     return;
+  }
+
+  // Close offcanvas drawer cleanly if open
+  const offcanvasEl = document.getElementById('cartOffcanvas');
+  if (offcanvasEl && typeof bootstrap !== 'undefined') {
+    const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasEl);
+    if (offcanvasInstance) {
+      offcanvasInstance.hide();
+    }
   }
 
   const { totalPriceFormatted, totalCount } = store.getCartTotals();
@@ -663,19 +673,24 @@ function openCheckoutModal() {
     summaryEl.innerHTML = `
       <div class="p-3 bg-light rounded-3 border mb-3">
         <div class="d-flex justify-content-between mb-2">
-          <span class="text-muted">Mahsulotlar soni:</span>
-          <strong>${totalCount} dona</strong>
+          <span class="text-muted">${isRu ? 'Количество товаров:' : 'Mahsulotlar soni:'}</span>
+          <strong>${totalCount} ${isRu ? 'шт' : 'dona'}</strong>
         </div>
         <div class="d-flex justify-content-between">
-          <span class="text-muted">Jami to'lov:</span>
+          <span class="text-muted">${isRu ? 'Итого к оплате:' : 'Jami to\'lov:'}</span>
           <strong class="text-primary fs-5">${totalPriceFormatted}</strong>
         </div>
       </div>
     `;
   }
 
-  const modal = new bootstrap.Modal(document.getElementById('checkoutModal'));
-  modal.show();
+  const modalEl = document.getElementById('checkoutModal');
+  if (modalEl && typeof bootstrap !== 'undefined') {
+    setTimeout(() => {
+      const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+      modal.show();
+    }, 150);
+  }
 }
 
 // ============================================================================
@@ -762,7 +777,14 @@ function formatOrderForTelegramHTML(order) {
 }
 
 function processOrderSubmit(event) {
-  event.preventDefault();
+  if (event && event.preventDefault) event.preventDefault();
+
+  const isRu = (typeof currentLang !== 'undefined' && currentLang === 'ru');
+
+  if (!store.cart || store.cart.length === 0) {
+    store.showToast(isRu ? "Корзина пуста! Выберите товары в каталоге." : "Savat bo'sh! Avval mahsulot tanlang.", "warning");
+    return;
+  }
 
   const customerType = document.querySelector('input[name="clientType"]:checked')?.value || 'Jismoniy shaxs';
   const fullName = document.getElementById('orderFullName')?.value || '';
@@ -775,8 +797,13 @@ function processOrderSubmit(event) {
 
   const { totalPriceFormatted, totalCount } = store.getCartTotals();
 
+  // Generate unique order and commercial offer number
+  const offerNumber = "TT-" + new Date().getFullYear() + "/" + String(new Date().getMonth() + 1).padStart(2, '0') + "-" + Math.floor(100 + Math.random() * 900);
+  const offerDate = new Date().toLocaleDateString(isRu ? 'ru-RU' : 'uz-UZ', { day: '2-digit', month: '2-digit', year: 'numeric' }) + (isRu ? " г." : " y.");
+
   // Create message for Telegram
   let orderText = `🛒 *YANGI BUYURTMA — STANDART VA METROLOGIYA MCHJ*\n\n`;
+  orderText += `📋 *Buyurtma №:* ${offerNumber}\n`;
   orderText += `👤 *Mijoz:* ${fullName}\n`;
   orderText += `📞 *Telefon:* ${phone}\n`;
   orderText += `🏢 *Turi:* ${customerType}\n`;
@@ -792,7 +819,7 @@ function processOrderSubmit(event) {
   });
 
   orderText += `\n💰 *JAMI SUMMA:* ${totalPriceFormatted}\n`;
-  orderText += `📅 *Sana:* ${new Date().toLocaleDateString('uz-UZ')}`;
+  orderText += `📅 *Sana:* ${offerDate}`;
 
   const offerItems = [...store.cart];
   const clientInfo = {
@@ -802,8 +829,7 @@ function processOrderSubmit(event) {
     phone: phone,
     address: address
   };
-  const isRu = (typeof currentLang !== 'undefined' && currentLang === 'ru');
-  const offerDate = new Date().toLocaleDateString(isRu ? 'ru-RU' : 'uz-UZ', { day: '2-digit', month: '2-digit', year: 'numeric' }) + (isRu ? " г." : " y.");
+
   currentOfferData = { items: offerItems, client: clientInfo, offerNumber, offerDate };
 
   const newOrder = {
@@ -830,20 +856,32 @@ function processOrderSubmit(event) {
   }
 
   // Telegram guruhga (-1003964640399) to'g'ridan-to'g'ri xabar yuborish
-  const orderTgHtml = formatOrderForTelegramHTML(newOrder);
-  sendTelegramNotification(orderTgHtml);
+  try {
+    const orderTgHtml = formatOrderForTelegramHTML(newOrder);
+    sendTelegramNotification(orderTgHtml);
+  } catch (e) {
+    console.warn("Telegram notification error:", e);
+  }
 
-  // Close Checkout Modal
-  const checkoutModalEl = document.getElementById('checkoutModal');
-  const modal = bootstrap.Modal.getInstance(checkoutModalEl);
-  if (modal) modal.hide();
+  // Close Checkout Modal cleanly
+  try {
+    const checkoutModalEl = document.getElementById('checkoutModal');
+    if (checkoutModalEl && typeof bootstrap !== 'undefined') {
+      const modal = bootstrap.Modal.getOrCreateInstance(checkoutModalEl);
+      modal.hide();
+    }
+  } catch (e) {
+    console.warn("Could not hide modal:", e);
+  }
 
   // Reset checkout form fields so values don't linger in DOM
   const checkoutForm = document.getElementById('orderForm');
   if (checkoutForm) checkoutForm.reset();
 
-  // Show Success Modal with direct Telegram link & printable commercial offer
-  showOrderSuccessModal(orderText, fullName, phone, company);
+  // Show Success Modal with direct Telegram link & printable commercial offer with smooth transition
+  setTimeout(() => {
+    showOrderSuccessModal(orderText, fullName, phone, company);
+  }, 200);
   
   // Clear cart
   store.clearCart();
@@ -877,6 +915,7 @@ async function handleContactSubmit(event) {
 
 function showOrderSuccessModal(orderText, name, phone, company) {
   const modalEl = document.getElementById('orderSuccessModal');
+  if (!modalEl) return;
   const msgContainer = document.getElementById('orderSuccessDetails');
   const tgBtn = document.getElementById('btnSendTelegram');
 
@@ -898,8 +937,10 @@ function showOrderSuccessModal(orderText, name, phone, company) {
     `;
   }
 
-  const successModal = new bootstrap.Modal(modalEl);
-  successModal.show();
+  if (typeof bootstrap !== 'undefined') {
+    const successModal = bootstrap.Modal.getOrCreateInstance(modalEl);
+    successModal.show();
+  }
 }
 
 // 6. EVENT LISTENERS SETUP
@@ -1063,6 +1104,15 @@ function generateSingleProductOffer(productId) {
 }
 
 function openCommercialOfferModal(customItems = null, customClient = null) {
+  // Close offcanvas drawer cleanly if open
+  const offcanvasEl = document.getElementById('cartOffcanvas');
+  if (offcanvasEl && typeof bootstrap !== 'undefined') {
+    const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasEl);
+    if (offcanvasInstance) {
+      offcanvasInstance.hide();
+    }
+  }
+
   // Barcha boshqa modallarni yopish (ayniqsa checkoutModal va orderSuccessModal)
   ['checkoutModal', 'orderSuccessModal', 'productDetailModal', 'quickViewModal', 'compareModal', 'authModal', 'b2bModal'].forEach(id => {
     const el = document.getElementById(id);
