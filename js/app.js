@@ -726,6 +726,8 @@ async function sendTelegramNotification(text) {
   }
 }
 
+window.sendTelegramOrder = sendTelegramNotification;
+
 function formatOrderForTelegramHTML(order) {
   let msg = `🛒 <b>YANGI BUYURTMA — STANDART VA METROLOGIYA</b>\n`;
   msg += `━━━━━━━━━━━━━━━━━━━━━━\n`;
@@ -1171,7 +1173,7 @@ function renderCommercialOfferHTML() {
           <div><strong>${isRu ? 'Адрес:' : 'Manzil:'}</strong> ${isRu ? 'г. Ташкент, Сергелийский район, Узумзор 16-тупик, 18' : 'Toshkent sh., Sergeli tumani, Uzumzor 16-tor ko\'cha 18-uy'}</div>
           <div><strong>Тел:</strong> +998 (90) 939-71-83 | +998 (55) 503-47-15</div>
           <div><strong>Email:</strong> standartmetrolog@bk.ru | <strong>${isRu ? 'Сайт:' : 'Sayt:'}</strong> gsouz.uz</div>
-          <div><strong>${isRu ? 'ИНН:' : 'STIR (INN):'}</strong> 305 918 247 | <strong>${isRu ? 'МФО:' : 'MFO:'}</strong> 00440 | <strong>${isRu ? 'Р/с:' : 'H/r:'}</strong> 2020 8000 9005 1234 5001</div>
+          <div><strong>${isRu ? 'ИНН:' : 'STIR (INN):'}</strong> 308 097 539 | <strong>${isRu ? 'ОКЭД:' : 'IFUT (OKED):'}</strong> 71200 | <strong>${isRu ? 'МФО:' : 'MFO:'}</strong> 01071 | <strong>${isRu ? 'Р/с:' : 'H/r:'}</strong> 2020 8000 5053 2963 3001</div>
         </div>
       </div>
 
@@ -1190,8 +1192,8 @@ function renderCommercialOfferHTML() {
         <div>
           <div class="party-box-title">${supplierTitle}</div>
           <div><strong>"STANDART VA METROLOGIYA" MCHJ</strong></div>
-          <div>${isRu ? 'Директор:' : 'Direktor:'} Saidov A.M.</div>
-          <div>${isRu ? 'Банк:' : 'Bank:'} ATIB "Ipoteka-bank" Toshkent filiali</div>
+          <div>${isRu ? 'Директор:' : 'Direktor:'} Inogamov K.T.</div>
+          <div>${isRu ? 'Банк:' : 'Bank:'} ТОШКЕНТ Ш., "ОРИЕНТ ФИНАНС" ХАТ БАНКИ</div>
           <div>${isRu ? 'Счет-фактура:' : 'Hisob-faktura:'} Didox / E-Faktura</div>
         </div>
         <div>
@@ -1257,22 +1259,10 @@ function renderCommercialOfferHTML() {
         <div class="doc-sign-box">
           <div class="fw-bold mb-1">${isRu ? 'ПОСТАВЩИК:' : 'YETKAZIB BERUVCHI:'}</div>
           <div>"STANDART VA METROLOGIYA" MCHJ</div>
-          <div>${isRu ? 'Генеральный директор:' : 'Bosh direktor:'} <strong>A. Saidov</strong></div>
+          <div>${isRu ? 'Генеральный директор:' : 'Bosh direktor:'} <strong>Inogamov K.T.</strong></div>
           <div class="doc-sign-line">
             <span>${isRu ? 'Подпись: _________________' : 'Imzo: _________________'}</span>
-          </div>
-
-          <!-- Official Blue Round Seal Stamp -->
-          <div class="doc-stamp-container">
-            <div class="doc-blue-seal">
-              <span>* O'ZBEKISTON RESPUBLIKASI *</span>
-              <span class="seal-star">★ ★ ★</span>
-              <span style="font-size: 8px;">"STANDART VA METROLOGIYA"</span>
-              <span style="font-weight: 800; text-decoration: underline;">MCHJ</span>
-              <span>SIFAT NAZORATI</span>
-              <span class="seal-star">★ ★ ★</span>
-              <span style="font-size: 7.5px;">TOSHKENT SH. * STIR 305918247</span>
-            </div>
+            <img src="assets/images/director_signature.png" alt="Imzo" class="doc-director-signature-img" />
           </div>
         </div>
 
@@ -1534,6 +1524,7 @@ function printCommercialOffer() {
           margin: 1px 0;
         }
         .doc-sign-line {
+          position: relative;
           margin-top: 25px;
           border-bottom: 1px solid #334155;
           width: 85%;
@@ -1541,6 +1532,51 @@ function printCommercialOffer() {
           justify-content: space-between;
           font-size: 8.5px;
           color: #64748b;
+        }
+        .doc-director-signature-img {
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          bottom: -6px;
+          height: 48px;
+          width: auto;
+          pointer-events: none;
+        }
+        .doc-eimzo-qr-container {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          margin-top: 10px;
+          padding: 4px 8px;
+          background: #f8fafc;
+          border: 1px solid #cbd5e1;
+          border-left: 3px solid #0284c7;
+          border-radius: 4px;
+          width: fit-content;
+        }
+        .doc-eimzo-qr-code {
+          width: 44px;
+          height: 44px;
+          border-radius: 3px;
+          border: 1px solid #e2e8f0;
+          background: #ffffff;
+          padding: 2px;
+        }
+        .doc-eimzo-qr-text {
+          font-size: 6.5px;
+          line-height: 1.25;
+          color: #334155;
+        }
+        .doc-eimzo-title {
+          font-weight: 800;
+          color: #0369a1;
+          font-size: 7px;
+          margin-bottom: 1px;
+        }
+        .doc-eimzo-ok {
+          color: #16a34a;
+          font-weight: 800;
+          margin-top: 1px;
         }
         .text-center { text-align: center; }
         .text-end { text-align: right; }
@@ -1626,5 +1662,236 @@ function sendOfferViaTelegram() {
 
   const encoded = encodeURIComponent(text);
   window.open(`https://t.me/share/url?url=${encoded}`, '_blank');
+}
+
+// ============================================================================
+// 19. METROLOGIYA: DAVLAT QIYOSLOVI (POVERKA) VA KALIBRLASH MODULI
+// ============================================================================
+
+function openMetrologyModal(serviceType = 'poverka') {
+  const modalEl = document.getElementById('metrologyModal');
+  if (!modalEl) return;
+
+  const selectEl = document.getElementById('metroServiceType');
+  if (selectEl) {
+    if (serviceType === 'poverka' || serviceType === 'kalibrlash' || serviceType === 'both' || serviceType === 'attestation') {
+      selectEl.value = serviceType;
+    } else {
+      selectEl.value = 'poverka';
+    }
+  }
+
+  // Hide success box and show form
+  const successBox = document.getElementById('metrologySuccessBox');
+  const form = document.getElementById('metrologyForm');
+  if (successBox) successBox.classList.add('d-none');
+  if (form) form.classList.remove('d-none');
+
+  // Pre-fill client info from previous order if available
+  try {
+    const orders = JSON.parse(localStorage.getItem('sm_orders') || '[]');
+    if (orders.length > 0 && orders[0].customer) {
+      const c = orders[0].customer;
+      const nameInput = document.getElementById('metroClientName');
+      const compInput = document.getElementById('metroClientCompany');
+      const phoneInput = document.getElementById('metroClientPhone');
+      const innInput = document.getElementById('metroClientINN');
+      if (nameInput && !nameInput.value && c.name) nameInput.value = c.name;
+      if (compInput && !compInput.value && c.company && c.company !== 'Jismoniy Shaxs') compInput.value = c.company;
+      if (phoneInput && !phoneInput.value && c.phone) phoneInput.value = c.phone;
+      if (innInput && !innInput.value && c.inn) innInput.value = c.inn;
+    }
+  } catch (e) {}
+
+  if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+    const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+    modal.show();
+  }
+}
+
+function resetMetrologyForm() {
+  const form = document.getElementById('metrologyForm');
+  const successBox = document.getElementById('metrologySuccessBox');
+  if (form) {
+    form.reset();
+    form.classList.remove('d-none');
+  }
+  if (successBox) {
+    successBox.classList.add('d-none');
+  }
+}
+
+async function handleMetrologySubmit(event) {
+  if (event && event.preventDefault) event.preventDefault();
+
+  const isRu = (typeof currentLang !== 'undefined' && currentLang === 'ru');
+  const submitBtn = document.getElementById('metroSubmitBtn');
+  const originalBtnHtml = submitBtn ? submitBtn.innerHTML : '';
+
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> ${isRu ? 'Отправка заявки...' : 'Yuborilmoqda...'}`;
+  }
+
+  try {
+    const reqId = "POV-" + Date.now().toString().slice(-6);
+    const serviceType = document.getElementById('metroServiceType')?.value || 'poverka';
+    
+    const serviceLabels = {
+      poverka: isRu ? "Госповерка (Поверка)" : "Davlat qiyoslovi (Poverka)",
+      kalibrlash: isRu ? "Калибровка приборов (ISO 17025)" : "Kalibrlash xizmati (ISO 17025)",
+      both: isRu ? "Поверка + Калибровка" : "Qiyoslash va Kalibrlash",
+      attestation: isRu ? "Метрологическая аттестация" : "Metrologik attestatsiya"
+    };
+    const serviceLabel = serviceLabels[serviceType] || serviceType;
+
+    const deviceQty = document.getElementById('metroDeviceQty')?.value || '1';
+    const deviceName = document.getElementById('metroDeviceName')?.value?.trim() || '';
+    const deviceModel = document.getElementById('metroDeviceModel')?.value?.trim() || '';
+    const deviceSerial = document.getElementById('metroDeviceSerial')?.value?.trim() || '';
+    const deviceManufacturer = document.getElementById('metroDeviceManufacturer')?.value?.trim() || '';
+    const deviceRange = document.getElementById('metroDeviceRange')?.value?.trim() || '';
+
+    const clientName = document.getElementById('metroClientName')?.value?.trim() || '';
+    const clientCompany = document.getElementById('metroClientCompany')?.value?.trim() || '';
+    const clientPhone = document.getElementById('metroClientPhone')?.value?.trim() || '';
+    const clientINN = document.getElementById('metroClientINN')?.value?.trim() || '';
+    const servicePlace = document.getElementById('metroServicePlace')?.value || 'lab';
+    const clientAddress = document.getElementById('metroClientAddress')?.value?.trim() || '';
+    const notes = document.getElementById('metroNotes')?.value?.trim() || '';
+
+    const servicePlaceText = servicePlace === 'lab'
+      ? (isRu ? "Привезем приборы в лабораторию" : "Laboratoriyaga olib kelamiz")
+      : (servicePlace === 'onsite'
+        ? (isRu ? "Выездная поверка / на объекте заказчика" : "Sayyor xizmat (obyektga borish)")
+        : (isRu ? "Курьерской доставкой" : "Yetkazib berish xizmati orqali"));
+
+    // Build Telegram Notification Message
+    let tgMsg = `🔬 <b>YANGI ARIZA: DAVLAT QIYOSLOVI / KALIBRLASH</b>\n`;
+    tgMsg += `━━━━━━━━━━━━━━━━━━━━━━\n`;
+    tgMsg += `📋 <b>Ariza raqami:</b> <code>#${reqId}</code>\n`;
+    tgMsg += `⚙️ <b>Xizmat turi:</b> <b>${escapeTgHtml(serviceLabel)}</b>\n`;
+    tgMsg += `📐 <b>O'lchov vositasi:</b> <b>${escapeTgHtml(deviceName)}</b>\n`;
+    if (deviceModel) tgMsg += `🏷 <b>Model / Marka:</b> <code>${escapeTgHtml(deviceModel)}</code>\n`;
+    if (deviceSerial) tgMsg += `🔢 <b>Zavod №:</b> <code>${escapeTgHtml(deviceSerial)}</code>\n`;
+    if (deviceManufacturer) tgMsg += `🏭 <b>Ishlab chiqaruvchi:</b> ${escapeTgHtml(deviceManufacturer)}\n`;
+    tgMsg += `📦 <b>Miqdori:</b> ${deviceQty} dona\n`;
+    if (deviceRange) tgMsg += `📊 <b>Diapazon / Aniqlik:</b> ${escapeTgHtml(deviceRange)}\n`;
+
+    tgMsg += `━━━━━━━━━━━━━━━━━━━━━━\n`;
+    tgMsg += `🏢 <b>BUYURTMACHI MA'LUMOTLARI:</b>\n`;
+    tgMsg += `🏢 <b>Korxona:</b> <b>${escapeTgHtml(clientCompany)}</b>\n`;
+    tgMsg += `👤 <b>Mas'ul shaxs:</b> ${escapeTgHtml(clientName)}\n`;
+    tgMsg += `📞 <b>Telefon:</b> <code>${escapeTgHtml(clientPhone)}</code>\n`;
+    if (clientINN) tgMsg += `🔢 <b>STIR (INN):</b> <code>${escapeTgHtml(clientINN)}</code>\n`;
+    if (clientAddress) tgMsg += `📍 <b>Manzil:</b> ${escapeTgHtml(clientAddress)}\n`;
+    tgMsg += `🚚 <b>Format:</b> ${escapeTgHtml(servicePlaceText)}\n`;
+    if (notes) tgMsg += `📝 <b>Izoh:</b> <i>${escapeTgHtml(notes)}</i>\n`;
+    tgMsg += `📅 <b>Sana:</b> ${new Date().toLocaleString('uz-UZ')}\n`;
+
+    // Send to Telegram (with error catching so it never blocks)
+    try {
+      if (typeof sendTelegramNotification === 'function') {
+        await sendTelegramNotification(tgMsg);
+      }
+    } catch (tgErr) {
+      console.warn("Telegram notification error:", tgErr);
+    }
+
+    // Save to localStorage orders and metrology requests
+    try {
+      const metrologyOrder = {
+        id: reqId,
+        date: new Date().toISOString(),
+        dateFormatted: new Date().toLocaleDateString(isRu ? 'ru-RU' : 'uz-UZ') + ' y.',
+        customer: {
+          name: clientName,
+          company: clientCompany,
+          inn: clientINN,
+          phone: clientPhone,
+          address: clientAddress
+        },
+        customerType: isRu ? `Поверка / Калибровка` : `Davlat qiyoslovi / Kalibrlash`,
+        items: [
+          {
+            title: `${serviceLabel}: ${deviceName}${deviceModel ? ' (' + deviceModel + ')' : ''}`,
+            price: 0,
+            quantity: parseInt(deviceQty) || 1
+          }
+        ],
+        totalSum: 0,
+        totalSumFormatted: isRu ? "По договору" : "Shartnoma asosida",
+        payType: "Hisob-raqam / Didox",
+        status: "Yangi",
+        details: {
+          serviceType,
+          deviceSerial,
+          deviceManufacturer,
+          deviceRange,
+          servicePlaceText,
+          notes
+        }
+      };
+
+      const orders = JSON.parse(localStorage.getItem('sm_orders') || '[]');
+      orders.unshift(metrologyOrder);
+      localStorage.setItem('sm_orders', JSON.stringify(orders));
+
+      const metroList = JSON.parse(localStorage.getItem('sm_metrology_requests') || '[]');
+      metroList.unshift(metrologyOrder);
+      localStorage.setItem('sm_metrology_requests', JSON.stringify(metroList));
+    } catch (err) {
+      console.warn("Could not save metrology order to localStorage:", err);
+    }
+
+    // Show Success Box inside modal
+    const form = document.getElementById('metrologyForm');
+    const successBox = document.getElementById('metrologySuccessBox');
+    const reqIdEl = document.getElementById('metrologySuccessReqId');
+    const detailsEl = document.getElementById('metrologySuccessDetails');
+
+    if (reqIdEl) reqIdEl.textContent = `#${reqId}`;
+    if (detailsEl) {
+      detailsEl.innerHTML = `
+        <div class="row g-2 small">
+          <div class="col-6 text-muted">${isRu ? 'Вид услуги:' : 'Xizmat turi:'}</div>
+          <div class="col-6 fw-bold text-end text-primary">${serviceLabel}</div>
+          <div class="col-6 text-muted">${isRu ? 'Прибор:' : 'O\'lchov vositasi:'}</div>
+          <div class="col-6 fw-bold text-end">${deviceName} ${deviceModel ? `(${deviceModel})` : ''}</div>
+          <div class="col-6 text-muted">${isRu ? 'Количество:' : 'Miqdori:'}</div>
+          <div class="col-6 fw-bold text-end">${deviceQty} ${isRu ? 'шт.' : 'dona'}</div>
+          <div class="col-6 text-muted">${isRu ? 'Организация:' : 'Korxona:'}</div>
+          <div class="col-6 fw-bold text-end">${clientCompany}</div>
+          <div class="col-6 text-muted">${isRu ? 'Контакт:' : 'Aloqa:'}</div>
+          <div class="col-6 fw-bold text-end">${clientPhone}</div>
+        </div>
+      `;
+    }
+
+    const tgLinkBtn = document.getElementById('metroSuccessTgLink');
+    if (tgLinkBtn) {
+      const shareText = isRu
+        ? `🔬 ЗАЯВКА НА ПОВЕРКУ / КАЛИБРОВКУ #${reqId}\nУслуга: ${serviceLabel}\nПрибор: ${deviceName} ${deviceModel}\nКол-во: ${deviceQty} шт.\nОрганизация: ${clientCompany}\nКонтакт: ${clientName} (${clientPhone})`
+        : `🔬 QIYOSLOV / KALIBRLASH ARIZASI #${reqId}\nXizmat: ${serviceLabel}\nAsbob: ${deviceName} ${deviceModel}\nMiqdor: ${deviceQty} dona\nKorxona: ${clientCompany}\nAloqa: ${clientName} (${clientPhone})`;
+      tgLinkBtn.href = `https://t.me/share/url?url=${encodeURIComponent(shareText)}`;
+    }
+
+    if (form) form.classList.add('d-none');
+    if (successBox) successBox.classList.remove('d-none');
+
+    if (typeof store !== 'undefined' && typeof store.showToast === 'function') {
+      store.showToast(
+        isRu ? `Заявка #${reqId} успешно принята!` : `Arizangiz #${reqId} muvaffaqiyatli qabul qilindi!`,
+        "success"
+      );
+    }
+  } catch (globalErr) {
+    console.error("Metrology submit error:", globalErr);
+  } finally {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalBtnHtml;
+    }
+  }
 }
 

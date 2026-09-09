@@ -6,6 +6,14 @@
 
 const COMPANY_INFO = {
   name: '"STANDART VA METROLOGIYA" MCHJ',
+  inn: "308097539",
+  innFormatted: "308 097 539",
+  oked: "71200",
+  account: "20208000505329633001",
+  accountFormatted: "2020 8000 5053 2963 3001",
+  bank: 'ТОШКЕНТ Ш., "ОРИЕНТ ФИНАНС" ХАТ БАНКИ',
+  bankUz: 'Toshkent sh., "ORIENT FINANCE" XAT banki',
+  mfo: "01071",
   address: "г. Ташкент, Сергелийский район, Узумзор 16-туп 18 Дом (Sergeli tumani, Uzumzor 16-tor ko'cha 18-uy)",
   phones: [
     "+998 90 939-71-83",

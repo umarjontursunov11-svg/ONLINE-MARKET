@@ -6,7 +6,11 @@
 
 class B2BEFakturaManager {
   constructor() {
-    this.companySTIR = "305918247"; // STANDART VA METROLOGIYA MCHJ
+    this.companySTIR = "308097539"; // STANDART VA METROLOGIYA MCHJ
+    this.companyOked = "71200";
+    this.companyAccount = "20208000505329633001";
+    this.companyBank = 'ТОШКЕНТ Ш., "ОРИЕНТ ФИНАНС" ХАТ БАНКИ';
+    this.companyMFO = "01071";
     this.apiProvider = "didox"; // 'didox' or 'soliq'
     this.apiToken = localStorage.getItem("sm_didox_token") || "";
     this.didoxApiUrl = "https://api.didox.uz/v1";
@@ -81,10 +85,12 @@ class B2BEFakturaManager {
       Seller: {
         Name: '"STANDART VA METROLOGIYA" MCHJ',
         Tin: sellerSTIR,
+        Oked: "71200",
         Address: "Toshkent sh., Sergeli tumani, Uzumzor 16-tor ko'cha 18-uy",
-        Account: "20208000900512345001",
-        BankId: "00440",
-        VatRegCode: "305918247012",
+        Account: "20208000505329633001",
+        BankId: "01071",
+        BankName: 'ТОШКЕНТ Ш., "ОРИЕНТ ФИНАНС" ХАТ БАНКИ',
+        VatRegCode: "308097539012",
         Phone: "+998909397183"
       },
       Buyer: {
@@ -309,7 +315,7 @@ function renderB2BModalContent(offer) {
               </div>
               <div class="d-flex justify-content-between small">
                 <span class="text-muted">Yetkazib beruvchi STIR:</span>
-                <span class="fw-bold">305 918 247 ("STANDART VA METROLOGIYA" MCHJ)</span>
+                <span class="fw-bold">308 097 539 ("STANDART VA METROLOGIYA" MCHJ)</span>
               </div>
             </div>
           </div>

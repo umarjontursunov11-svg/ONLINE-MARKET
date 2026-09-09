@@ -314,26 +314,40 @@
 
       <div class="row g-4">
         <div class="col-md-6 col-lg-3">
-          <div class="service-card">
-            <div class="service-icon-box">
-              <i class="bi bi-patch-check"></i>
+          <div class="service-card h-100 d-flex flex-column justify-content-between cursor-pointer" onclick="openMetrologyModal('poverka')" style="cursor: pointer;">
+            <div>
+              <div class="service-icon-box">
+                <i class="bi bi-patch-check"></i>
+              </div>
+              <h3 class="service-title" data-i18n="svc_1_title">Davlat Qiyoslovi (Poverka)</h3>
+              <p class="service-desc" data-i18n="svc_1_desc">
+                O'lchov vositalarini O'zbekiston Davlat Reestri talablariga asosan qiyoslashdan o'tkazish va rasmiy sertifikat taqdim etish.
+              </p>
             </div>
-            <h3 class="service-title" data-i18n="svc_1_title">Davlat Qiyoslovi (Poverka)</h3>
-            <p class="service-desc" data-i18n="svc_1_desc">
-              O'lchov vositalarini O'zbekiston Davlat Reestri talablariga asosan qiyoslashdan o'tkazish va rasmiy sertifikat taqdim etish.
-            </p>
+            <div class="mt-3">
+              <button type="button" class="btn btn-sm btn-primary-custom w-100" onclick="event.stopPropagation(); openMetrologyModal('poverka')">
+                <i class="bi bi-patch-check-fill me-1"></i> <span data-i18n="svc_poverka_btn">Arizani to'ldirish</span>
+              </button>
+            </div>
           </div>
         </div>
 
         <div class="col-md-6 col-lg-3">
-          <div class="service-card">
-            <div class="service-icon-box">
-              <i class="bi bi-sliders2-vertical"></i>
+          <div class="service-card h-100 d-flex flex-column justify-content-between cursor-pointer" onclick="openMetrologyModal('kalibrlash')" style="cursor: pointer;">
+            <div>
+              <div class="service-icon-box">
+                <i class="bi bi-sliders2-vertical"></i>
+              </div>
+              <h3 class="service-title" data-i18n="svc_2_title">Kalibrlash Xizmati</h3>
+              <p class="service-desc" data-i18n="svc_2_desc">
+                ISO/IEC 17025 standartiga muvofiq laboratoriya tarozilari, pH-metrlar, spektrofotometrlar va manometrlarni kalibrlash.
+              </p>
             </div>
-            <h3 class="service-title" data-i18n="svc_2_title">Kalibrlash Xizmati</h3>
-            <p class="service-desc" data-i18n="svc_2_desc">
-              ISO/IEC 17025 standartiga muvofiq laboratoriya tarozilari, pH-metrlar, spektrofotometrlar va manometrlarni kalibrlash.
-            </p>
+            <div class="mt-3">
+              <button type="button" class="btn btn-sm btn-outline-primary w-100" onclick="event.stopPropagation(); openMetrologyModal('kalibrlash')">
+                <i class="bi bi-sliders2-vertical me-1"></i> <span data-i18n="svc_kalibrlash_btn">Kalibrlash arizasi</span>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -596,8 +610,8 @@
         <div class="col-6 col-lg-3">
           <h4 class="footer-title" data-i18n="footer_services_title">Xizmatlar</h4>
           <ul class="footer-links">
-            <li><a href="#xizmatlar">Davlat qiyoslovi (Poverka)</a></li>
-            <li><a href="#xizmatlar">Asboblarni kalibrlash</a></li>
+            <li><a href="javascript:void(0)" onclick="openMetrologyModal('poverka')">Davlat qiyoslovi (Poverka)</a></li>
+            <li><a href="javascript:void(0)" onclick="openMetrologyModal('kalibrlash')">Asboblarni kalibrlash</a></li>
             <li><a href="#xizmatlar">Metrologik pasport berish</a></li>
             <li><a href="#xizmatlar">Tijorat taklifi (B2B)</a></li>
           </ul>
@@ -964,6 +978,182 @@
           <button type="button" class="btn btn-primary-custom" onclick="downloadDidoxPackageAction()">
             <i class="bi bi-download me-1"></i> Didox Paketini Yuklab Olish
           </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       18. METROLOGY POVERKA & KALIBRLASH APPLICATION MODAL
+       ========================================================================== -->
+  <div class="modal fade" id="metrologyModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content modal-content-custom">
+        <div class="modal-header border-bottom">
+          <div class="d-flex align-items-center gap-2">
+            <div class="rounded-circle bg-primary-subtle text-primary p-2 d-flex align-items-center justify-content-center" style="width: 42px; height: 42px;">
+              <i class="bi bi-speedometer2 fs-4"></i>
+            </div>
+            <div>
+              <h5 class="modal-title fw-bold text-dark mb-0" id="metrologyModalTitle" data-i18n="metrology_modal_title">Davlat Qiyoslovi va Kalibrlash Buyurtmasi</h5>
+              <div class="text-muted small" data-i18n="metrology_modal_subtitle">O'lchov vositalarini davlat reestri va ISO 17025 talablariga muvofiq qiyoslash yoki kalibrlash</div>
+            </div>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body p-3 p-md-4">
+          <!-- Success Notification Container (hidden by default) -->
+          <div id="metrologySuccessBox" class="text-center py-4 d-none">
+            <div class="mb-3 text-success">
+              <i class="bi bi-check-circle-fill" style="font-size: 3.5rem;"></i>
+            </div>
+            <h4 class="fw-bold text-dark mb-2" data-i18n="metrology_success_title">Arizangiz muvaffaqiyatli qabul qilindi!</h4>
+            <div class="badge bg-primary-subtle text-primary fs-6 px-3 py-2 mb-3" id="metrologySuccessReqId">#POV-2026-001</div>
+            <p class="text-muted max-w-500 mx-auto mb-4" data-i18n="metrology_success_desc">
+              Tez orada metrologiya bo'limi mutaxassislari siz bilan bog'lanishadi va shartnoma hamda to'lov ma'lumotlarini taqdim etishadi.
+            </p>
+            <div class="card bg-light border-0 p-3 text-start mb-4 mx-auto" style="max-width: 500px;" id="metrologySuccessDetails">
+              <!-- Populated by JS -->
+            </div>
+            <div class="d-flex justify-content-center flex-wrap gap-2">
+              <a href="https://t.me/standartgso_uz" target="_blank" class="btn btn-outline-primary px-3" id="metroSuccessTgLink">
+                <i class="bi bi-telegram me-1"></i> Telegram orqali yuborish
+              </a>
+              <button type="button" class="btn btn-primary-custom px-4" data-bs-dismiss="modal">Tushunarli</button>
+              <button type="button" class="btn btn-outline-secondary px-3" onclick="resetMetrologyForm()">Yangi ariza</button>
+            </div>
+          </div>
+
+          <!-- The Metrology Request Form -->
+          <form id="metrologyForm" onsubmit="handleMetrologySubmit(event)">
+            <!-- Informational Banner -->
+            <div class="alert alert-primary d-flex align-items-center gap-2 py-2 px-3 mb-4 rounded-3 border-0 bg-primary-subtle text-primary">
+              <i class="bi bi-info-circle-fill fs-5 flex-shrink-0"></i>
+              <div class="small" data-i18n="metrology_info_banner">
+                O'lchov vositasi va tashkilot ma'lumotlarini to'ldiring. Mutaxassislarimiz arizangizni ko'rib chiqib, tijorat taklifi va shartnomani tayyorlab berishadi.
+              </div>
+            </div>
+
+            <!-- SECTION 1: O'LCHOV VOSITASI MA'LUMOTLARI -->
+            <div class="mb-4">
+              <h6 class="fw-bold text-primary text-uppercase small d-flex align-items-center gap-2 mb-3 border-bottom pb-2">
+                <i class="bi bi-tools"></i> <span data-i18n="metrology_sec_device">1. O'lchov vositasi (asbob) ma'lumotlari</span>
+              </h6>
+
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold" data-i18n="metrology_service_type">Xizmat turi *</label>
+                  <select id="metroServiceType" class="form-select" required>
+                    <option value="poverka">Davlat qiyoslovi (Госповерка / Poverka)</option>
+                    <option value="kalibrlash">Kalibrlash (Калибровка / ISO 17025)</option>
+                    <option value="both">Qiyoslash va Kalibrlash (Поверка + Калибровка)</option>
+                    <option value="attestation">Metrologik attestatsiya (Аттестация)</option>
+                  </select>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold" data-i18n="metrology_device_qty">Miqdori (dona) *</label>
+                  <input type="number" id="metroDeviceQty" class="form-control" value="1" min="1" max="1000" required />
+                </div>
+
+                <div class="col-md-7">
+                  <label class="form-label small fw-semibold" data-i18n="metrology_device_name">O'lchov vositasi nomi va turi *</label>
+                  <input type="text" id="metroDeviceName" class="form-control" list="instrumentsDatalist" placeholder="Masalan: Laboratoriya tarozisi, pH-metr, Manometr..." required />
+                  <datalist id="instrumentsDatalist">
+                    <option value="Laboratoriya tarozisi (Аналитические весы)"></option>
+                    <option value="pH-metr / Ionometr"></option>
+                    <option value="Texnik / Namunaviy manometr"></option>
+                    <option value="Spektrofotometr / Fotokolorimetr"></option>
+                    <option value="Shisha suyuqlikli termometr"></option>
+                    <option value="Areometr (АОН, АНТ, АСП)"></option>
+                    <option value="Viskozimetr (ВПЖ)"></option>
+                    <option value="Elektr o'tkazuvchanlik o'lchagich (Konduktometr)"></option>
+                    <option value="Gaz analizatori"></option>
+                    <option value="Refraktometr"></option>
+                    <option value="Shtangensirkul / Mikrometr"></option>
+                    <option value="Gigrometr / Psixrometr (VIT)"></option>
+                  </datalist>
+                </div>
+
+                <div class="col-md-5">
+                  <label class="form-label small fw-semibold" data-i18n="metrology_device_model">Modeli / Tipi / Markasi</label>
+                  <input type="text" id="metroDeviceModel" class="form-control" placeholder="Masalan: OHAUS PX224, Эксперт-001..." />
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold" data-i18n="metrology_device_serial">Zavod (seriya) raqami</label>
+                  <input type="text" id="metroDeviceSerial" class="form-control" placeholder="Masalan: № SN-2024-8841" />
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold" data-i18n="metrology_device_manufacturer">Ishlab chiqaruvchi korxona va yili</label>
+                  <input type="text" id="metroDeviceManufacturer" class="form-control" placeholder="Masalan: OHAUS Corp, 2023-yil" />
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label small fw-semibold" data-i18n="metrology_device_range">O'lchash diapazoni va aniqlik sinfi (ixtiyoriy)</label>
+                  <input type="text" id="metroDeviceRange" class="form-control" placeholder="Masalan: 0-220 g (aniqlik: 0.1 mg) yoki 0-16 bar (sinf: 1.0)" />
+                </div>
+              </div>
+            </div>
+
+            <!-- SECTION 2: MIJOZ VA KORXONA MA'LUMOTLARI -->
+            <div class="mb-4">
+              <h6 class="fw-bold text-primary text-uppercase small d-flex align-items-center gap-2 mb-3 border-bottom pb-2">
+                <i class="bi bi-building"></i> <span data-i18n="metrology_sec_client">2. Mijoz va Korxona ma'lumotlari</span>
+              </h6>
+
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold" data-i18n="metrology_client_name">Ism va familiya (F.I.Sh) *</label>
+                  <input type="text" id="metroClientName" class="form-control" placeholder="Masalan: Rustam Aliyev" required />
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold" data-i18n="metrology_client_company">Korxona / Tashkilot nomi *</label>
+                  <input type="text" id="metroClientCompany" class="form-control" placeholder="Masalan: 'O'zbekneftgaz' AJ yoki MCHJ" required />
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold" data-i18n="metrology_client_phone">Telefon raqami *</label>
+                  <input type="tel" id="metroClientPhone" class="form-control" placeholder="+998 (90) 123-45-67" required />
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold" data-i18n="metrology_client_inn">STIR (INN) raqami</label>
+                  <input type="text" id="metroClientINN" class="form-control" placeholder="9 xonali STIR (masalan: 308097539)" maxlength="9" />
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold" data-i18n="metrology_service_place">Xizmat ko'rsatish usuli</label>
+                  <select id="metroServicePlace" class="form-select">
+                    <option value="lab">Asboblarni laboratoriyaga olib kelamiz</option>
+                    <option value="onsite">Sayyor xizmat (Mutaxassisni obyektga chaqirish)</option>
+                    <option value="courier">Yetkazib berish / Kuriyer orqali yuborish</option>
+                  </select>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold">Manzil (Shahar / Tuman)</label>
+                  <input type="text" id="metroClientAddress" class="form-control" placeholder="Masalan: Toshkent sh., Chilonzor tumani..." />
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label small fw-semibold" data-i18n="metrology_notes">Qo'shimcha talab yoki izoh</label>
+                  <textarea id="metroNotes" class="form-control" rows="2" placeholder="Qo'shimcha talablar, sertifikat tili yoki shoshilinchlik haqida izoh..."></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- SUBMIT BUTTON -->
+            <div class="d-flex justify-content-end gap-2 pt-2 border-top">
+              <button type="button" class="btn btn-outline-secondary px-3" data-bs-dismiss="modal">Bekor qilish</button>
+              <button type="submit" class="btn btn-primary-custom px-4 py-2 fw-semibold" id="metroSubmitBtn">
+                <i class="bi bi-send-fill me-1"></i> <span data-i18n="metrology_btn_submit">Arizani Yuborish</span>
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

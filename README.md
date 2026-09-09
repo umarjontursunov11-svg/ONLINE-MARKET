@@ -127,7 +127,11 @@ git push -u origin main
 
 - **Korxona**: "STANDART VA METROLOGIYA" MCHJ
 - **Manzil**: Toshkent sh., Sergeli tumani, Uzumzor 16-tor ko'cha 18-uy
-- **STIR (INN)**: 305 918 247
+- **STIR (INN)**: 308 097 539
+- **IFUT (OKED)**: 71200
+- **Hisob raqami (H/r)**: 20208000505329633001
+- **Bank**: TOShKENT Sh., "ORIENT FINANS" XAT BANKI
+- **MFO**: 01071
 - **Telefonlar**: +998 (90) 939-71-83 | +998 (93) 870-78-77 | +998 (55) 503-47-15
 - **Telegram**: [@standartgso_uz](https://t.me/standartgso_uz)
 - **Elektron pochta**: standartmetrolog@bk.ru
