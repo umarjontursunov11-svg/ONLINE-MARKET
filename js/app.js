@@ -1665,22 +1665,35 @@ function downloadCommercialOfferPDF() {
 
   store.showToast(isRu ? "Формируется официальный PDF документ, пожалуйста подождите..." : "Rasmiy PDF hujjat tayyorlanmoqda, iltimos kuting...", "info");
 
+  element.classList.add('pdf-rendering-active');
+
   const opt = {
     margin: [6, 8, 6, 8],
     filename: fileName,
     image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2, useCORS: true, letterRendering: true, logging: false },
-    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    html2canvas: { 
+      scale: 2, 
+      useCORS: true, 
+      letterRendering: true, 
+      logging: false,
+      scrollY: 0,
+      scrollX: 0
+    },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+    pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
   };
 
   if (typeof html2pdf !== 'undefined') {
     html2pdf().set(opt).from(element).save().then(() => {
+      element.classList.remove('pdf-rendering-active');
       store.showToast(isRu ? "Файл коммерческого предложения PDF успешно скачан!" : "Tijorat taklifi PDF fayli muvaffaqiyatli yuklab olindi!", "success");
     }).catch(err => {
+      element.classList.remove('pdf-rendering-active');
       console.warn("html2pdf fallback to dedicated print:", err);
       printCommercialOffer();
     });
   } else {
+    element.classList.remove('pdf-rendering-active');
     printCommercialOffer();
   }
 }
