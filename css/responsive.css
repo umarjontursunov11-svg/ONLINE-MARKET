@@ -1,19 +1,84 @@
 /* ==========================================================================
-   RESPONSIVE LAYOUT & MEDIA QUERIES
+   RESPONSIVE LAYOUT & MOBILE PHONE OPTIMIZATION
    ========================================================================== */
 
+/* Prevent horizontal scroll jitter on mobile devices */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* -------------------------------------------------------------
+   MOBILE BOTTOM NAVIGATION BAR (Smartphones & Tablets < 992px)
+   ------------------------------------------------------------- */
+.mobile-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 62px;
+  background: var(--bg-surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid var(--border-color);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 1040;
+  padding: 0 4px;
+}
+
+.mobile-nav-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-size: 0.68rem;
+  font-weight: 600;
+  gap: 2px;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+  background: transparent;
+  border: none;
+  flex: 1;
+  max-width: 72px;
+}
+
+.mobile-nav-link i {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.mobile-nav-link:hover,
+.mobile-nav-link:focus,
+.mobile-nav-link.active {
+  color: var(--primary);
+}
+
+.mobile-nav-link.active i {
+  transform: scale(1.12);
+}
+
+/* -------------------------------------------------------------
+   TABLET BREAKPOINT (< 992px)
+   ------------------------------------------------------------- */
 @media (max-width: 991.98px) {
+  body {
+    padding-bottom: 66px !important;
+  }
+
   .hero-title {
-    font-size: 2.2rem;
+    font-size: 2.1rem;
+    line-height: 1.25;
   }
 
   .hero-banner-img {
-    height: 300px;
-    margin-top: 30px;
-  }
-
-  .catalog-nav-section {
-    top: 60px;
+    height: 280px;
+    margin-top: 25px;
   }
 
   .cart-drawer {
@@ -21,40 +86,76 @@
   }
 }
 
+/* -------------------------------------------------------------
+   MOBILE PHONE BREAKPOINT (< 768px)
+   ------------------------------------------------------------- */
 @media (max-width: 767.98px) {
-  .hero-section {
-    padding: 40px 0 50px;
-  }
-
-  .hero-title {
-    font-size: 1.85rem;
-  }
-
-  .hero-subtitle {
-    font-size: 0.98rem;
-  }
-
-  .hero-stats-grid {
-    grid-template-columns: 1fr;
-    gap: 15px;
+  /* 1. TOP BAR: Compact quick-call bar */
+  .top-bar {
+    padding: 6px 0;
+    font-size: 0.78rem;
   }
 
   .top-bar-contacts {
     display: none !important;
   }
 
-  .brand-title {
-    font-size: 1rem;
+  .top-bar .text-white-50 {
+    display: none;
   }
 
-  .brand-subtitle {
-    font-size: 0.65rem;
+  .top-bar a[href*="instagram"],
+  .top-bar a[href*="telegram"],
+  .top-bar a[href="admin.html"],
+  .top-bar .lang-switcher {
+    display: none !important;
+  }
+
+  .top-bar .ms-auto {
+    width: 100%;
+    justify-content: center;
+    margin: 0 auto;
+  }
+
+  /* 2. NAVBAR: Streamlined logo and actions */
+  .site-navbar {
+    padding: 8px 0;
+  }
+
+  .brand-logo-frame {
+    width: 40px;
+    height: 40px;
+    padding: 2px;
+    border-radius: 8px;
+  }
+
+  .brand-title {
+    font-size: 0.98rem;
+    line-height: 1.15;
+  }
+
+  .brand-slogan-bar {
+    display: none !important;
+  }
+
+  .lang-switcher {
+    padding: 2px;
+  }
+
+  .lang-btn {
+    padding: 3px 6px;
+    font-size: 0.72rem;
   }
 
   .header-action-btn {
-    width: 36px;
-    height: 36px;
-    font-size: 1rem;
+    width: 35px;
+    height: 35px;
+    font-size: 0.95rem;
+  }
+
+  /* Compare button hidden on phone header to avoid clutter */
+  .header-action-btn[data-bs-target="#compareModal"] {
+    display: none !important;
   }
 
   .cart-header-btn span.cart-text {
@@ -62,22 +163,279 @@
   }
 
   .cart-header-btn {
+    padding: 6px 10px;
+    font-size: 0.9rem;
+  }
+
+  /* 3. HERO SECTION */
+  .hero-section {
+    padding: 24px 0 32px;
+  }
+
+  .hero-pill {
+    font-size: 0.76rem;
+    padding: 5px 12px;
+    margin-bottom: 12px;
+  }
+
+  .hero-title {
+    font-size: 1.6rem;
+    line-height: 1.25;
+    margin-bottom: 12px;
+  }
+
+  .hero-subtitle {
+    font-size: 0.88rem;
+    line-height: 1.45;
+    margin-bottom: 20px;
+  }
+
+  .hero-section .d-flex.flex-wrap.gap-3 {
+    flex-direction: column;
+    gap: 10px !important;
+  }
+
+  .hero-section .d-flex.flex-wrap.gap-3 .btn {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 0.92rem;
+    justify-content: center;
+  }
+
+  .hero-stats-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 6px !important;
+    margin-top: 24px;
+  }
+
+  .hero-stat-item {
+    padding: 10px 4px !important;
+    text-align: center;
+    border-radius: 8px;
+  }
+
+  .hero-stat-item h4 {
+    font-size: 1.2rem;
+    margin-bottom: 2px;
+  }
+
+  .hero-stat-item p {
+    font-size: 0.65rem;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .hero-banner-img {
+    height: 200px;
+    margin-top: 20px;
+    border-radius: 12px;
+  }
+
+  .hero-banner-badge {
     padding: 8px 12px;
+    bottom: 8px;
+    left: 8px;
+    right: 8px;
+  }
+
+  .hero-badge-icon {
+    width: 34px;
+    height: 34px;
+    font-size: 1rem;
+  }
+
+  /* 4. CATALOG & FILTERS */
+  .catalog-nav-section {
+    position: relative !important;
+    top: 0 !important;
+    padding: 14px 0;
+  }
+
+  .category-pills-row {
+    padding-bottom: 8px;
+    gap: 8px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .category-pills-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cat-pill {
+    padding: 7px 14px;
+    font-size: 0.78rem;
+  }
+
+  .search-wrapper {
+    margin-bottom: 4px;
+  }
+
+  .search-input-field {
+    padding-left: 36px;
+    font-size: 0.88rem;
+    height: 42px;
+  }
+
+  /* 5. PRODUCT CARDS */
+  .product-card-img {
+    height: 170px !important;
+  }
+
+  .product-card-body {
+    padding: 12px 14px 14px;
+  }
+
+  .product-title {
+    font-size: 0.95rem;
+    line-height: 1.3;
+    min-height: auto;
+    margin-bottom: 6px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .product-short-desc {
+    font-size: 0.78rem;
+    line-height: 1.35;
+    margin-bottom: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-specs-box {
+    margin-bottom: 8px;
+    padding: 6px 8px;
+  }
+
+  .spec-micro-row {
+    font-size: 0.72rem;
+  }
+
+  .product-card-footer {
+    padding-top: 10px;
+  }
+
+  .price-val {
+    font-size: 1.05rem;
+  }
+
+  .btn-add-cart {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+  }
+
+  /* 6. MODALS & FORMS (Prevent iOS Safari auto-zoom) */
+  input[type="text"],
+  input[type="number"],
+  input[type="tel"],
+  input[type="email"],
+  input[type="password"],
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+
+  .modal-dialog {
+    margin: 8px auto;
+    max-width: calc(100% - 16px);
   }
 
   .modal-product-img {
-    height: 200px;
+    height: 180px;
+    object-fit: contain;
   }
 
+  /* Commercial Offer in modal on mobile: smooth touch horizontal scroller */
+  #commercialOfferDocContainer {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 10px;
+  }
+
+  #commercialOfferDocContainer .commercial-doc-sheet {
+    min-width: 620px;
+  }
+
+  /* 7. TOASTS */
   .custom-toast {
-    min-width: 90vw;
+    min-width: calc(100vw - 24px);
     margin: 0 auto;
   }
 
   .toast-container-custom {
     left: 12px;
     right: 12px;
-    bottom: 12px;
+    bottom: 74px; /* Above mobile bottom nav */
+  }
+}
+
+/* -------------------------------------------------------------
+   SMARTPHONE PORTRAIT BREAKPOINT (< 576px)
+   ------------------------------------------------------------- */
+@media (max-width: 575.98px) {
+  .container-fluid.px-lg-5 {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  section.py-5 {
+    padding-top: 1.85rem !important;
+    padding-bottom: 1.85rem !important;
+  }
+
+  .category-showcase-card {
+    padding: 14px;
+  }
+
+  .cat-icon-bubble {
+    width: 42px;
+    height: 42px;
+    font-size: 1.25rem;
+  }
+
+  .service-card {
+    padding: 18px 16px;
+  }
+
+  .stat-highlight-box {
+    padding: 16px 14px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+}
+
+/* -------------------------------------------------------------
+   SMALL PHONE BREAKPOINT (< 400px, iPhone SE & compact devices)
+   ------------------------------------------------------------- */
+@media (max-width: 400px) {
+  .brand-title {
+    font-size: 0.88rem;
+  }
+
+  .brand-logo-frame {
+    width: 36px;
+    height: 36px;
+  }
+
+  .hero-title {
+    font-size: 1.45rem;
+  }
+
+  .hero-stat-item h4 {
+    font-size: 1.05rem;
+  }
+
+  .hero-stat-item p {
+    font-size: 0.6rem;
   }
 }
 

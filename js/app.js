@@ -1010,6 +1010,16 @@ function setupEventListeners() {
   if (orderForm) {
     orderForm.addEventListener('submit', processOrderSubmit);
   }
+
+  // Mobile bottom navigation active state toggle
+  document.querySelectorAll('.mobile-nav-link').forEach(link => {
+    link.addEventListener('click', function() {
+      if (this.getAttribute('data-bs-toggle') !== 'offcanvas') {
+        document.querySelectorAll('.mobile-nav-link').forEach(l => l.classList.remove('active'));
+        this.classList.add('active');
+      }
+    });
+  });
 }
 
 // 7. THEME TOGGLE (DARK / LIGHT)
