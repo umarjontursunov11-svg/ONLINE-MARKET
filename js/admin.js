@@ -55,7 +55,7 @@ class AdminManager {
     }
 
     // Unauthenticated - redirect immediately to standalone login page
-    window.location.href = '/admin/login';
+    window.location.href = '/login';
     return false;
   }
 
@@ -66,7 +66,7 @@ class AdminManager {
       console.error("Logout API error:", e);
     }
     sessionStorage.removeItem('sm_admin_logged');
-    window.location.href = '/admin/login';
+    window.location.href = '/login';
   }
 
   // 2. BUYURTMALARNI YUKLASH VA TAYYORLASH
