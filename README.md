@@ -33,7 +33,7 @@ O'zbekiston Respublikasi bo'ylab kimyo, farmatsevtika, neft-gaz, oziq-ovqat va s
    - Buyurtmani rasmiylashtirganda barcha ma'lumotlarni shakllantirib, menejer Telegramiga 1 bosishda jo'natish.
 
 6. **Admin Panel & Ombor Tahlili (admin.html)**:
-   - **Parol bilan himoyalangan boshqaruv tizimi** (Standart parol: `admin2026`).
+   - **Parol bilan himoyalangan boshqaruv tizimi**.
    - **Mahsulotlar CRUD**: Istalgan mahsulot narxi, nomi, tavsifini tahrirlash, yangi qo'shish va o'chirish.
    - **Rasm yangilash**: Kompyuterdan rasm yuklash (File Upload) yoki URL kiritish orqali to'g'ridan-to'g'ri yangilash va jonli ko'rish.
    - **Ombor tahlili**: Jami zaxira summasi (so'm), kam qolgan yoki tugagan tovarlar monitoringi, kategoriyalar bo'yicha taqsimot.

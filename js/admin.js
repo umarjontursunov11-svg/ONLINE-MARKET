@@ -38,8 +38,8 @@ class AdminManager {
   }
 
   handleLogin(password) {
-    // Standart admin paroli: admin2026 yoki standart
-    if (password === 'admin2026' || password === 'admin' || password === '1234') {
+    // Admin paroli
+    if (password === 'U20020604u') {
       sessionStorage.setItem('sm_admin_logged', 'true');
       const authModalEl = document.getElementById('adminAuthModal');
       const modal = bootstrap.Modal.getInstance(authModalEl);
