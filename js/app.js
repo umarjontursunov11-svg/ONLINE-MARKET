@@ -1161,15 +1161,41 @@ function openCommercialOfferModal(customItems = null, customClient = null) {
     return;
   }
 
-  const client = customClient || {
-    name: "Buyurtmachi",
-    company: "Tashkilot / Korxona",
-    inn: "—",
-    phone: "—",
-    address: "O'zbekiston Respublikasi"
-  };
+  // Check if client details were passed, or present in checkout form, or saved in localStorage
+  let savedClient = null;
+  try {
+    savedClient = JSON.parse(localStorage.getItem('sm_b2b_client') || 'null');
+  } catch (e) {}
+
+  const orderCompanyVal = document.getElementById('orderCompany')?.value?.trim();
+  const orderNameVal = document.getElementById('orderFullName')?.value?.trim();
+  const orderInnVal = document.getElementById('orderINN')?.value?.trim();
+  const orderPhoneVal = document.getElementById('orderPhone')?.value?.trim();
+  const orderAddressVal = document.getElementById('orderAddress')?.value?.trim();
 
   const isRu = (typeof currentLang !== 'undefined' && currentLang === 'ru');
+
+  const client = customClient || {
+    company: orderCompanyVal || (savedClient?.company) || (isRu ? "Организация / Заказчик" : "Tashkilot / Korxona"),
+    name: orderNameVal || (savedClient?.name) || (isRu ? "Представитель заказчика" : "Buyurtmachi"),
+    inn: orderInnVal || (savedClient?.inn) || "—",
+    phone: orderPhoneVal || (savedClient?.phone) || "—",
+    address: orderAddressVal || (savedClient?.address) || "O'zbekiston Respublikasi"
+  };
+
+  // Populate interactive form inputs in the modal
+  const inputCompany = document.getElementById('commClientCompany');
+  const inputName = document.getElementById('commClientName');
+  const inputInn = document.getElementById('commClientInn');
+  const inputPhone = document.getElementById('commClientPhone');
+  const inputAddress = document.getElementById('commClientAddress');
+
+  if (inputCompany) inputCompany.value = (client.company && !client.company.includes("Tashkilot") && !client.company.includes("Организация")) ? client.company : (orderCompanyVal || savedClient?.company || '');
+  if (inputName) inputName.value = (client.name && client.name !== "Buyurtmachi" && !client.name.includes("Представитель")) ? client.name : (orderNameVal || savedClient?.name || '');
+  if (inputInn) inputInn.value = (client.inn && client.inn !== "—") ? client.inn : (orderInnVal || savedClient?.inn || '');
+  if (inputPhone) inputPhone.value = (client.phone && client.phone !== "—") ? client.phone : (orderPhoneVal || savedClient?.phone || '');
+  if (inputAddress) inputAddress.value = (client.address && client.address !== "O'zbekiston Respublikasi") ? client.address : (orderAddressVal || savedClient?.address || '');
+
   const offerNumber = "TT-" + new Date().getFullYear() + "/" + String(new Date().getMonth()+1).padStart(2, '0') + "-" + Math.floor(100 + Math.random() * 900);
   const offerDate = new Date().toLocaleDateString(isRu ? 'ru-RU' : 'uz-UZ', { day: '2-digit', month: '2-digit', year: 'numeric' }) + (isRu ? " г." : " y.");
 
@@ -1181,6 +1207,30 @@ function openCommercialOfferModal(customItems = null, customClient = null) {
     const modal = new bootstrap.Modal(modalEl);
     modal.show();
   }
+}
+
+function handleCommercialClientChange() {
+  if (!currentOfferData) return;
+  const isRu = (typeof currentLang !== 'undefined' && currentLang === 'ru');
+  const company = document.getElementById('commClientCompany')?.value?.trim() || '';
+  const name = document.getElementById('commClientName')?.value?.trim() || '';
+  const inn = document.getElementById('commClientInn')?.value?.trim() || '';
+  const phone = document.getElementById('commClientPhone')?.value?.trim() || '';
+  const address = document.getElementById('commClientAddress')?.value?.trim() || '';
+
+  currentOfferData.client = {
+    company: company || (isRu ? 'Организация / Заказчик' : 'Tashkilot / Korxona'),
+    name: name || (isRu ? 'Представитель заказчика' : 'Buyurtmachi'),
+    inn: inn || '—',
+    phone: phone || '—',
+    address: address || "O'zbekiston Respublikasi"
+  };
+
+  try {
+    localStorage.setItem('sm_b2b_client', JSON.stringify({ company, name, inn, phone, address }));
+  } catch (e) {}
+
+  renderCommercialOfferHTML();
 }
 
 function renderCommercialOfferHTML() {
