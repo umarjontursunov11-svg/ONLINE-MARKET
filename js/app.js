@@ -1299,17 +1299,13 @@ function renderCommercialOfferHTML() {
         <div class="doc-terms-title"><i class="bi bi-shield-check text-primary me-1"></i> ${isRu ? 'УСЛОВИЯ ПОСТАВКИ И МЕТРОЛОГИЧЕСКАЯ ГАРАНТИЯ:' : 'YETKAZIB BERISH VA METROLOGIK KAFOLAT SHARTLARI:'}</div>
         <ol>
           ${isRu ? `
-          <li>Все поставляемые стандартные образцы (ГСО/CRM) и буферные растворы внесены в Государственный реестр Республики Узбекистан и поставляются с официальным паспортом метрологической аттестации производителя.</li>
           <li>Средства измерений поверены (с Государственным сертификатом поверки) и готовы к полной эксплуатации.</li>
-          <li>Срок поставки: по г. Ташкенту в течение 24 часов (бесплатно), по регионам Узбекистана — 1-3 рабочих дня в специальных термобоксах.</li>
-          <li>Условия оплаты: 15% или 100% предоплата для юридических лиц (по договору через Didox / Э-Фактура).</li>
-          <li>Гарантийный срок: на стандартные образцы 2-3 года, на измерительные приборы от 12 до 24 месяцев.</li>
+          <li>Срок поставки: по г. Ташкенту в течение 3-5 рабочих дней, по регионам Узбекистана — 5-7 рабочих дней.</li>
+          <li>Гарантийный срок: официальный гарантийный срок, установленный производителем.</li>
           ` : `
-          <li>Barcha taqdim etilayotgan standart namunalar (GSO/CRM) va bufer eritmalari O'zbekiston Respublikasi Davlat Reestridan o'tgan hamda ishlab chiqaruvchining rasmiy metrologik attestatsiya pasporti bilan birga taqdim etiladi.</li>
           <li>O'lchov vositalari qiyoslashdan o'tkazilgan (Davlat qiyoslov sertifikati / Poverka bilan) va foydalanishga to'liq shay holatda yetkaziladi.</li>
-          <li>Yetkazib berish muddati: Toshkent shahrida 24 soat ichida (bepul), O'zbekiston viloyatlariga 1-3 ish kunida termobokslarda yetkaziladi.</li>
-          <li>To'lov sharti: Yuridik shaxslar uchun 15% yoki 100% oldindan to'lov (Didox / E-Faktura orqali shartnoma asosida).</li>
-          <li>Kafolat muddati: Standart namunalarga 2-3 yil, o'lchov asboblariga 12 oydan 24 oygacha to'liq kafolat beriladi.</li>
+          <li>Yetkazib berish muddati: Toshkent shahrida 3-5 ish kunida, O'zbekiston viloyatlariga 5-7 ish kunida yetkaziladi.</li>
+          <li>Kafolat muddati: Ishlab chiqaruvchi tomonidan berilgan rasmiy kafolat muddati amal qiladi.</li>
           `}
         </ol>
       </div>
