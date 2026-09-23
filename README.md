@@ -105,7 +105,7 @@ So'ng brauzerda `http://localhost:8000` manziliga kiring.
 Parol va maxfiy kalitlar kodda saqlanmaydi — faqat muhit o'zgaruvchilari (environment variables) orqali beriladi.
 
 - **Lokal (`python server.py`)**: `.env.example` faylini `.env` nomi bilan nusxalang va `ADMIN_PASSWORD`, `ADMIN_JWT_SECRET` qiymatlarini kiriting. `.env` gitga yuklanmaydi.
-- **Vercel**: `node scripts/hash-password.js "<yangi parol>"` buyrug'i chiqargan `ADMIN_PASSWORD_HASH` va `ADMIN_JWT_SECRET` qiymatlarini Vercel → Settings → Environment Variables bo'limiga qo'shing (hamda kerak bo'lsa `ADMIN_USERNAME`).
+- **Vercel**: `python scripts/hash-password.py` (yoki `node scripts/hash-password.js "<yangi parol>"`) buyrug'i chiqargan `ADMIN_PASSWORD_HASH` va `ADMIN_JWT_SECRET` qiymatlarini Vercel → Settings → Environment Variables bo'limiga qo'shing (hamda kerak bo'lsa `ADMIN_USERNAME`).
 
 Ushbu o'zgaruvchilar o'rnatilmasa, admin login xavfsizlik uchun o'chirilgan holatda bo'ladi.
 
