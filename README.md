@@ -120,6 +120,14 @@ Parol va maxfiy kalitlar kodda saqlanmaydi — faqat muhit o'zgaruvchilari (envi
 
 Ushbu o'zgaruvchilar o'rnatilmasa, admin login xavfsizlik uchun o'chirilgan holatda bo'ladi.
 
+### 📨 Telegram guruhga buyurtma xabarnomalari
+
+Buyurtma va murojaatlar `/api/telegram/notify` server funksiyasi orqali guruhga yuboriladi — bot tokeni brauzer kodida saqlanmaydi.
+
+- **Vercel**: `TELEGRAM_BOT_TOKEN` (@BotFather'dan) va `TELEGRAM_CHAT_ID` (masalan `-1003964640399`) o'zgaruvchilarini qo'shing, so'ng Redeploy qiling.
+- **Lokal**: xuddi shu qiymatlarni `.env` fayliga yozing.
+- Bot guruhga a'zo bo'lishi va xabar yozish ruxsatiga ega bo'lishi kerak. Admin panel → "Guruhga Test Xabar Yuborish" tugmasi bilan tekshiring.
+
 ---
 
 ## 🌐 GitHub-ga Yuklash Qo'llanmasi

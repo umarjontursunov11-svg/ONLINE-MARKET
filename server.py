@@ -2,6 +2,8 @@ import http.server
 import socketserver
 import json
 import urllib.parse
+import urllib.request
+import urllib.error
 import os
 import time
 import hmac
@@ -37,6 +39,14 @@ LOCKOUT_SECONDS = 15 * 60
 ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "admin").lower()
 # Plain password for local development only; set it in .env (see .env.example)
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
+
+# Telegram group notifications (token stays on the server, see .env.example)
+TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
+TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "").strip()
+MAX_TG_TEXT_LENGTH = 4000
+MAX_TG_MESSAGES = 10
+TG_WINDOW_SECONDS = 10 * 60
+tg_send_counts = {}
 
 def generate_token(username):
     payload = f"{username}:{int(time.time())}"
@@ -167,6 +177,10 @@ class LocalAppHandler(http.server.SimpleHTTPRequestHandler):
                 self.wfile.write(json.dumps(res).encode('utf-8'))
             return
 
+        if path == '/api/telegram/notify':
+            self.handle_telegram_notify(body, client_ip, now)
+            return
+
         if path == '/api/admin/logout':
             self.send_response(200)
             self.send_header('Content-Type', 'application/json')
@@ -178,6 +192,74 @@ class LocalAppHandler(http.server.SimpleHTTPRequestHandler):
 
         self.send_response(404)
         self.end_headers()
+
+    def send_json(self, status, data):
+        self.send_response(status)
+        self.send_header('Content-Type', 'application/json')
+        self.end_headers()
+        self.wfile.write(json.dumps(data).encode('utf-8'))
+
+    def is_admin(self):
+        cookie_header = self.headers.get('Cookie')
+        if not cookie_header:
+            return False
+        C = cookies.SimpleCookie()
+        C.load(cookie_header)
+        return 'admin_token' in C and bool(verify_token(C['admin_token'].value))
+
+    def handle_telegram_notify(self, body, client_ip, now):
+        if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
+            self.send_json(503, {"success": False, "message": "Telegram integratsiyasi sozlanmagan."})
+            return
+
+        if body.get('test'):
+            if not self.is_admin():
+                self.send_json(401, {"success": False, "message": "Avtorizatsiyadan o'tilmagan."})
+                return
+            text = ("🧪 <b>TEST XABARI — STANDART VA METROLOGIYA TIZIMI</b>\n"
+                    "━━━━━━━━━━━━━━━━━━━━━━\n"
+                    "✅ Saytdagi buyurtmalar integratsiyasi ishlayapti!\n"
+                    f"📅 <b>Vaqt:</b> {time.strftime('%d.%m.%Y %H:%M')}")
+        else:
+            text = body.get('text')
+            text = text.strip() if isinstance(text, str) else ''
+            if not text or len(text) > MAX_TG_TEXT_LENGTH:
+                self.send_json(400, {"success": False, "message": "Xabar matni noto'g'ri."})
+                return
+
+            info = tg_send_counts.get(client_ip, {"count": 0, "resetAt": now + TG_WINDOW_SECONDS})
+            if info["resetAt"] < now:
+                info = {"count": 0, "resetAt": now + TG_WINDOW_SECONDS}
+            if info["count"] >= MAX_TG_MESSAGES:
+                self.send_json(429, {"success": False, "message": "Juda ko'p so'rov. Birozdan so'ng qayta urinib ko'ring."})
+                return
+            info["count"] += 1
+            tg_send_counts[client_ip] = info
+
+        payload = json.dumps({
+            "chat_id": TELEGRAM_CHAT_ID,
+            "text": text,
+            "parse_mode": "HTML",
+            "disable_web_page_preview": True,
+        }).encode('utf-8')
+        req = urllib.request.Request(
+            f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage",
+            data=payload, headers={'Content-Type': 'application/json'})
+        try:
+            with urllib.request.urlopen(req, timeout=15) as resp:
+                data = json.loads(resp.read().decode('utf-8'))
+        except urllib.error.HTTPError as e:
+            data = json.loads(e.read().decode('utf-8') or '{}')
+        except Exception as e:
+            print(f"Telegram request failed: {e}")
+            self.send_json(502, {"success": False, "message": "Telegram serveriga ulanib bo'lmadi."})
+            return
+
+        if not data.get('ok'):
+            print(f"Telegram API error ({data.get('error_code')}): {data.get('description')}")
+            self.send_json(502, {"success": False, "message": f"Telegram xatoligi: {data.get('description')}"})
+            return
+        self.send_json(200, {"success": True})
 
 if __name__ == "__main__":
     os.chdir(os.path.dirname(os.path.abspath(__file__)))

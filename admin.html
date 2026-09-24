@@ -383,28 +383,12 @@
           </div>
           <div class="admin-card-body">
             <div class="row g-3">
-              <div class="col-md-5">
-                <label class="form-label small fw-semibold">Guruh Chat ID (Target Group)</label>
-                <div class="input-group">
-                  <span class="input-group-text"><i class="bi bi-chat-left-dots"></i></span>
-                  <input type="text" id="adminTgChatId" class="form-control" placeholder="-1003964640399" value="-1003964640399" />
+              <div class="col-12">
+                <div class="small text-muted">
+                  <i class="bi bi-shield-lock text-primary me-1"></i>
+                  Bot tokeni va guruh ID xavfsizlik uchun saytda saqlanmaydi. Ular Vercel → Settings → Environment Variables bo'limida
+                  <code>TELEGRAM_BOT_TOKEN</code> va <code>TELEGRAM_CHAT_ID</code> sifatida sozlanadi.
                 </div>
-                <div class="form-text small">Saytdagi barcha yangi buyurtma va murojaatlar ushbu guruhga tushadi.</div>
-              </div>
-
-              <div class="col-md-7">
-                <label class="form-label small fw-semibold">Telegram Bot Token (@BotFather)</label>
-                <div class="input-group">
-                  <span class="input-group-text"><i class="bi bi-key-fill"></i></span>
-                  <input type="password" id="adminTgBotToken" class="form-control" placeholder="Bot tokenini kiriting..." value="8796402233:AAHkcD3lE1piqcC3yOWgTRUIXWJhtaSQ8qQ" />
-                  <button class="btn btn-outline-secondary" type="button" onclick="admin.toggleTokenVisibility()" title="Ko'rsatish / Yashirish">
-                    <i class="bi bi-eye" id="adminTokenEyeIcon"></i>
-                  </button>
-                  <button class="btn btn-primary-custom" type="button" onclick="admin.saveTelegramSettings()">
-                    <i class="bi bi-check2-circle me-1"></i> Saqlash
-                  </button>
-                </div>
-                <div class="form-text small">Standart bot: <code>@standart_tozala_bot</code> (yoki o'zingizning buyurtmalar botingiz).</div>
               </div>
 
               <div class="col-12 pt-3 border-top d-flex flex-wrap align-items-center justify-content-between gap-3">
@@ -413,7 +397,7 @@
                   Bot guruhga xabar yuborishi uchun botni guruhga a'zo qilib, unga xabar yozish ruxsatini berish kerak.
                 </div>
                 <button class="btn btn-outline-primary" type="button" onclick="admin.testTelegramGroup()">
-                  <i class="bi bi-send-check me-1"></i> Guruhga Test Xabar Yuborish (-1003964640399)
+                  <i class="bi bi-send-check me-1"></i> Guruhga Test Xabar Yuborish
                 </button>
               </div>
             </div>

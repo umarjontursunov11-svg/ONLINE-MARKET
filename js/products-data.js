@@ -28,17 +28,6 @@ const COMPANY_INFO = {
   telegramGroupId: "-1003964640399"
 };
 
-const TELEGRAM_CONFIG = {
-  chatId: "-1003964640399",
-  botToken: "8796402233:AAHkcD3lE1piqcC3yOWgTRUIXWJhtaSQ8qQ",
-  getChatId() {
-    return localStorage.getItem('sm_tg_chat_id') || this.chatId;
-  },
-  getBotToken() {
-    return localStorage.getItem('sm_tg_bot_token') || this.botToken;
-  }
-};
-
 const CATEGORIES = [
   {
     "id": "all",

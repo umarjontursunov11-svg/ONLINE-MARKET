@@ -704,39 +704,26 @@ function escapeTgHtml(text) {
     .replace(/>/g, '&gt;');
 }
 
+// Bot token is kept on the server (Vercel env); the browser only posts the message text
 async function sendTelegramNotification(text) {
-  const token = typeof TELEGRAM_CONFIG !== 'undefined' ? TELEGRAM_CONFIG.getBotToken() : (localStorage.getItem('sm_tg_bot_token') || '8796402233:AAHkcD3lE1piqcC3yOWgTRUIXWJhtaSQ8qQ');
-  const chatId = typeof TELEGRAM_CONFIG !== 'undefined' ? TELEGRAM_CONFIG.getChatId() : (localStorage.getItem('sm_tg_chat_id') || '-1003964640399');
-
-  if (!token || !chatId) {
-    console.warn("Telegram Bot Token yoki Chat ID mavjud emas.");
-    return false;
-  }
-
   try {
-    const url = `https://api.telegram.org/bot${token}/sendMessage`;
-    const response = await fetch(url, {
+    const response = await fetch('/api/telegram/notify', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        chat_id: chatId,
-        text: text,
-        parse_mode: 'HTML'
-      })
+      body: JSON.stringify({ text })
     });
 
-    const data = await response.json();
-    if (data.ok) {
-      console.log(`✅ Xabar Telegram guruhga (${chatId}) muvaffaqiyatli yuborildi:`, data);
+    const data = await response.json().catch(() => ({}));
+    if (response.ok && data.success) {
+      console.log('✅ Xabar Telegram guruhga muvaffaqiyatli yuborildi');
       return true;
-    } else {
-      console.warn(`⚠️ Telegram API xatoligi (${data.error_code}): ${data.description}`);
-      return false;
     }
+    console.warn(`⚠️ Telegram xabarini yuborib bo'lmadi (${response.status}): ${data.message || ''}`);
+    return false;
   } catch (err) {
-    console.warn("⚠️ Telegram API ga so'rov yuborishda xatolik:", err);
+    console.warn("⚠️ Telegram xabarini yuborishda xatolik:", err);
     return false;
   }
 }
