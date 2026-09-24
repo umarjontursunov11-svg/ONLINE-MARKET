@@ -1,9 +1,13 @@
 const jwt = require('jsonwebtoken');
 const cookie = require('cookie');
 
-const JWT_SECRET = process.env.ADMIN_JWT_SECRET || 'SM_METROLOGIYA_SUPER_SECURE_JWT_SECRET_2026_983742';
+const JWT_SECRET = process.env.ADMIN_JWT_SECRET;
 
 module.exports = async function handler(req, res) {
+  if (!JWT_SECRET) {
+    return res.status(503).json({ authenticated: false, message: 'Server not configured' });
+  }
+
   const cookies = cookie.parse(req.headers.cookie || '');
   const token = cookies.admin_token;
 

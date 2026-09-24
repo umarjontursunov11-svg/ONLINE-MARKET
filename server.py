@@ -6,18 +6,37 @@ import os
 import time
 import hmac
 import hashlib
+import secrets
 from http import cookies
 
-PORT = 3000
-SECRET_KEY = b"SM_METROLOGIYA_SUPER_SECURE_SECRET_2026"
+
+def load_env_file(path):
+    # Minimal .env loader (KEY=VALUE per line) so secrets never live in source code
+    if not os.path.exists(path):
+        return
+    with open(path, encoding='utf-8') as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith('#') or '=' not in line:
+                continue
+            key, value = line.split('=', 1)
+            os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))
+
+
+load_env_file(os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env'))
+
+PORT = int(os.environ.get("PORT", 3000))
+# Without ADMIN_JWT_SECRET a random key is used, so sessions reset on every restart
+SECRET_KEY = os.environ.get("ADMIN_JWT_SECRET", "").encode('utf-8') or secrets.token_bytes(32)
 
 # In-memory rate limiting map: ip -> { count: number, resetAt: timestamp }
 login_attempts = {}
 MAX_ATTEMPTS = 5
 LOCKOUT_SECONDS = 15 * 60
 
-ADMIN_USERNAME = "admin"
-ADMIN_PASSWORD = "U20020604u"
+ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "admin").lower()
+# Plain password for local development only; set it in .env (see .env.example)
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 
 def generate_token(username):
     payload = f"{username}:{int(time.time())}"
@@ -118,7 +137,15 @@ class LocalAppHandler(http.server.SimpleHTTPRequestHandler):
             username = body.get('username', '').strip()
             password = body.get('password', '')
 
-            if username.lower() == ADMIN_USERNAME and password == ADMIN_PASSWORD:
+            if not ADMIN_PASSWORD:
+                self.send_response(503)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                res = {"success": False, "message": "Admin paroli sozlanmagan. .env faylida ADMIN_PASSWORD ni belgilang."}
+                self.wfile.write(json.dumps(res).encode('utf-8'))
+                return
+
+            if username.lower() == ADMIN_USERNAME and hmac.compare_digest(password.encode('utf-8'), ADMIN_PASSWORD.encode('utf-8')):
                 if client_ip in login_attempts:
                     del login_attempts[client_ip]
 
@@ -157,4 +184,6 @@ if __name__ == "__main__":
     socketserver.TCPServer.allow_reuse_address = True
     with socketserver.TCPServer(("", PORT), LocalAppHandler) as httpd:
         print(f"ONLINE MARKET Server running on http://localhost:{PORT}")
+        if not ADMIN_PASSWORD:
+            print("OGOHLANTIRISH: ADMIN_PASSWORD o'rnatilmagan - admin login o'chirilgan (.env.example ga qarang)")
         httpd.serve_forever()

@@ -7,12 +7,11 @@ const loginAttempts = new Map();
 const MAX_ATTEMPTS = 5;
 const LOCKOUT_MS = 15 * 60 * 1000; // 15 minutes
 
-// Secret key for JWT session (In production set ADMIN_JWT_SECRET env variable)
-const JWT_SECRET = process.env.ADMIN_JWT_SECRET || 'SM_METROLOGIYA_SUPER_SECURE_JWT_SECRET_2026_983742';
-
-// Pre-calculated bcrypt hash for admin password ('U20020604u')
+// Secrets come only from environment variables (Vercel → Settings → Environment Variables).
+// Generate the hash with: node scripts/hash-password.js "<password>"
+const JWT_SECRET = process.env.ADMIN_JWT_SECRET;
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
-const ADMIN_PASSWORD_HASH = process.env.ADMIN_PASSWORD_HASH || '$2a$10$84ZJb25d0nF5m6XpW8uI1O4Y/Q3bZ0Pz2nL/7y2m.0A7R8n1K2.6e'; 
+const ADMIN_PASSWORD_HASH = process.env.ADMIN_PASSWORD_HASH;
 
 module.exports = async function handler(req, res) {
   // Allow only POST
@@ -21,8 +20,18 @@ module.exports = async function handler(req, res) {
     return res.status(405).json({ success: false, message: 'Method Not Allowed' });
   }
 
-  // Get Client IP
-  const clientIp = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '127.0.0.1';
+  // Fail closed if the server is not configured
+  if (!JWT_SECRET || !ADMIN_PASSWORD_HASH) {
+    console.error('Admin login disabled: ADMIN_JWT_SECRET and ADMIN_PASSWORD_HASH must be set');
+    return res.status(503).json({
+      success: false,
+      message: "Admin kirish tizimi sozlanmagan. Administrator bilan bog'laning."
+    });
+  }
+
+  // Get Client IP (first entry of x-forwarded-for is the original client)
+  const forwardedFor = req.headers['x-forwarded-for'];
+  const clientIp = (forwardedFor ? String(forwardedFor).split(',')[0].trim() : '') || req.socket?.remoteAddress || '127.0.0.1';
   const now = Date.now();
 
   // Rate Limiting & Lockout Check
@@ -59,10 +68,6 @@ module.exports = async function handler(req, res) {
     if (isUsernameMatch) {
       // Use bcrypt to compare password with hash
       isPasswordMatch = await bcrypt.compare(password, ADMIN_PASSWORD_HASH);
-      // Fallback check if hash comparison fails for legacy value
-      if (!isPasswordMatch && password === 'U20020604u') {
-        isPasswordMatch = true;
-      }
     }
 
     if (!isUsernameMatch || !isPasswordMatch) {
