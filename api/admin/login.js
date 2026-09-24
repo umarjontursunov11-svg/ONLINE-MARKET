@@ -9,9 +9,16 @@ const LOCKOUT_MS = 15 * 60 * 1000; // 15 minutes
 
 // Secrets come only from environment variables (Vercel → Settings → Environment Variables).
 // Generate the hash with: node scripts/hash-password.js "<password>"
-const JWT_SECRET = process.env.ADMIN_JWT_SECRET;
-const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
-const ADMIN_PASSWORD_HASH = process.env.ADMIN_PASSWORD_HASH;
+// Values pasted into the Vercel UI often carry stray whitespace, quotes or a "NAME=" prefix
+function readEnv(name) {
+  let value = (process.env[name] || '').trim();
+  if (value.startsWith(name + '=')) value = value.slice(name.length + 1).trim();
+  return value.replace(/^['"]|['"]$/g, '');
+}
+
+const JWT_SECRET = readEnv('ADMIN_JWT_SECRET');
+const ADMIN_USERNAME = readEnv('ADMIN_USERNAME') || 'admin';
+const ADMIN_PASSWORD_HASH = readEnv('ADMIN_PASSWORD_HASH');
 
 module.exports = async function handler(req, res) {
   // Allow only POST
