@@ -6,7 +6,7 @@
 const TRANSLATIONS = {
   uz: {
     // Top bar & Header
-    "top_address": "Toshkent sh., Yakkasaroy tumani, 5-uy, 12-xona",
+    "top_address": "Toshkent sh., Yakkasaroy tumani, Yakkasaroy ko'chasi, 5-uy, 12-xona",
     "top_schedule": "Dush - Shan: 09:00 - 18:00",
     "nav_home": "Bosh sahifa",
     "nav_categories": "Kategoriyalar",
@@ -223,7 +223,7 @@ const TRANSLATIONS = {
 
   ru: {
     // Top bar & Header
-    "top_address": "г. Ташкент, Яккасарайский район, дом 5, офис 12",
+    "top_address": "г. Ташкент, Яккасарайский район, ул. Яккасарай, дом 5, офис 12",
     "top_schedule": "Пн - Сб: 09:00 - 18:00",
     "nav_home": "Главная",
     "nav_categories": "Категории",
