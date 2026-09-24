@@ -21,6 +21,48 @@ function initApp() {
   store.renderCart();
   setupEventListeners();
   setupThemeToggle();
+  handleDeepLink();
+}
+
+// 0.0. TASHQI HAVOLALAR (gsouz.uz info-saytidan keladi)
+//   ?product=<id>  — o'sha mahsulot oynasini ochadi
+//   ?q=<matn>      — katalogda qidiradi
+//   ?request=<matn> — aloqa formasini shu matn bilan to'ldiradi
+function handleDeepLink() {
+  const params = new URLSearchParams(window.location.search);
+  const productId = params.get('product');
+  const query = params.get('q');
+  const request = params.get('request');
+
+  if (productId && PRODUCTS_DATABASE.some(p => p.id === productId)) {
+    selectCategoryAndScroll('all');
+    openProductModal(productId);
+    return;
+  }
+
+  if (query) {
+    const searchInput = document.getElementById('searchInput');
+    const clearSearchBtn = document.getElementById('clearSearchBtn');
+    searchQuery = query;
+    if (searchInput) searchInput.value = query;
+    if (clearSearchBtn) clearSearchBtn.style.display = 'block';
+    selectCategoryAndScroll('all');
+    return;
+  }
+
+  if (request) {
+    const message = document.getElementById('contactMessage');
+    if (message) message.value = request;
+    const section = document.getElementById('aloqa');
+    if (section) {
+      // katalog to'liq chizilgach sahifa uzayadi, shuning uchun biroz kutib, darhol o'tamiz
+      setTimeout(() => {
+        const y = section.getBoundingClientRect().top + window.pageYOffset - 70;
+        window.scrollTo({ top: y, behavior: 'instant' });
+        document.getElementById('contactName')?.focus({ preventScroll: true });
+      }, 300);
+    }
+  }
 }
 
 function selectCategoryAndScroll(catId) {
