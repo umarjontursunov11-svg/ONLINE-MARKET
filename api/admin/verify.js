@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const cookie = require('cookie');
 
-const JWT_SECRET = process.env.ADMIN_JWT_SECRET;
+const JWT_SECRET = (process.env.ADMIN_JWT_SECRET || '').trim().replace(/^ADMIN_JWT_SECRET=/, '').replace(/^['"]|['"]$/g, '');
 
 module.exports = async function handler(req, res) {
   if (!JWT_SECRET) {
