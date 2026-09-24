@@ -208,7 +208,17 @@ const TRANSLATIONS = {
     "footer_services_title": "Xizmatlar",
     "footer_contact_title": "Bog'lanish",
     "footer_copyright": "© 2026 \"STANDART VA METROLOGIYA\" MCHJ. Barcha huquqlar himoyalangan.",
-    "footer_rules": "O'zbekiston Respublikasi standartlashtirish va metrologiya qoidalari asosida faoliyat yuritadi."
+    "footer_rules": "O'zbekiston Respublikasi standartlashtirish va metrologiya qoidalari asosida faoliyat yuritadi.",
+
+    // Buyurtma asosida ariza
+    "order_req_title": "Buyurtma asosida ariza",
+    "order_req_hint": "Mahsulot buyurtma asosida yetkaziladi. Ma'lumotlaringizni qoldiring — menejer narx va yetkazib berish muddatini aytadi.",
+    "order_req_name": "F.I.O *",
+    "order_req_phone": "Telefon *",
+    "order_req_company": "Tashkilot",
+    "order_req_qty": "Miqdori",
+    "order_req_comment": "Izoh",
+    "order_req_submit": "Arizani yuborish"
   },
 
   ru: {
@@ -415,7 +425,17 @@ const TRANSLATIONS = {
     "footer_services_title": "Услуги",
     "footer_contact_title": "Контакты",
     "footer_copyright": "© 2026 ООО \"STANDART VA METROLOGIYA\". Все права защищены.",
-    "footer_rules": "Деятельность осуществляется в строгом соответствии с правилами стандартизации и метрологии Республики Узбекистан."
+    "footer_rules": "Деятельность осуществляется в строгом соответствии с правилами стандартизации и метрологии Республики Узбекистан.",
+
+    // Заявка на товар под заказ
+    "order_req_title": "Заявка на товар под заказ",
+    "order_req_hint": "Товар поставляется под заказ. Оставьте контакты — менеджер сообщит цену и срок поставки.",
+    "order_req_name": "Ф.И.О. *",
+    "order_req_phone": "Телефон *",
+    "order_req_company": "Организация",
+    "order_req_qty": "Количество",
+    "order_req_comment": "Комментарий",
+    "order_req_submit": "Отправить заявку"
   }
 };
 
@@ -427,7 +447,8 @@ const CATEGORY_TRANSLATIONS = {
     'standart-titrlar': "Standart-Titrlar (Fiksanallar)",
     'bufer-eritmalari': "Bufer va Kalibrlash Eritmalari",
     'olchov-vositalari': "O'lchov Vositalari & Jihozlar",
-    'areometrlar-termometrlar': "Areometr va Termometrlar"
+    'areometrlar-termometrlar': "Areometr va Termometrlar",
+    'buyurtma-asosida': "Buyurtma asosida"
   },
   ru: {
     'all': "Все Товары",
@@ -435,7 +456,8 @@ const CATEGORY_TRANSLATIONS = {
     'standart-titrlar': "Стандарт-Титры (Фиксаналы)",
     'bufer-eritmalari': "Буферные и Калибровочные Растворы",
     'olchov-vositalari': "Средства Измерений и Приборы",
-    'areometrlar-termometrlar': "Ареометры и Термометры"
+    'areometrlar-termometrlar': "Ареометры и Термометры",
+    'buyurtma-asosida': "Под заказ"
   }
 };
 

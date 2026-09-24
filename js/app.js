@@ -11,6 +11,9 @@ let currentCategory = 'all';
 let searchQuery = '';
 let currentSort = 'popular';
 let selectedPriceRange = 0; // index in filterOptions
+const PRODUCTS_PAGE_SIZE = 24; // katalog 24 tadan ko'rsatiladi (7000+ mahsulot bir yo'la chizilmaydi)
+let productsVisible = PRODUCTS_PAGE_SIZE;
+let lastFilteredProducts = [];
 
 function initApp() {
   renderCategoryShowcase();
@@ -118,6 +121,13 @@ function renderCategoryShowcase() {
       accent: "#ef4444",
       bg: "#fee2e2",
       badge: "ГОСТ 18481"
+    },
+    'buyurtma-asosida': {
+      desc_uz: "Weiyel CRM katalogidagi 6900+ standart namuna: pestitsidlar, toksinlar, metallar, organik standartlar. Ariza asosida yetkaziladi.",
+      desc_ru: "6900+ стандартных образцов из каталога Weiyel CRM: пестициды, токсины, металлы, органические стандарты. Поставка под заказ.",
+      accent: "#0f766e",
+      bg: "#ccfbf1",
+      badge: currentLang === 'ru' ? "Под заказ" : "Ariza orqali"
     }
   };
 
@@ -388,14 +398,14 @@ function renderProducts() {
   // Price range filter
   const priceRange = FILTER_OPTIONS.priceRanges[selectedPriceRange];
   if (priceRange) {
-    filtered = filtered.filter(p => p.price >= priceRange.min && p.price <= priceRange.max);
+    filtered = filtered.filter(p => (selectedPriceRange === 0 || !p.onOrder) && p.price >= priceRange.min && p.price <= priceRange.max);
   }
 
   // Sorting
   if (currentSort === 'price-asc') {
-    filtered.sort((a, b) => a.price - b.price);
+    filtered.sort((a, b) => (!!a.onOrder - !!b.onOrder) || a.price - b.price);
   } else if (currentSort === 'price-desc') {
-    filtered.sort((a, b) => b.price - a.price);
+    filtered.sort((a, b) => (!!a.onOrder - !!b.onOrder) || b.price - a.price);
   } else if (currentSort === 'name-asc') {
     filtered.sort((a, b) => a.title.localeCompare(b.title));
   }
@@ -416,23 +426,56 @@ function renderProducts() {
 
   if (emptyState) emptyState.classList.add('d-none');
 
-  // Render cards
-  grid.innerHTML = filtered.map(product => {
+  lastFilteredProducts = filtered;
+  productsVisible = PRODUCTS_PAGE_SIZE;
+  grid.innerHTML = filtered.slice(0, productsVisible).map(productCardHTML).join('');
+  updateLoadMoreButton();
+}
+
+function loadMoreProducts() {
+  const grid = document.getElementById('productsGrid');
+  if (!grid) return;
+  const next = lastFilteredProducts.slice(productsVisible, productsVisible + PRODUCTS_PAGE_SIZE);
+  grid.insertAdjacentHTML('beforeend', next.map(productCardHTML).join(''));
+  productsVisible += next.length;
+  updateLoadMoreButton();
+}
+
+function updateLoadMoreButton() {
+  const btn = document.getElementById('loadMoreProductsBtn');
+  if (!btn) return;
+  const rest = lastFilteredProducts.length - productsVisible;
+  const isRu = typeof currentLang !== 'undefined' && currentLang === 'ru';
+  btn.classList.toggle('d-none', rest <= 0);
+  btn.innerHTML = `<i class="bi bi-arrow-down-circle me-1"></i> ${isRu ? 'Показать ещё' : "Yana ko'rsatish"} (${rest})`;
+}
+
+function productCardHTML(product) {
     const isFav = store.isFavorite(product.id);
     const isComp = store.isCompared(product.id);
     const isRu = typeof currentLang !== 'undefined' && currentLang === 'ru';
     
     // Extract top 3 key specs for card preview
-    const specEntries = Object.entries(product.specs).slice(0, 3);
-    const priceDisplay = isRu ? product.priceFormatted.replace("so'm", "сум") : product.priceFormatted;
+    const specEntries = Object.entries(product.specs).filter(([k]) => !product.onOrder || !['Artikul', 'Turi', "Bo'lim", 'Yetkazib berish'].includes(k)).slice(0, 3);
+    const priceDisplay = product.onOrder ? (isRu ? 'По запросу' : "So'rov bo'yicha") : (isRu ? product.priceFormatted.replace("so'm", "сум") : product.priceFormatted);
+    const badgeText = isRu && product.badge_ru ? product.badge_ru : product.badge;
+    const categoryText = isRu && product.categoryName_ru ? product.categoryName_ru : product.categoryName;
+    const stockText = product.onOrder ? (isRu ? 'Поставка под заказ' : product.stockCount) : product.stockCount;
+    const actionBtn = product.onOrder
+      ? `<button class="btn btn-add-cart btn-order-request" onclick="openOrderRequest('${product.id}')" title="${isRu ? 'Отправить заявку' : 'Ariza yuborish'}">
+                <i class="bi bi-send-fill me-1"></i> ${isRu ? 'Заявка' : 'Ariza'}
+              </button>`
+      : `<button class="btn btn-add-cart" onclick="store.addToCart('${product.id}')" title="${isRu ? 'В корзину' : 'Savatga qo\'shish'}">
+                <i class="bi bi-cart-plus-fill me-1"></i> ${isRu ? 'В корзину' : 'Savatga'}
+              </button>`;
 
     return `
       <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
-        <div class="product-card">
+        <div class="product-card${product.onOrder ? ' product-card--order' : ''}">
           <!-- Card Badge & Actions -->
           <div class="product-card-top">
             <span class="badge-custom badge-${product.badgeType || 'primary'}">
-              ${product.badge}
+              ${badgeText}
             </span>
             <div class="card-quick-actions">
               <button class="action-circle-btn ${isComp ? 'active' : ''}" 
@@ -461,7 +504,7 @@ function renderProducts() {
           <!-- Product Content -->
           <div class="product-card-body">
             <div class="product-meta">
-              <span class="product-category-tag">${product.categoryName}</span>
+              <span class="product-category-tag">${categoryText}</span>
               <span class="product-code-tag">${isRu ? 'Код:' : 'Kod:'} ${product.artikul}</span>
             </div>
 
@@ -486,7 +529,7 @@ function renderProducts() {
             <!-- In Stock Status -->
             <div class="product-stock-status">
               <span class="stock-dot"></span>
-              <span class="stock-text">${product.stockCount}</span>
+              <span class="stock-text">${stockText}</span>
             </div>
 
             <!-- Price and Cart Button -->
@@ -495,15 +538,12 @@ function renderProducts() {
                 <span class="price-label">${isRu ? 'Цена:' : 'Narxi:'}</span>
                 <span class="price-val">${priceDisplay}</span>
               </div>
-              <button class="btn btn-add-cart" onclick="store.addToCart('${product.id}')" title="${isRu ? 'В корзину' : 'Savatga qo\'shish'}">
-                <i class="bi bi-cart-plus-fill me-1"></i> ${isRu ? 'В корзину' : 'Savatga'}
-              </button>
+              ${actionBtn}
             </div>
           </div>
         </div>
       </div>
     `;
-  }).join('');
 }
 
 // 3. DETAILED PRODUCT MODAL (TEXNIK PASPORT & XUSUSIYATLAR)
@@ -516,7 +556,7 @@ function openProductModal(productId) {
   const modalBody = document.getElementById('productModalBody');
 
   if (modalTitle) {
-    modalTitle.innerHTML = `<span class="badge-custom badge-${product.badgeType} me-2">${product.badge}</span> ${product.title}`;
+    modalTitle.innerHTML = `<span class="badge-custom badge-${product.badgeType} me-2">${isRu && product.badge_ru ? product.badge_ru : product.badge}</span> ${product.title}`;
   }
 
   const specRows = Object.entries(product.specs).map(([key, val]) => `
@@ -534,7 +574,20 @@ function openProductModal(productId) {
     <li class="feature-item"><i class="bi bi-shield-check text-primary me-2"></i>${f}</li>
   `).join('') : '';
 
-  const priceDisplay = isRu ? product.priceFormatted.replace("so'm", "сум") : product.priceFormatted;
+  const priceDisplay = product.onOrder ? (isRu ? 'По запросу' : "So'rov bo'yicha") : (isRu ? product.priceFormatted.replace("so'm", "сум") : product.priceFormatted);
+  const orderBox = `
+          <div class="order-note small mb-3">
+            <i class="bi bi-clipboard2-check me-1"></i>
+            ${isRu ? 'Товар поставляется под заказ. Отправьте заявку — менеджер сообщит цену и срок поставки.' : "Mahsulot buyurtma asosida yetkaziladi. Ariza qoldiring — menejer narx va muddatni aytadi."}
+          </div>
+          <button class="btn btn-primary-custom w-100" onclick="openOrderRequest('${product.id}')">
+            <i class="bi bi-send-fill me-1"></i> ${isRu ? 'Отправить заявку' : 'Ariza yuborish'}
+          </button>
+          <div class="mt-3 pt-3 border-top">
+            <button class="btn btn-sm btn-outline-secondary w-100" onclick="store.toggleCompare('${product.id}')">
+              <i class="bi bi-shuffle me-1"></i> ${isRu ? 'Сравнить' : 'Taqqoslash'}
+            </button>
+          </div>`;
 
   modalBody.innerHTML = `
     <div class="row g-4">
@@ -549,6 +602,7 @@ function openProductModal(productId) {
             <span class="text-muted small">${isRu ? 'Цена товара:' : 'Mahsulot narxi:'}</span>
             <span class="modal-price-tag">${priceDisplay}</span>
           </div>
+          ${product.onOrder ? orderBox : `
           <div class="text-success small mb-3">
             <i class="bi bi-check-circle-fill me-1"></i> ${product.stockCount}
           </div>
@@ -574,7 +628,7 @@ function openProductModal(productId) {
           </div>
           <button class="btn btn-sm btn-outline-primary w-100 mt-2" onclick="generateSingleProductOffer('${product.id}')">
             <i class="bi bi-file-earmark-ruled me-1"></i> ${isRu ? 'Коммерческое Предложение (PDF)' : 'Ushbu mahsulotga Tijorat Taklifi (PDF)'}
-          </button>
+          </button>`}
         </div>
       </div>
 
@@ -583,7 +637,7 @@ function openProductModal(productId) {
         <div class="product-modal-details">
           <div class="d-flex gap-2 align-items-center mb-2">
             <span class="badge bg-secondary-subtle text-dark border">${isRu ? 'Артикул:' : 'Artikul:'} ${product.artikul}</span>
-            <span class="badge bg-info-subtle text-dark border">${product.categoryName}</span>
+            <span class="badge bg-info-subtle text-dark border">${isRu && product.categoryName_ru ? product.categoryName_ru : product.categoryName}</span>
           </div>
 
           <h4 class="mb-3 text-dark fw-bold">${product.title}</h4>

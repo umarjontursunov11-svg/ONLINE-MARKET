@@ -35,6 +35,11 @@ class StoreState {
   addToCart(productId, qty = 1) {
     const product = PRODUCTS_DATABASE.find(p => p.id === productId);
     if (!product) return;
+    // Buyurtma asosidagi mahsulotning narxi yo'q — savat o'rniga ariza oynasi
+    if (product.onOrder) {
+      if (typeof openOrderRequest === 'function') openOrderRequest(productId);
+      return;
+    }
 
     const existingIndex = this.cart.findIndex(item => item.id === productId);
     if (existingIndex > -1) {

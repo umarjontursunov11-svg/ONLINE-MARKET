@@ -286,6 +286,11 @@
         <!-- Rendered dynamically by app.js -->
       </div>
 
+      <!-- Katalog 24 tadan ko'rsatiladi -->
+      <div class="text-center mt-2">
+        <button id="loadMoreProductsBtn" class="btn btn-outline-primary px-4 py-2 d-none" onclick="loadMoreProducts()"></button>
+      </div>
+
       <!-- Empty State -->
       <div id="productsEmptyState" class="text-center py-5 d-none">
         <i class="bi bi-search text-muted" style="font-size: 3.5rem;"></i>
@@ -726,6 +731,51 @@
   <!-- ==========================================================================
        12. CHECKOUT MODAL (BUYURTMA VA TIJORAT TAKLIFI)
        ========================================================================== -->
+  <!-- Buyurtma asosidagi mahsulot uchun ariza (js/order-request.js) -->
+  <div class="modal fade" id="orderRequestModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content modal-content-custom">
+        <div class="modal-header border-bottom">
+          <h5 class="modal-title fw-bold">
+            <i class="bi bi-send-fill text-primary me-2"></i> <span data-i18n="order_req_title">Buyurtma asosida ariza</span>
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <div id="orderRequestProduct" class="mb-3"></div>
+          <p class="small text-muted mb-3" data-i18n="order_req_hint">Mahsulot buyurtma asosida yetkaziladi. Ma'lumotlaringizni qoldiring — menejer narx va yetkazib berish muddatini aytadi.</p>
+          <form id="orderRequestForm">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold" for="orderReqName" data-i18n="order_req_name">F.I.O *</label>
+                <input type="text" id="orderReqName" class="form-control" required />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold" for="orderReqPhone" data-i18n="order_req_phone">Telefon *</label>
+                <input type="tel" id="orderReqPhone" class="form-control" placeholder="+998 __ ___-__-__" required />
+              </div>
+              <div class="col-md-8">
+                <label class="form-label small fw-semibold" for="orderReqCompany" data-i18n="order_req_company">Tashkilot</label>
+                <input type="text" id="orderReqCompany" class="form-control" />
+              </div>
+              <div class="col-md-4">
+                <label class="form-label small fw-semibold" for="orderReqQty" data-i18n="order_req_qty">Miqdori</label>
+                <input type="number" id="orderReqQty" class="form-control" min="1" value="1" />
+              </div>
+              <div class="col-12">
+                <label class="form-label small fw-semibold" for="orderReqComment" data-i18n="order_req_comment">Izoh</label>
+                <textarea id="orderReqComment" class="form-control" rows="2"></textarea>
+              </div>
+            </div>
+            <button type="submit" id="orderReqSubmit" class="btn btn-primary-custom w-100 mt-4">
+              <i class="bi bi-send-fill me-1"></i> <span data-i18n="order_req_submit">Arizani yuborish</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="modal fade" id="checkoutModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content modal-content-custom">
@@ -1226,8 +1276,10 @@
   <script src="js/html2pdf.bundle.min.js"></script>
   <script src="js/i18n.js"></script>
   <script src="js/products-data.js"></script>
+  <script src="js/products-order.js"></script>
   <script src="js/cart.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/order-request.js"></script>
   <script src="js/b2b-efaktura.js"></script>
 </body>
 </html>

@@ -1223,3 +1223,83 @@
   color: #ffffff !important;
   box-shadow: 0 2px 6px rgba(2, 132, 199, 0.4);
 }
+
+/* ==========================================================================
+   Buyurtma asosidagi mahsulotlar (js/products-order.js, js/order-request.js)
+   ========================================================================== */
+.badge-order {
+  background: rgba(15, 118, 110, 0.92);
+  color: #ffffff;
+}
+
+.product-card--order .stock-dot {
+  background: #0f766e;
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.18);
+}
+
+.product-card--order .stock-text {
+  color: #0f766e;
+}
+
+.product-card--order .price-val {
+  font-size: 0.95rem;
+  color: #0f766e;
+}
+
+.btn-order-request {
+  background: #0f766e !important;
+  border-color: #0f766e !important;
+  color: #ffffff !important;
+}
+
+.btn-order-request:hover {
+  background: #115e59 !important;
+}
+
+.order-note {
+  background: #ccfbf1;
+  color: #115e59;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.order-req-product {
+  background: var(--bs-light, #f8f9fa);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.order-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.order-fact {
+  display: inline-flex;
+  flex-direction: column;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.order-fact small {
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: #6b7280;
+}
+
+[data-theme="dark"] .order-req-product,
+[data-theme="dark"] .order-fact {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+[data-theme="dark"] .order-note {
+  background: rgba(15, 118, 110, 0.25);
+  color: #99f6e4;
+}
