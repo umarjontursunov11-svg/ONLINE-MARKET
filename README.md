@@ -63,6 +63,12 @@ O'zbekiston Respublikasi bo'ylab kimyo, farmatsevtika, neft-gaz, oziq-ovqat va s
 ```plaintext
 ├── index.html                  # Asosiy sayt (Katalog, Qidiruv, Modallar)
 ├── admin.html                  # Admin Dashboard (Mahsulotlar CRUD, Ombor va Savdo analitikasi)
+├── login.html                  # Admin panelga kirish sahifasi (/admin/login)
+├── api/
+│   └── admin/
+│       ├── login.js            # Admin autentifikatsiyasi (JWT, bcrypt, rate limiting)
+│       ├── logout.js           # Sessiyani yakunlash (cookie tozalash)
+│       └── verify.js           # Admin sessiya tokenini tekshirish
 ├── css/
 │   ├── main.css                # Asosiy dizayn qoidalari, ranglar, shriftlar
 │   ├── components.css          # Kartochkalar, savat, A4 tijorat hujjati, Didox stili
@@ -74,9 +80,14 @@ O'zbekiston Respublikasi bo'ylab kimyo, farmatsevtika, neft-gaz, oziq-ovqat va s
 │   ├── app.js                  # Asosiy ilova mantiqi, filtrlash, qidiruv, PDF/Telegram
 │   ├── b2b-efaktura.js         # B2B elektron shartnoma, Didox & E-Faktura moduli
 │   ├── admin.js                # Admin panel mantiqi, CRUD, rasm yuklash, ombor va savdo tahlili
+│   ├── i18n.js                 # Ko'p tilli tizim (O'zbekcha / Ruscha)
+│   └── html2pdf.bundle.min.js  # A4 PDF generatsiyasi uchun kutubxona
 ├── assets/
-│   ├── icons/                  # SVG va veb-belgilar
-│   └── images/                 # Mahsulotlar va logotip rasmlari
+│   └── images/                 # Mahsulotlar, logotip, imzo va QR rasmlari
+├── Tijorat_Taklifi_STANDART_METROLOGIYA.docx  # Word formatidagi tijorat taklifi shabloni
+├── server.py                   # Lokal Python server (admin API bilan, port 3000)
+├── package.json                # Admin API uchun Node.js bog'liqliklari
+├── vercel.json                 # Vercel deploy sozlamalari (clean URL, /admin/login)
 ├── .gitattributes              # Git fayl qatorlari konfiguratsiyasi
 ├── .gitignore                  # Keraksiz fayllarni gitdan chiqarish
 └── README.md                   # Loyiha hujjatlari
