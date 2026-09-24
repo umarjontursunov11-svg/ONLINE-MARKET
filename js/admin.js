@@ -781,76 +781,35 @@ class AdminManager {
   }
 
   // TELEGRAM INTEGRATION
+  // Bot tokeni va guruh ID faqat serverda (Vercel Environment Variables:
+  // TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID). Admin paneldan faqat sinov xabari yuboriladi.
   initTelegramSettings() {
-    const chatIdInput = document.getElementById('adminTgChatId');
-    const tokenInput = document.getElementById('adminTgBotToken');
-    if (chatIdInput) {
-      chatIdInput.value = localStorage.getItem('sm_tg_chat_id') || "-1003964640399";
-    }
-    if (tokenInput) {
-      tokenInput.value = localStorage.getItem('sm_tg_bot_token') || "8796402233:AAHkcD3lE1piqcC3yOWgTRUIXWJhtaSQ8qQ";
-    }
-  }
-
-  saveTelegramSettings() {
-    const chatId = document.getElementById('adminTgChatId')?.value.trim() || "-1003964640399";
-    const token = document.getElementById('adminTgBotToken')?.value.trim() || "8796402233:AAHkcD3lE1piqcC3yOWgTRUIXWJhtaSQ8qQ";
-
-    localStorage.setItem('sm_tg_chat_id', chatId);
-    localStorage.setItem('sm_tg_bot_token', token);
-    this.showToast("Telegram sozlamalari muvaffaqiyatli saqlandi!", "success");
-  }
-
-  toggleTokenVisibility() {
-    const tokenInput = document.getElementById('adminTgBotToken');
-    const eyeIcon = document.getElementById('adminTokenEyeIcon');
-    if (tokenInput && eyeIcon) {
-      if (tokenInput.type === 'password') {
-        tokenInput.type = 'text';
-        eyeIcon.classList.remove('bi-eye');
-        eyeIcon.classList.add('bi-eye-slash');
-      } else {
-        tokenInput.type = 'password';
-        eyeIcon.classList.remove('bi-eye-slash');
-        eyeIcon.classList.add('bi-eye');
-      }
-    }
+    // Eski versiyalarda brauzerga saqlangan tokenni o'chiramiz
+    localStorage.removeItem('sm_tg_bot_token');
+    localStorage.removeItem('sm_tg_chat_id');
   }
 
   async testTelegramGroup() {
-    const chatId = document.getElementById('adminTgChatId')?.value.trim() || "-1003964640399";
-    const token = document.getElementById('adminTgBotToken')?.value.trim() || "8796402233:AAHkcD3lE1piqcC3yOWgTRUIXWJhtaSQ8qQ";
-
-    if (!token || !chatId) {
-      this.showToast("Guruh ID va Bot Token kiritilishi shart!", "warning");
-      return;
-    }
-
     this.showToast("Guruhga test xabari yuborilmoqda...", "info");
 
     const testMsg = `🧪 <b>TEST XABARI — STANDART VA METROLOGIYA TIZIMI</b>\n` +
       `━━━━━━━━━━━━━━━━━━━━━━\n` +
-      `✅ Saytdagi buyurtmalar integratsiyasi muvaffaqiyatli ulandi!\n` +
-      `📍 <b>Target Guruh ID:</b> <code>${chatId}</code>\n` +
-      `🤖 <b>Yuboruvchi Bot:</b> @standart_tozala_bot\n` +
+      `✅ Saytdagi buyurtmalar integratsiyasi server orqali ishlayapti.\n` +
       `📅 <b>Vaqt:</b> ${new Date().toLocaleString('uz-UZ')}`;
 
     try {
-      const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      const res = await fetch('/api/notify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chat_id: chatId,
-          text: testMsg,
-          parse_mode: 'HTML'
-        })
+        body: JSON.stringify({ text: testMsg })
       });
-      const data = await res.json();
-      if (data.ok) {
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.ok) {
         this.showToast("✅ Test xabari guruhga muvaffaqiyatli yuborildi!", "success");
+      } else if (res.status === 503) {
+        alert("⚠️ Telegram sozlanmagan.\n\nVercel → Settings → Environment Variables bo'limiga TELEGRAM_BOT_TOKEN va TELEGRAM_CHAT_ID qo'shing, so'ng saytni qayta joylang (Redeploy).");
       } else {
-        alert(`⚠️ Telegram xatoligi (${data.error_code}): ${data.description}\n\nEslatma: Bot (${token.split(':')[0]}) guruhga (${chatId}) qo'shilgan va xabar yozish ruxsatiga ega bo'lishi kerak!`);
-        this.showToast(`Xatolik: ${data.description}`, "danger");
+        alert(`⚠️ Xabar yuborilmadi (${res.status}): ${data.message || ''}${data.code ? ' — Telegram kodi ' + data.code : ''}\n\nBot guruhga qo'shilgan va xabar yozish ruxsatiga ega ekanini tekshiring.`);
       }
     } catch (e) {
       this.showToast("Tarmoq yoki ulanish xatoligi!", "danger");

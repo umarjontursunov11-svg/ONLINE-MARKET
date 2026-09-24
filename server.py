@@ -4,6 +4,7 @@ import json
 import urllib.parse
 import os
 import time
+import urllib.request
 import hmac
 import hashlib
 import secrets
@@ -37,6 +38,13 @@ LOCKOUT_SECONDS = 15 * 60
 ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "admin").lower()
 # Plain password for local development only; set it in .env (see .env.example)
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
+
+# Telegram xabarnomalari (api/notify.js ning lokal nusxasi) — token faqat .env da
+TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
+TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "")
+NOTIFY_LIMIT = 10
+NOTIFY_WINDOW_SECONDS = 10 * 60
+notify_attempts = {}
 
 def generate_token(username):
     payload = f"{username}:{int(time.time())}"
@@ -167,6 +175,10 @@ class LocalAppHandler(http.server.SimpleHTTPRequestHandler):
                 self.wfile.write(json.dumps(res).encode('utf-8'))
             return
 
+        if path == '/api/notify':
+            self.handle_notify(body, client_ip, now)
+            return
+
         if path == '/api/admin/logout':
             self.send_response(200)
             self.send_header('Content-Type', 'application/json')
@@ -178,6 +190,52 @@ class LocalAppHandler(http.server.SimpleHTTPRequestHandler):
 
         self.send_response(404)
         self.end_headers()
+
+    def send_json(self, status, payload):
+        self.send_response(status)
+        self.send_header('Content-Type', 'application/json')
+        self.end_headers()
+        self.wfile.write(json.dumps(payload).encode('utf-8'))
+
+    def handle_notify(self, body, client_ip, now):
+        if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
+            return self.send_json(503, {"ok": False, "message": "Telegram sozlanmagan (.env: TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID)"})
+
+        origin = self.headers.get('Origin', '')
+        if not origin or urllib.parse.urlparse(origin).netloc != self.headers.get('Host', ''):
+            return self.send_json(403, {"ok": False, "message": "Forbidden"})
+
+        attempt = notify_attempts.get(client_ip, {"count": 0, "resetAt": now + NOTIFY_WINDOW_SECONDS})
+        if attempt["resetAt"] < now:
+            attempt = {"count": 0, "resetAt": now + NOTIFY_WINDOW_SECONDS}
+        if attempt["count"] >= NOTIFY_LIMIT:
+            return self.send_json(429, {"ok": False, "message": "Juda ko'p so'rov. Birozdan keyin qayta urinib ko'ring."})
+
+        text = body.get('text')
+        if not isinstance(text, str) or not text.strip() or len(text) > 4000:
+            return self.send_json(400, {"ok": False, "message": "Xabar bo'sh yoki juda uzun"})
+
+        attempt["count"] += 1
+        notify_attempts[client_ip] = attempt
+
+        req = urllib.request.Request(
+            f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage",
+            data=json.dumps({"chat_id": TELEGRAM_CHAT_ID, "text": text, "parse_mode": "HTML",
+                             "disable_web_page_preview": True}).encode('utf-8'),
+            headers={'Content-Type': 'application/json'}, method='POST')
+        try:
+            with urllib.request.urlopen(req, timeout=15) as r:
+                data = json.loads(r.read().decode('utf-8'))
+        except urllib.error.HTTPError as e:
+            data = json.loads(e.read().decode('utf-8') or '{}')
+        except Exception as e:
+            print("Telegram request failed:", e)
+            return self.send_json(502, {"ok": False, "message": "Telegram bilan ulanib bo'lmadi"})
+
+        if not data.get("ok"):
+            print(f"Telegram API error {data.get('error_code')}: {data.get('description')}")
+            return self.send_json(502, {"ok": False, "message": "Telegram xatoligi", "code": data.get("error_code")})
+        return self.send_json(200, {"ok": True})
 
 if __name__ == "__main__":
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
