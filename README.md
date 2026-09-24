@@ -120,6 +120,16 @@ Parol va maxfiy kalitlar kodda saqlanmaydi — faqat muhit o'zgaruvchilari (envi
 
 Ushbu o'zgaruvchilar o'rnatilmasa, admin login xavfsizlik uchun o'chirilgan holatda bo'ladi.
 
+### 📨 Telegram xabarnomalari (buyurtma, ariza, murojaat)
+
+Bot tokeni saytda (js/html) saqlanmaydi. Brauzer xabarni `/api/notify` ga yuboradi, server esa uni Telegram guruhga jo'natadi.
+
+- **Vercel**: Settings → Environment Variables → `TELEGRAM_BOT_TOKEN` (@BotFather bergan token) va `TELEGRAM_CHAT_ID` (guruh ID, masalan `-1003964640399`), so'ng **Redeploy**. Boshqa domendan (masalan `https://gsouz.uz`) yuborish kerak bo'lsa — `ALLOWED_ORIGINS`.
+- **Lokal (`python server.py`)**: xuddi shu ikki qiymatni `.env` fayliga yozing.
+- Tekshirish: admin panel → "Guruhga Test Xabar Yuborish".
+
+Himoya: faqat o'z saytingizdan kelgan so'rovlar qabul qilinadi, xabar 4000 belgidan oshmaydi, bitta IP dan 10 daqiqada 10 tagacha xabar.
+
 ---
 
 ## 🌐 GitHub-ga Yuklash Qo'llanmasi
